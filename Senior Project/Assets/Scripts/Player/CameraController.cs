@@ -5,17 +5,17 @@ public class CameraController : MonoBehaviour
 {
     //Setting variables for look sensivity
     [Header("Look")]
-    public float sensitivity = 1f;
-    public float maxYRot = 90f;
-    public float minYRot = -75f;
+    public float _sensitivity = 1f;
+    public float _maxYRot = 90f;
+    public float _minYRot = -75f;
 
     //This is public variables to store the cameraFollow target
     [Header("Follow")]
-    public Transform targetTransform;
-    public UpdateMode followUpdateMode = UpdateMode.FixedUpdate;
+    public Transform _targetTransform;
+    public UpdateMode _followUpdateMode = UpdateMode.FixedUpdate;
 
-    private float xRot;
-    private float yRot;
+    private float _xRot;
+    private float _yRot;
 
     public enum UpdateMode
     {
@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     {
         HandleLook();
 
-        if (followUpdateMode != UpdateMode.Update)
+        if (_followUpdateMode != UpdateMode.Update)
             return;
 
         FollowTarget();
@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (followUpdateMode != UpdateMode.FixedUpdate)
+        if (_followUpdateMode != UpdateMode.FixedUpdate)
             return;
 
         FollowTarget();
@@ -49,7 +49,7 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (followUpdateMode != UpdateMode.LateUpdate)
+        if (_followUpdateMode != UpdateMode.LateUpdate)
             return;
 
         FollowTarget();
@@ -57,7 +57,7 @@ public class CameraController : MonoBehaviour
 
     private void FollowTarget()
     {
-        transform.position = targetTransform.position;
+        transform.position = _targetTransform.position;
     }
 
     private void HandleLook()
@@ -65,12 +65,12 @@ public class CameraController : MonoBehaviour
         float xInput = Input.GetAxisRaw("Mouse X");
         float yInput = Input.GetAxisRaw("Mouse Y");
 
-        xRot -= yInput * sensitivity;
-        yRot += xInput * sensitivity;
+        _xRot -= yInput * _sensitivity;
+        _yRot += xInput * _sensitivity;
 
-        xRot = Mathf.Clamp(xRot, minYRot, maxYRot);
+        _xRot = Mathf.Clamp(_xRot, _minYRot, _maxYRot);
 
-        transform.rotation = Quaternion.Euler(xRot, yRot, 0f);
+        transform.rotation = Quaternion.Euler(_xRot, _yRot, 0f);
     }
 
     public static void LockCursor(bool isLocked)

@@ -387,11 +387,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95498eb0becc0e440b2c31ac8eda64a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  sensitivity: 1
-  maxYRot: 90
-  minYRot: -75
-  targetTransform: {fileID: 30852380}
-  followUpdateMode: 1
+  _sensitivity: 1
+  _maxYRot: 90
+  _minYRot: -75
+  _targetTransform: {fileID: 30852380}
+  _followUpdateMode: 0
 --- !u!1 &2031250696
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +570,14 @@ PrefabInstance:
     - target: {fileID: 6248889060958525270, guid: a936ab00389c6254d83469d338796764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
+      propertyPath: _sprintSpeed
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
+      propertyPath: _sprintClip._Speed
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
