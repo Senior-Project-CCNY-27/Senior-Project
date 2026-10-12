@@ -1,17 +1,24 @@
 using System;
+using Animancer;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(AnimancerComponent))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Idle")]
+    [SerializeField] private ClipTransition _idleClip;
+    
     [Header("Walk")]
     [SerializeField] private float _walkSpeed = 3f;
+    [SerializeField] private ClipTransition _walkClip;
     
     [Header("Sprint")]
     [SerializeField] private float _sprintSpeed = 4.5f;
+    [SerializeField] private ClipTransition _sprintClip;
     
     public enum State
     {
@@ -22,6 +29,7 @@ public class PlayerController : MonoBehaviour
     
     private PlayerInputActions _input;
     private CharacterController _characterController;
+    private AnimancerComponent _animator;
     
     [field: Header("Debug")]
     [field: SerializeField, ReadOnly] public State CurrentState { get; private set; }
@@ -33,6 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         _input = InputManager.Instance.Actions;
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<AnimancerComponent>();
     }
 
     private void Start()
@@ -64,11 +73,15 @@ public class PlayerController : MonoBehaviour
         switch (state)
         {
             case State.Idle:
+                _animator.Play(_idleClip, 0.1f);
+                CurrentSpeed = 0f;
                 break;
             case State.Walk:
+                _animator.Play(_walkClip, 0.1f);
                 CurrentSpeed = _walkSpeed;
                 break;
             case State.Sprint:
+                _animator.Play(_sprintClip, 0.1f);
                 CurrentSpeed = _sprintSpeed;
                 break;
         }
