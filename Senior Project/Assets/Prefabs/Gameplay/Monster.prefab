@@ -73,9 +73,9 @@ MonoBehaviour:
           _Names: []
         _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
         _NormalizedStartTime: NaN
-      _moveSpeed: 1.5
-      _rotateSpeed: 25
-    <FollowStopDistance>k__BackingField: 1.5
+      _moveSpeed: 1.4
+      _rotateSpeed: 10
+    <FollowStopDistance>k__BackingField: 3.5
     <MaxTimeWithoutFood>k__BackingField: 10
     _agitatedAnimationClip:
       _FadeDuration: 0.25
@@ -99,7 +99,7 @@ MonoBehaviour:
           _Names: []
         _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
         _NormalizedStartTime: NaN
-      _attackDistance: 1.5
+      _attackDistance: 3.25
       _moveSpeed: 3.5
       _rotateSpeed: 10
     <AttackState>k__BackingField:
@@ -161,10 +161,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
-  m_Height: 2
+  m_Radius: 1.5
+  m_Height: 4
   m_Direction: 2
-  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!54 &3585593536688389072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -200,6 +200,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5947050458185536802}
     m_Modifications:
+    - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -239,6 +251,10 @@ PrefabInstance:
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7962199819078159310, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_Name
