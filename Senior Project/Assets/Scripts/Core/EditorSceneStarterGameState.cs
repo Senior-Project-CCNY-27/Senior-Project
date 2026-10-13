@@ -7,7 +7,7 @@ public class EditorSceneStarterGameState : MonoBehaviour
 {
     [SerializeField] private GameManager.State _startingState;
 
-    private void Awake()
+    private void Start()
     {
 #if UNITY_EDITOR
         GameManager.Instance.ChangeState(_startingState);
