@@ -49,6 +49,7 @@ public class InputManager : Singleton<InputManager>
         _playerInput = GetComponent<PlayerInput>();
         
         Actions = new PlayerInputActions();
+        
         _playerInput.onControlsChanged += PlayerInput_OnControlsChanged;
     }
 

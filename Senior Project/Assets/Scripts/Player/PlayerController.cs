@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [field: Header("Debug")]
     [field: SerializeField, ReadOnly] public State CurrentState { get; private set; }
     [field: SerializeField, ReadOnly] public float CurrentSpeed { get; private set; }
+    public event Action<State, State> OnStateChanged = delegate { };
 
     private Vector3 _moveInput;
 
@@ -63,9 +64,13 @@ public class PlayerController : MonoBehaviour
         if (CurrentState == newState && !forceChange)
             return;
 
+        State previousState = CurrentState;
+        
         OnStateExit(CurrentState);
         CurrentState = newState;
         OnStateEnter(CurrentState);
+        
+        OnStateChanged(newState, previousState);
     }
 
     private void OnStateEnter(State state)

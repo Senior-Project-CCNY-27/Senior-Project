@@ -62,11 +62,10 @@ public class CameraController : MonoBehaviour
 
     private void HandleLook()
     {
-        float xInput = Input.GetAxisRaw("Mouse X");
-        float yInput = Input.GetAxisRaw("Mouse Y");
+        Vector2 mouseInput = InputManager.Instance.Actions.Player.Look.ReadValue<Vector2>();
 
-        _xRot -= yInput * _sensitivity;
-        _yRot += xInput * _sensitivity;
+        _xRot -= mouseInput.y * _sensitivity;
+        _yRot += mouseInput.x * _sensitivity;
 
         _xRot = Mathf.Clamp(_xRot, _minYRot, _maxYRot);
 

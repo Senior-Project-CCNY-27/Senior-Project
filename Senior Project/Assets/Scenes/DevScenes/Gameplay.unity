@@ -447,6 +447,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6248889060958525270, guid: a936ab00389c6254d83469d338796764, type: 3}
   m_PrefabInstance: {fileID: 4554190117332698801}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1120643419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
+  m_PrefabInstance: {fileID: 4554190117332698801}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4df4e8c588f90894fb0ccd93fae0911f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1001 &1153900627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -825,6 +836,7 @@ GameObject:
   - component: {fileID: 1958229513}
   - component: {fileID: 1958229515}
   - component: {fileID: 1958229514}
+  - component: {fileID: 1958229516}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -963,7 +975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95498eb0becc0e440b2c31ac8eda64a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  _sensitivity: 1
+  _sensitivity: 0.25
   _maxYRot: 90
   _minYRot: -75
   _targetTransform: {fileID: 30852380}
@@ -999,6 +1011,23 @@ MonoBehaviour:
   heldObject: {fileID: 0}
   heldObjectRB: {fileID: 0}
   pickupRange: 10
+--- !u!114 &1958229516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958229508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd1e3a1441a43c5ae993933581cdb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFOVHandler
+  _player: {fileID: 1120643419}
+  _camera: {fileID: 1958229510}
+  _sprintFOV: 90
+  _adjustmentDuration: 0.4
+  _adjustmentEase: 9
 --- !u!1 &2031250696
 GameObject:
   m_ObjectHideFlags: 0
