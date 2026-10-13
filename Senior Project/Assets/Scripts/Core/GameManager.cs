@@ -65,6 +65,10 @@ public class GameManager : Singleton<GameManager>
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(false);
                 break;
+            case State.Gameplay:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(true);
+                break;
             case State.Pause:
                 Time.timeScale = 0f;
                 InputManager.Instance.LockCursor(false);
