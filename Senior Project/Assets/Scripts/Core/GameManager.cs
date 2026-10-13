@@ -25,8 +25,21 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        
+    }
+
+    private void Start()
+    {
         ChangeState(State.MainMenu, true);
+    }
+
+    private void OnEnable()
+    {
+        InputManager.Instance.Actions.UI.Pause.performed += PauseGame;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.Actions.UI.Pause.performed -= PauseGame;
     }
 
     public void ChangeState(State newState, bool forceChange = false)
@@ -49,6 +62,13 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case State.MainMenu:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(false);
+                break;
+            case State.Pause:
+                Time.timeScale = 0f;
+                InputManager.Instance.LockCursor(false);
+                PauseMenuManager.Instance.Open();
                 break;
         }
     }
@@ -58,6 +78,10 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case State.MainMenu:
+                break;
+            case State.Pause:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(true);
                 break;
         }
     }
@@ -91,6 +115,17 @@ public class GameManager : Singleton<GameManager>
     public static Scene GetCurrentScene()
     {
         return SceneManager.GetActiveScene();
+    }
+
+    private void PauseGame(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (CurrentState == State.MainMenu) 
+            return;
+
+        if (CurrentState == State.Pause)
+            return;
+
+        ChangeState(State.Pause);
     }
 
     public static void Quit()

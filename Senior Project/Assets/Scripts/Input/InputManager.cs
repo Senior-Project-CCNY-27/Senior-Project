@@ -58,13 +58,15 @@ public class InputManager : Singleton<InputManager>
             return;
 
         Actions.Enable();
+        Actions.UI.Enable();
     }
 
     private void OnDisable()
     {
         if (Actions == null)
             return;
-            
+
+        Actions.UI.Disable();
         Actions.Disable();
     }
 

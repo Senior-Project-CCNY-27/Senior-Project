@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerActions : MonoBehaviour
 {
@@ -15,5 +16,10 @@ public class GameManagerActions : MonoBehaviour
     public void QuitGame()
     {
         GameManager.Quit();
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(GameManager.GetCurrentScene().name);
     }
 }
