@@ -1,15 +1,11 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class Lever : MonoBehaviour, IInteractable
+public class Lever : Interactable
 {
     public bool isOpen = false;
-    public bool canInteract()
-    {
-        return true;
-    }
-
-    public void Interact(Interactor interactor)
+    
+    public override void Interact(Interactor interactor)
     {
         if (isOpen)
         {

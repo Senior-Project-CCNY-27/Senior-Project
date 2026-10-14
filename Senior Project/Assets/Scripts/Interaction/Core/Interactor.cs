@@ -10,11 +10,11 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
-        if (doInteractionsTest(out IInteractable interactable)) // check if player is looking at interactble object
+        if (doInteractionsTest(out Interactable interactable)) // check if player is looking at interactble object
         {
             CrosshairChange(true); // changes crosshiar color to red 
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && interactable.canInteract()) // checks if object getting clicked is interactble
+            if (InputManager.Instance.Actions.Player.Interact.WasPerformedThisFrame() && interactable.canInteract == true) // checks if object getting clicked is interactble
             {
                 interactable.Interact(this); // tells the object to interact
             }
@@ -26,17 +26,17 @@ public class Interactor : MonoBehaviour
     }
 
     //Ray cast
-    public bool doInteractionsTest(out IInteractable interactable) // will make cursor turn red if raycast is on interactable object
+    public bool doInteractionsTest(out Interactable interactable) // will make cursor turn red if raycast is on interactable object
     {
         interactable = null;
         RaycastHit hit;
 
-        Vector3 forward  = transform.TransformDirection(Vector3.forward);
+        Vector3 forward  = transform.TransformDirection(Vector3.forward); 
         Debug.DrawLine(transform.position, transform.position + forward * 5, Color.blue); //show the raycast
 
         if (Physics.Raycast(transform.position, forward, out hit, castDistance))
         {
-            interactable = hit.collider.GetComponent<IInteractable>(); // Get the IInteractable component from whatever the raycast hit
+            interactable = hit.collider.GetComponent<Interactable>(); // Get the Interactable component from whatever the raycast hit
 
             isCrosshairActive = true;
 

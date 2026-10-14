@@ -12,7 +12,7 @@ public class PickUpController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && (heldObject == null)) // click to pick up objects if not holding object 
+        if (InputManager.Instance.Actions.Player.Interact.WasPerformedThisFrame() && (heldObject == null)) // click E to pick up objects if not holding object 
         {
             RaycastHit hit;
 
@@ -22,7 +22,7 @@ public class PickUpController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && heldObject != null) // drop held object 
+        if (Input.GetMouseButtonDown(1) && heldObject != null) // right click drop held object 
         {
             DropObject();
         }
@@ -33,13 +33,11 @@ public class PickUpController : MonoBehaviour
         }
 
     }
-
     void MoveObject() // how the object moves when being held
     {
         heldObject.transform.position = holdArea.position;
         heldObject.transform.rotation = holdArea.rotation;
     }
-
     void PickupObject(GameObject pickObject) // how objects are being picked up, object with a rigidbody
     {
         Rigidbody rb = pickObject.GetComponent<Rigidbody>();
@@ -53,7 +51,6 @@ public class PickUpController : MonoBehaviour
             heldObjectRB.constraints = RigidbodyConstraints.FreezeRotation;
         }
     }
-
     void DropObject() // how objects are beings dropped
     {
         if (heldObject == null)
