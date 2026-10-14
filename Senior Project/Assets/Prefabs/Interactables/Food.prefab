@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3966693119767414400}
   - component: {fileID: 6678814626649657824}
   - component: {fileID: 994842252667517437}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,3 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1accfbc359b3d4644b174c27ea81f2c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meat
+  canInteract: 1

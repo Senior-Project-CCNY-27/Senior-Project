@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 37350039}
   - component: {fileID: 37350038}
   - component: {fileID: 37350037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Food (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1accfbc359b3d4644b174c27ea81f2c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meat
+  canInteract: 1
 --- !u!54 &37350038
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -321,7 +322,7 @@ GameObject:
   - component: {fileID: 513865576}
   - component: {fileID: 513865575}
   - component: {fileID: 513865574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,6 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af6799c2c7554a64bfb46a3e9954701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lever
+  canInteract: 1
   isOpen: 0
 --- !u!65 &513865574
 BoxCollider:
@@ -1224,6 +1226,10 @@ PrefabInstance:
     - target: {fileID: 1099216390143750588, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
       propertyPath: m_Name
       value: Food
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099216390143750588, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2167165202538946547, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
       propertyPath: m_LocalPosition.x

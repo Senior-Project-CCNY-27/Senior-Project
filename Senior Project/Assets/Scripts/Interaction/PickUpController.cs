@@ -9,6 +9,13 @@ public class PickUpController : MonoBehaviour
 
     public float pickupRange = 5.0f;
 
+    private int interactableLayerMask; // Only detect objects on the Interactable layer
+
+    void Start()
+    {
+        interactableLayerMask = LayerMask.GetMask("Interactable");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -16,13 +23,13 @@ public class PickUpController : MonoBehaviour
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, pickupRange))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, pickupRange, interactableLayerMask))
             {
                 PickupObject(hit.transform.gameObject);
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && heldObject != null) // right click drop held object 
+        if (InputManager.Instance.Actions.Player.Drop.WasPerformedThisFrame() && heldObject != null) // click G drop held object 
         {
             DropObject();
         }

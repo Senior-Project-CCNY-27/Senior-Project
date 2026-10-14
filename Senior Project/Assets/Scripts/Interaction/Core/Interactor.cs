@@ -8,6 +8,13 @@ public class Interactor : MonoBehaviour
     public Image crosshair = null; 
     public bool isCrosshairActive;
 
+    private int interactableLayerMask; // Only detect objects on the Interactable layer
+
+    private void Start()
+    {
+        interactableLayerMask = LayerMask.GetMask("Interactable");
+    }
+
     private void Update()
     {
         if (doInteractionsTest(out Interactable interactable)) // check if player is looking at interactble object
@@ -34,7 +41,7 @@ public class Interactor : MonoBehaviour
         Vector3 forward  = transform.TransformDirection(Vector3.forward); 
         Debug.DrawLine(transform.position, transform.position + forward * 5, Color.blue); //show the raycast
 
-        if (Physics.Raycast(transform.position, forward, out hit, castDistance))
+        if (Physics.Raycast(transform.position, forward, out hit, castDistance, interactableLayerMask))
         {
             interactable = hit.collider.GetComponent<Interactable>(); // Get the Interactable component from whatever the raycast hit
 
