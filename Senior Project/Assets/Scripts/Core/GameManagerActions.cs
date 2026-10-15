@@ -13,13 +13,13 @@ public class GameManagerActions : MonoBehaviour
         GameManager.Instance.ReturnToMainMenu();
     }
 
-    public void QuitGame()
-    {
-        GameManager.Quit();
-    }
-
     public void ReloadScene()
     {
         SceneManager.LoadScene(GameManager.GetCurrentScene().name);
+    }
+
+    public void QuitGame()
+    {
+        GameManager.Quit();
     }
 }
