@@ -89,6 +89,18 @@ MonoBehaviour:
   <AgitatedSuperState>k__BackingField:
     <SubStateMachine>k__BackingField:
       rid: -2
+    <RoamState>k__BackingField:
+      _animationClip:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Clip: {fileID: -3865510570152648483, guid: 632368da2a0c8904ab1e6031fb4591df, type: 3}
+        _NormalizedStartTime: NaN
+      _range: 10
+      _halfAngleCone: 45
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -113,15 +125,7 @@ MonoBehaviour:
         _Clip: {fileID: -6528749351906173395, guid: 168542ff75cc8964fb4e265f66c946cf, type: 3}
         _NormalizedStartTime: 0
   <PlayerTransform>k__BackingField: {fileID: 0}
-  <EatingAnimationClip>k__BackingField:
-    _FadeDuration: 0.25
-    _Speed: 1
-    _Events:
-      _NormalizedTimes: []
-      _Callbacks: []
-      _Names: []
-    _Clip: {fileID: -5284272045877403231, guid: 7ece14db7c507c64089ee3e86e00ddb9, type: 3}
-    _NormalizedStartTime: 0
+  <LOSOrigin>k__BackingField: {fileID: 4110793275426171861}
   references:
     version: 2
     RefIds:
@@ -192,6 +196,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!1 &5855619227845965456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4110793275426171861}
+  m_Layer: 0
+  m_Name: LOSOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4110793275426171861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855619227845965456}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.051, y: 0.326, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1479164432836177180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6783574099857454460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -262,9 +297,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5378164941576247392, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 4110793275426171861}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+--- !u!4 &1479164432836177180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5378164941576247392, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+  m_PrefabInstance: {fileID: 6783574099857454460}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4256080403027076104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
