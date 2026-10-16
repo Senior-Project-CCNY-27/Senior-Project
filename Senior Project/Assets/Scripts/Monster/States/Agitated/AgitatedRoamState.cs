@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Animancer;
 using UnityEngine;
+using System.Linq;
 
 namespace MonsterStates
 {
@@ -19,13 +20,13 @@ namespace MonsterStates
         
         private List<Transform> _availableWaypoints = new List<Transform>();
         private Transform _currentWaypoint;
-        private bool _targetDetected;
+        private Transform _targetTransform;
         
         private protected override void OnEnter()
         {
             _context.Animator.Play(_animationClip, 0.1f);
             
-            _targetDetected = false;
+            _targetTransform = null;
             _availableWaypoints = new List<Transform>(_waypoints);
             
             PickAndMoveToRandomAvailableWaypoint();
@@ -54,8 +55,9 @@ namespace MonsterStates
 
         private protected override State<MonsterController> GetTransition()
         {
-            if (_targetDetected)
+            if (_targetTransform != null)
             {
+                _context.AgitatedSuperState.ChaseState.SetTarget(_targetTransform);
                 return new TransitionState<MonsterController>(
                     _stateMachine,
                     _context,
@@ -70,7 +72,7 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            Gizmos.color = _targetDetected ? Color.red : Color.white;
+            Gizmos.color = _targetTransform != null ? Color.red : Color.white;
             Gizmos.DrawWireSphere(_context.transform.position, _innerDetectionRadius);
             CustomDebug.DrawWireSphereSectorIgnoringY(
                 _context.LOSOrigin.position,
@@ -82,16 +84,18 @@ namespace MonsterStates
 
         private void DetectTarget()
         {
+            List<GameObject> targets = new List<GameObject>();
+            
             List<GameObject> innerObjects = _context.GetObjectsInRange(
                 _innerDetectionRadius,
                 _context.transform.position,
-                LayerMask.GetMask("Player") 
+                LayerMask.GetMask("Player", "Interactable") 
             );
             List<GameObject> detectedInnerObjects = _context.GetVisibleObjects(
                 innerObjects,
                 _context.transform.position,
                 _innerDetectionRadius,
-                LayerMask.GetMask("Player"),
+                LayerMask.GetMask("Player", "Interactable"),
                 LayerMask.GetMask("Wall")
             );
                 
@@ -109,8 +113,27 @@ namespace MonsterStates
                 LayerMask.GetMask("Player"),
                 LayerMask.GetMask("Wall")
             );
+
+            foreach (GameObject innerObject in detectedInnerObjects)
+            {
+                if(!targets.Contains(innerObject))
+                    targets.Add(innerObject);
+            }
             
-            _targetDetected = detectedInnerObjects.Count > 0 || detectedLOSObjects.Count > 0;
+            foreach (GameObject losObject in detectedLOSObjects)
+            {
+                if(!targets.Contains(losObject))
+                    targets.Add(losObject);
+            }
+
+            if (targets.Count == 0)
+            {
+                _targetTransform = null;
+                return;
+            }
+            
+            targets = targets.OrderBy((target) => Vector3.Distance(_context.transform.position, target.transform.position)).ToList();
+            _targetTransform = targets[0].transform;
         }
 
         private void PickAndMoveToRandomAvailableWaypoint()

@@ -13,7 +13,13 @@ namespace MonsterStates
         [SerializeField] private float _moveSpeed = 3f;
         [SerializeField] private float _rotateSpeed = 10f;
 
+        private Transform _targetTransform;
         private bool _isTargetInAttackRange = false;
+
+        public void SetTarget(Transform targetTransform)
+        {
+            _targetTransform = targetTransform;
+        }
         
         private protected override void OnEnter()
         {
@@ -24,15 +30,22 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            
+            _context.NavMeshAgent.ResetPath();
         }
 
         private protected override void OnUpdate()
         {
-            _isTargetInAttackRange = Physics.OverlapSphere(_attackHitBoxTransform.position,
-                _attackColliderRadius, LayerMask.GetMask("Player")).Length > 0;
+            Collider[] attackableColliders = Physics.OverlapSphere(_attackHitBoxTransform.position, _attackColliderRadius);
+            foreach (Collider attackableCollider in attackableColliders)
+            {
+                if (attackableCollider.gameObject == _targetTransform.gameObject)
+                {
+                    _isTargetInAttackRange = true;
+                    break;
+                }
+            }
             
-            _context.NavMeshAgent.SetDestination(_context.PlayerTransform.position);
+            _context.NavMeshAgent.SetDestination(_targetTransform.position);
             _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
         }
 
@@ -44,8 +57,16 @@ namespace MonsterStates
         
         private protected override State<MonsterController> GetTransition()
         {
+            if (_targetTransform == null)
+                return _context.AgitatedSuperState.RoamState;
+
             if (_isTargetInAttackRange)
             {
+                if (_targetTransform.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+                {
+                    _context.Feed();
+                    return null;
+                }
                 return _context.AgitatedSuperState.AttackState;
             }
             
