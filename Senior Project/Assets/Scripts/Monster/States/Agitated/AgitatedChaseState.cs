@@ -8,13 +8,18 @@ namespace MonsterStates
     {
         [SerializeField] private ClipTransition _animationClip;
 
-        [SerializeField] private float _attackDistance = 1f;
+        [SerializeField] private Transform _attackHitBoxTransform;
+        [SerializeField] private float _attackColliderRadius = 2f;
         [SerializeField] private float _moveSpeed = 3f;
         [SerializeField] private float _rotateSpeed = 10f;
+
+        private bool _isTargetInAttackRange = false;
         
         private protected override void OnEnter()
         {
             _context.Animator.Play(_animationClip, 0.1f);
+
+            _isTargetInAttackRange = false;
         }
 
         private protected override void OnExit()
@@ -24,22 +29,33 @@ namespace MonsterStates
 
         private protected override void OnUpdate()
         {
-            _context.GraduallyLookAt(_context.PlayerTransform.position, _rotateSpeed);
+            _isTargetInAttackRange = Physics.OverlapSphere(_attackHitBoxTransform.position,
+                _attackColliderRadius, LayerMask.GetMask("Player")).Length > 0;
+            
+            _context.NavMeshAgent.SetDestination(_context.PlayerTransform.position);
+            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveTowards(_context.PlayerTransform.position, _moveSpeed);
+            _context.MoveInDirection(_context.NavMeshAgent.velocity, _moveSpeed);
+            _context.NavMeshAgent.nextPosition = _context.transform.position;
         }
         
         private protected override State<MonsterController> GetTransition()
         {
-            if (Vector3.Distance(_context.transform.position, _context.PlayerTransform.position) <= _attackDistance)
+            if (_isTargetInAttackRange)
             {
                 return _context.AgitatedSuperState.AttackState;
             }
             
             return null;
+        }
+
+        public override void OnDrawGizmosInPlayMode()
+        {
+            Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
+            Gizmos.DrawWireSphere(_attackHitBoxTransform.position, _attackColliderRadius);
         }
     }
 }

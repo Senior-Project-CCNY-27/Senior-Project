@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1390518362615917083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8989832198447431673}
+  m_Layer: 0
+  m_Name: AttackHitboxCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8989832198447431673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390518362615917083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.422, z: 2.98}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5947050458185536802}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5674973594923332841
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,6 +45,7 @@ GameObject:
   - component: {fileID: 4990973764900267045}
   - component: {fileID: 3585593536688389072}
   - component: {fileID: 7102582458539518028}
+  - component: {fileID: 8932652977067262800}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -35,6 +67,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4256080403027076104}
+  - {fileID: 8989832198447431673}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5118755737595468301
@@ -77,16 +110,7 @@ MonoBehaviour:
       _moveSpeed: 1.4
       _rotateSpeed: 10
     <FollowStopDistance>k__BackingField: 3.5
-    <MaxTimeWithoutFood>k__BackingField: 10
-    _agitatedAnimationClip:
-      _FadeDuration: 0.25
-      _Speed: 1
-      _Events:
-        _NormalizedTimes: []
-        _Callbacks: []
-        _Names: []
-      _Clip: {fileID: -6989946573967037462, guid: d614bdd708fc9914da3949d1b0c9cad8, type: 3}
-      _NormalizedStartTime: NaN
+    <MaxTimeWithoutFood>k__BackingField: 4
   <AgitatedSuperState>k__BackingField:
     <SubStateMachine>k__BackingField:
       rid: -2
@@ -98,11 +122,20 @@ MonoBehaviour:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
-        _Clip: {fileID: -528885511140604667, guid: aab8b0cfc53d18840993589acb4626fa, type: 3}
+        _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
         _NormalizedStartTime: NaN
+      _waypoints:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
       _innerDetectionRadius: 4
       _losDetectionRadius: 10
       _losHalfAngleCone: 30
+      _rotateSpeed: 10
+      _roamMoveSpeed: 1.5
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -113,7 +146,8 @@ MonoBehaviour:
           _Names: []
         _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
         _NormalizedStartTime: NaN
-      _attackDistance: 3.25
+      _attackHitBoxTransform: {fileID: 8989832198447431673}
+      _attackColliderRadius: 1.25
       _moveSpeed: 3.5
       _rotateSpeed: 10
     <AttackState>k__BackingField:
@@ -136,7 +170,16 @@ MonoBehaviour:
       _Callbacks: []
       _Names: []
     _Clip: {fileID: -5284272045877403231, guid: 7ece14db7c507c64089ee3e86e00ddb9, type: 3}
-    _NormalizedStartTime: NaN
+    _NormalizedStartTime: 0
+  <AgitatedAnimationClip>k__BackingField:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: -6989946573967037462, guid: d614bdd708fc9914da3949d1b0c9cad8, type: 3}
+    _NormalizedStartTime: 0
   references:
     version: 2
     RefIds:
@@ -230,6 +273,28 @@ CapsuleCollider:
   m_Height: 1.93
   m_Direction: 2
   m_Center: {x: 0, y: 1.63, z: 2.36}
+--- !u!195 &8932652977067262800
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674973594923332841}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 2.25
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 0
+  m_Height: 2.85
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5855619227845965456
 GameObject:
   m_ObjectHideFlags: 0

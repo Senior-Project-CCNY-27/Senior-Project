@@ -14,7 +14,6 @@ namespace MonsterStates
         [field: Header("Config")]
         [field: SerializeField] public float FollowStopDistance { get; private set; }  = 1.5f;
         [field: SerializeField] public float MaxTimeWithoutFood { get; private set; }  = 10f;
-        [SerializeField] private ClipTransition _agitatedAnimationClip;
         
         private float _timeWithoutFood;
 
@@ -35,7 +34,7 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            
+            SubStateMachine.CurrentState?.Exit();
         }
 
         private protected override void OnUpdate()
@@ -64,7 +63,7 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _agitatedAnimationClip,
+                    _context.AgitatedAnimationClip,
                     _context.AgitatedSuperState
                     );
             }

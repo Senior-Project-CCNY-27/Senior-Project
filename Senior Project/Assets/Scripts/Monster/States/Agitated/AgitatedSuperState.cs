@@ -27,7 +27,7 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            
+            SubStateMachine.CurrentState?.Exit();
         }
 
         private protected override void OnUpdate()

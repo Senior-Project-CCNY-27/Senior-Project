@@ -4,30 +4,41 @@ using Animancer;
 using MonsterStates;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class MonsterController : MonoBehaviour
 {
     [field: SerializeReference, ReadOnly] public StateMachine<MonsterController> StateMachine { get; private set; }
     [field: SerializeField] public CalmSuperState CalmSuperState { get; private set; }
     [field: SerializeField] public AgitatedSuperState AgitatedSuperState { get; private set; }
 
-    [field: Header("Config")]
+    [field: Header("Blackboard")]
     [field: SerializeField] public Transform PlayerTransform { get; private set; }
     [field: SerializeField] public Transform LOSOrigin { get; private set; }
     [field: SerializeField] public ClipTransition EatingAnimationClip { get; private set; }
+    [field: SerializeField] public ClipTransition AgitatedAnimationClip { get; private set; }
     
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
+    public NavMeshAgent NavMeshAgent { get; private set; }
 
     private void Awake()
     {
         Animator = GetComponent<AnimancerComponent>();
         Rigidbody = GetComponent<Rigidbody>();
+        NavMeshAgent = GetComponent<NavMeshAgent>();
         
         InitStateMachine();
+    }
+
+    private void Start()
+    {
+        NavMeshAgent.updatePosition = false;
+        NavMeshAgent.updateRotation = false;
     }
 
     private void OnDrawGizmos()
