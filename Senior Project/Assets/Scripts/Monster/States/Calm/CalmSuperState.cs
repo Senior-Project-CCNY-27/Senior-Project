@@ -49,7 +49,13 @@ namespace MonsterStates
         {
             SubStateMachine.FixedUpdate();
         }
-        
+
+        public override void OnDrawGizmosInPlayMode()
+        {
+            IdleState?.OnDrawGizmosInPlayMode();
+            FollowState?.OnDrawGizmosInPlayMode();
+        }
+
         private protected override State<MonsterController> GetTransition()
         {
             if (_timeWithoutFood > MaxTimeWithoutFood)

@@ -16,26 +16,27 @@ public class MonsterController : MonoBehaviour
 
     [field: Header("Config")]
     [field: SerializeField] public Transform PlayerTransform { get; private set; }
-     public ClipTransition EatingAnimationClip { get; private set; }
+    [field: SerializeField] public Transform LOSOrigin { get; private set; }
+    [field: SerializeField] public ClipTransition EatingAnimationClip { get; private set; }
+    
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
-    public CapsuleCollider Collider { get; private set; }
-    [field: SerializeField] public Transform LOSOrigin { get; private set; }
 
     private void Awake()
     {
         Animator = GetComponent<AnimancerComponent>();
         Rigidbody = GetComponent<Rigidbody>();
-        Collider = GetComponent<CapsuleCollider>();
-
         
         InitStateMachine();
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = GetVisibleObjectsInConeRange(AgitatedSuperState.RoamState._range, LayerMask.GetMask("Player"), LOSOrigin.position, transform.forward, AgitatedSuperState.RoamState._halfAngleCone, LayerMask.GetMask("Wall")).Count > 0 ? Color.red: Color.green; 
-        CustomDebug.DrawSphereWireCone(LOSOrigin.position, transform.forward, AgitatedSuperState.RoamState._halfAngleCone, AgitatedSuperState.RoamState._range);
+        if (!Application.IsPlaying(this))
+            return;
+        
+        CalmSuperState?.OnDrawGizmosInPlayMode();
+        AgitatedSuperState?.OnDrawGizmosInPlayMode();
     }
 
     private void Update()
@@ -108,15 +109,15 @@ public class MonsterController : MonoBehaviour
         ));
     }
 
-    public List<GameObject> GetObjectsInRange(float radius, LayerMask layers, Vector3 origin)
+    public List<GameObject> GetObjectsInRange(float radius, Vector3 origin, LayerMask searchLayers)
     {
         List<GameObject> objectsInRange = new List<GameObject>();
-        Collider[] hits = Physics.OverlapSphere(origin, radius, layers);
+        Collider[] hits = Physics.OverlapSphere(origin, radius, searchLayers);
         if (hits == null || hits.Length == 0)
             return objectsInRange;
         foreach (Collider hit in hits)
         {
-            if (hit == Collider)
+            if (hit.gameObject == gameObject)
                 continue;
             objectsInRange.Add(hit.gameObject);
         }
@@ -124,10 +125,10 @@ public class MonsterController : MonoBehaviour
         return objectsInRange;
     } 
 
-    public List<GameObject> GetObjectsInConeRange(float radius, LayerMask layers, Vector3 origin, Vector3 direction, float halfAngle)
+    public List<GameObject> GetObjectsInConeRange(float radius, Vector3 origin, Vector3 direction, float halfAngle, LayerMask searchLayers)
     {
         List<GameObject> objectsInCone = new List<GameObject>();
-        List<GameObject> objectsInRange = GetObjectsInRange(radius, layers, origin);
+        List<GameObject> objectsInRange = GetObjectsInRange(radius, origin, searchLayers);
         if (objectsInRange.Count == 0)
             return objectsInCone;
         foreach (GameObject objectInRange in objectsInRange)
@@ -140,22 +141,22 @@ public class MonsterController : MonoBehaviour
         return objectsInCone;
     }
 
-    public List<GameObject> GetVisibleObjectsInConeRange(float radius, LayerMask searchLayers, Vector3 origin, Vector3 direction, float halfAngle, LayerMask wallLayers)
+    public List<GameObject> GetVisibleObjects(List<GameObject> objects, Vector3 origin, float radius, LayerMask searchLayers, LayerMask wallLayers)
     {
-        List<GameObject> visbleObjectsInCone = new List<GameObject>();
-        List<GameObject> objectsInCone = GetObjectsInConeRange(radius, searchLayers, origin, direction, halfAngle);
-        if (objectsInCone.Count == 0) 
-            return visbleObjectsInCone;
-        foreach (GameObject objectInCone in objectsInCone)
+        List<GameObject> visibleObjects = new List<GameObject>();
+        if (objects.Count == 0) 
+            return visibleObjects;
+        
+        foreach (GameObject obj in objects)
         {
-            Vector3 directionToTarget = objectInCone.transform.position - origin;
+            Vector3 directionToTarget = obj.transform.position - origin;
             if (Physics.Raycast(origin, directionToTarget, out RaycastHit hit, radius , searchLayers | wallLayers))
             {
                 if (wallLayers.Contains(hit.collider.gameObject.layer))
                     continue;
             }
-            visbleObjectsInCone.Add(objectInCone);
+            visibleObjects.Add(obj);
         }
-        return visbleObjectsInCone;
+        return visibleObjects;
     }
 }

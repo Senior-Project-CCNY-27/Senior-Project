@@ -1675,14 +1675,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 439304884227378115, guid: a936ab00389c6254d83469d338796764, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3891509819644572001, guid: a936ab00389c6254d83469d338796764, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6248889060958525270, guid: a936ab00389c6254d83469d338796764, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0000004017794
@@ -1722,14 +1714,6 @@ PrefabInstance:
     - target: {fileID: 6248889060958525270, guid: a936ab00389c6254d83469d338796764, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
-      propertyPath: _sprintSpeed
-      value: 2.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
-      propertyPath: _sprintClip._Speed
-      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

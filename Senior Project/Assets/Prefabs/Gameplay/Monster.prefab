@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 293364263455553691}
   - component: {fileID: 4990973764900267045}
   - component: {fileID: 3585593536688389072}
+  - component: {fileID: 7102582458539518028}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -97,10 +98,11 @@ MonoBehaviour:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
-        _Clip: {fileID: -3865510570152648483, guid: 632368da2a0c8904ab1e6031fb4591df, type: 3}
+        _Clip: {fileID: -528885511140604667, guid: aab8b0cfc53d18840993589acb4626fa, type: 3}
         _NormalizedStartTime: NaN
-      _range: 10
-      _halfAngleCone: 45
+      _innerDetectionRadius: 4
+      _losDetectionRadius: 10
+      _losHalfAngleCone: 30
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -126,6 +128,15 @@ MonoBehaviour:
         _NormalizedStartTime: 0
   <PlayerTransform>k__BackingField: {fileID: 0}
   <LOSOrigin>k__BackingField: {fileID: 4110793275426171861}
+  <EatingAnimationClip>k__BackingField:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: -5284272045877403231, guid: 7ece14db7c507c64089ee3e86e00ddb9, type: 3}
+    _NormalizedStartTime: NaN
   references:
     version: 2
     RefIds:
@@ -196,6 +207,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!136 &7102582458539518028
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674973594923332841}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.93
+  m_Direction: 2
+  m_Center: {x: 0, y: 1.63, z: 2.36}
 --- !u!1 &5855619227845965456
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,43 +44,77 @@ public static class CustomDebug
     }
 
     /// <summary>
-    /// Draws a wireframe circular sector on the XZ plane.
-    /// halfAngle is in degrees.
+    /// Draws a wireframe sector cut from a sphere with <paramref name="maxDistance"/>
+    /// as its radius. The sector is defined by the horizontal XZ angle around
+    /// <paramref name="direction"/>; the sphere's vertical bounds are preserved.
     /// </summary>
-    public static void DrawSphereWireCone(Vector3 center, Vector3 direction, float halfAngle, float maxDistance)
+    /// <param name="center">The center of the sector.</param>
+    /// <param name="direction">The forward direction used to orient the XZ sector.</param>
+    /// <param name="halfAngle">The sector's horizontal half-angle in degrees.</param>
+    /// <param name="maxDistance">The radius of the sphere.</param>
+    public static void DrawWireSphereSectorIgnoringY(Vector3 center, Vector3 direction, float halfAngle, float maxDistance)
     {
-        // Flatten direction onto the XZ plane
-        direction.y = 0f;
-        if (direction.sqrMagnitude < 0.0001f)
+        Vector3 horizontalDirection = Vector3.ProjectOnPlane(direction, Vector3.up);
+        if (horizontalDirection.sqrMagnitude < 0.0001f || maxDistance <= 0f)
             return;
 
-        direction.Normalize();
+        horizontalDirection.Normalize();
+        halfAngle = Mathf.Clamp(halfAngle, 0f, 180f);
+        int azimuthSegments = GIZMOS_SEGMENTS * 2;
+        int elevationSegments = GIZMOS_SEGMENTS;
+        float azimuthStep = (halfAngle * 2f) / azimuthSegments;
+        float elevationStep = 180f / elevationSegments;
+        Vector3 right = Vector3.Cross(Vector3.up, horizontalDirection).normalized;
 
-        float angleStep = (halfAngle * 2f) / GIZMOS_SEGMENTS;
-
-        // Start at the left edge of the arc
-        Vector3 lastPoint = center +
-            Quaternion.AngleAxis(-halfAngle, Vector3.up) *
-            direction * maxDistance;
-
-        Gizmos.DrawLine(center, lastPoint);
-
-        for (int i = 1; i <= GIZMOS_SEGMENTS; i++)
+        Vector3 PointOnSphere(float azimuth, float elevation)
         {
-            float angle = -halfAngle + angleStep * i;
-
-            Vector3 nextPoint = center +
-                Quaternion.AngleAxis(angle, Vector3.up) *
-                direction * maxDistance;
-
-            // Draw the curved outer edge
-            Gizmos.DrawLine(lastPoint, nextPoint);
-
-            lastPoint = nextPoint;
+            float azimuthRadians = azimuth * Mathf.Deg2Rad;
+            float elevationRadians = elevation * Mathf.Deg2Rad;
+            Vector3 horizontal = Mathf.Cos(azimuthRadians) * horizontalDirection +
+                Mathf.Sin(azimuthRadians) * right;
+            Vector3 radialDirection = Mathf.Cos(elevationRadians) * horizontal +
+                Mathf.Sin(elevationRadians) * Vector3.up;
+            return center + radialDirection * maxDistance;
         }
 
-        // Draw the right edge back to the center
-        Gizmos.DrawLine(lastPoint, center);
+        // Draw horizontal latitude arcs across the spherical sector.
+        for (int elevationIndex = 0; elevationIndex <= elevationSegments; elevationIndex++)
+        {
+            float elevation = -90f + elevationIndex * elevationStep;
+            Vector3 lastPoint = PointOnSphere(-halfAngle, elevation);
+
+            for (int azimuthIndex = 1; azimuthIndex <= azimuthSegments; azimuthIndex++)
+            {
+                float azimuth = -halfAngle + azimuthIndex * azimuthStep;
+                Vector3 nextPoint = PointOnSphere(azimuth, elevation);
+                Gizmos.DrawLine(lastPoint, nextPoint);
+                lastPoint = nextPoint;
+            }
+        }
+
+        // Draw the longitude arcs that form the rest of the spherical wire mesh.
+        for (int azimuthIndex = 0; azimuthIndex <= azimuthSegments; azimuthIndex++)
+        {
+            float azimuth = -halfAngle + azimuthIndex * azimuthStep;
+            Vector3 lastPoint = PointOnSphere(azimuth, -90f);
+
+            for (int elevationIndex = 1; elevationIndex <= elevationSegments; elevationIndex++)
+            {
+                float elevation = -90f + elevationIndex * elevationStep;
+                Vector3 nextPoint = PointOnSphere(azimuth, elevation);
+                Gizmos.DrawLine(lastPoint, nextPoint);
+                lastPoint = nextPoint;
+            }
+        }
+
+        // Draw the vertical diameter passing through the sphere's center.
+        Gizmos.DrawLine(
+            center - Vector3.up * maxDistance,
+            center + Vector3.up * maxDistance);
+
+        // Draw the sector's radial boundaries at the equator.
+        Gizmos.DrawLine(center, PointOnSphere(-halfAngle, 0f));
+        Gizmos.DrawLine(center, PointOnSphere(halfAngle, 0f));
     }
 
     /// <summary>

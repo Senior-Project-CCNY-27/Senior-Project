@@ -40,6 +40,13 @@ namespace MonsterStates
             SubStateMachine.FixedUpdate();
         }
 
+        public override void OnDrawGizmosInPlayMode()
+        {
+            RoamState?.OnDrawGizmosInPlayMode();
+            ChaseState?.OnDrawGizmosInPlayMode();
+            AttackState?.OnDrawGizmosInPlayMode();
+        }
+
         private protected override State<MonsterController> GetTransition()
         {
             return null;

@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(State.Idle);
+        ChangeState(State.Idle, true);
     }
 
     private void Update()

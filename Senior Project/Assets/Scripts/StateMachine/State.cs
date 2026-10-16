@@ -56,6 +56,8 @@ public abstract class State<TContext> where TContext : MonoBehaviour
         OnFixedUpdate();
     }
 
+    public virtual void OnDrawGizmosInPlayMode() { }
+
     private protected abstract void OnEnter();
     private protected abstract void OnExit();
     private protected abstract void OnUpdate();

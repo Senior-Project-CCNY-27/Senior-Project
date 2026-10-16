@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7841058051866017547}
   - component: {fileID: 3891509819644572001}
   - component: {fileID: 8334021453833950658}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,10 +67,10 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: -203655887218126122, guid: 61935ba2f3a653f4093d30cac4531629, type: 3}
     _NormalizedStartTime: NaN
-  _sprintSpeed: 2.25
+  _sprintSpeed: 2.75
   _sprintClip:
     _FadeDuration: 0.25
-    _Speed: 0.5
+    _Speed: 0.75
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
