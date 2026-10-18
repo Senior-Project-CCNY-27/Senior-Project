@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7841058051866017547}
   - component: {fileID: 3891509819644572001}
   - component: {fileID: 8334021453833950658}
+  - component: {fileID: 741346971847979075}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -122,6 +123,18 @@ MonoBehaviour:
   _Animator: {fileID: 6954998794102932181}
   _Transitions: {fileID: 0}
   _ActionOnDisable: 0
+--- !u!114 &741346971847979075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439304884227378115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f9748a84b4bef4eaf8a71d802090ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeath
 --- !u!1 &876998578852105867
 GameObject:
   m_ObjectHideFlags: 0

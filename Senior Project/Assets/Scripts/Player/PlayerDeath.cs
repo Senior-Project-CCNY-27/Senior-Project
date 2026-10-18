@@ -9,7 +9,7 @@ public class PlayerDeath : MonoBehaviour
     {
         if (hit.gameObject.CompareTag("Monster"))
         {
-            SceneManager.LoadScene("DeathMenu");
+            GameManager.Instance.ChangeState(GameManager.State.GameOver);
         }
     }
 
@@ -17,7 +17,7 @@ public class PlayerDeath : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            SceneManager.LoadScene("DeathMenu");
+            GameManager.Instance.ChangeState(GameManager.State.GameOver);
         }
     }
 
