@@ -7,7 +7,6 @@ using UnityEditor;
 
 public static class CustomDebug
 {
-#if UNITY_EDITOR
     private static int GIZMOS_SEGMENTS = 16;
 
     /// <summary>
@@ -122,6 +121,7 @@ public static class CustomDebug
     /// </summary>
     public static void DrawWireCapsule(Vector3 point1, Vector3 point2, float radius)
     {
+#if UNITY_EDITOR
         Handles.color = Gizmos.color;
 
         Vector3 upOffset = point2 - point1;
@@ -142,6 +142,7 @@ public static class CustomDebug
         // y axis
         Handles.DrawWireDisc(point2, up, radius);
         Handles.DrawWireDisc(point1, up, radius);
+#endif
     }
 
     /// <summary>
@@ -149,12 +150,13 @@ public static class CustomDebug
     /// </summary>
     public static void DrawWireCircle(Vector3 center, float radius)
     {
+#if UNITY_EDITOR
         Handles.color = Gizmos.color;
 
         // Draw the wire circle using Handles
         Handles.DrawWireArc(center, Vector3.up, Vector3.right, 360f, radius);
-    }
 #endif
+    }
 
     /// <summary>
     /// Instantiates a temporary sphere GameObject with the specified center, radius, expire duration, and color.
