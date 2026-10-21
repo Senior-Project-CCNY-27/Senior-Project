@@ -5,7 +5,6 @@ using MonsterStates;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Rigidbody))]
