@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public bool canInteract = true;
+    [field: SerializeField] public string DisplayName { get; private set; } = "Interactable";
+    [field: SerializeField] public Sprite DisplayImage { get; private set; }
+
+    [field: SerializeField] public bool CanInteract { get; private set; } = true;
 
     public virtual void Interact(Interactor interactor)
     {

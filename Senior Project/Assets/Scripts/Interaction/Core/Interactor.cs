@@ -1,77 +1,68 @@
+using System;
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
-    public float castDistance = 5f; // how far caycast goes
+    [SerializeField] private float _castDistance = 5f; // how far the raycast goes
 
-    public Image crosshair = null; 
-    public bool isCrosshairActive;
+    [field: SerializeField, ReadOnly] public Interactable CurrentInteractable { get; private set; }
+    
+    private Transform _mainCamera => Camera.main.transform;
+    private int _interactableLayerMask; // Only detect objects on the Interactable layer
 
-    private int interactableLayerMask; // Only detect objects on the Interactable layer
-
-    private void Start()
+    private void Awake()
     {
-        interactableLayerMask = LayerMask.GetMask("Interactable");
+        _interactableLayerMask = LayerMask.GetMask("Interactable");
     }
 
+    private void OnEnable()
+    {
+        InputManager.Instance.Actions.Player.Interact.performed += Input_OnInteract;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.Actions.Player.Interact.performed -= Input_OnInteract;
+    }
+
+    /// <summary>
+    /// Called whenever the Interact key is pressed
+    /// </summary>
+    private void Input_OnInteract(InputAction.CallbackContext context)
+    {
+        // Cant interact without an interactable
+        if (CurrentInteractable == null)
+            return;
+
+        if (!CurrentInteractable.CanInteract)
+            return;
+        
+        CurrentInteractable.Interact(this);
+    }
+    
     private void Update()
     {
-        if (doInteractionsTest(out Interactable interactable)) // check if player is looking at interactble object
-        {
-            CrosshairChange(true); // changes crosshiar color to red 
-
-            if (InputManager.Instance.Actions.Player.Interact.WasPerformedThisFrame() && interactable.canInteract == true) // checks if object getting clicked is interactble
-            {
-                interactable.Interact(this); // tells the object to interact
-            }
-        }
-        else
-        {
-            CrosshairChange(false); // changes crosshair color back to normal 
-        }
+        CurrentInteractable = GetInteractable();
     }
 
-    //Ray cast
-    public bool doInteractionsTest(out Interactable interactable) // will make cursor turn red if raycast is on interactable object
+    private void OnDrawGizmos()
     {
-        interactable = null;
-        RaycastHit hit;
-
-        Vector3 forward  = transform.TransformDirection(Vector3.forward); 
-        Debug.DrawLine(transform.position, transform.position + forward * 5, Color.blue); //show the raycast
-
-        if (Physics.Raycast(transform.position, forward, out hit, castDistance, interactableLayerMask))
-        {
-            interactable = hit.collider.GetComponent<Interactable>(); // Get the Interactable component from whatever the raycast hit
-
-            isCrosshairActive = true;
-
-            if (interactable != null) // check to see if there is anything to interact with
-            {                
-                return true; 
-            }
-                        
-            return false;
-        }
-        else
-        {
-            isCrosshairActive = false;
-        }
-        
-        return false;       
+        // Shows the raycast in the Scene view
+        Gizmos.DrawLine(_mainCamera.position, _mainCamera.position + _mainCamera.forward * _castDistance);
     }
 
-    void CrosshairChange(bool on) // changes color of crosshair
+    /// <summary>
+    /// Raycasts to try and get the interactable that the interactor is looking at
+    /// </summary>
+    private Interactable GetInteractable()
     {
-        if (on)
-        {
-            crosshair.color = Color.red; // if the player look at a interactible turn red
-        }
-        else
-        {
-            crosshair.color = Color.white; 
-            isCrosshairActive = false;
-        }
+        if (Physics.Raycast(_mainCamera.position, _mainCamera.forward, out RaycastHit hit, _castDistance,
+                _interactableLayerMask))
+            return hit.collider.GetComponent<Interactable>();
+
+        return null;
     }
 }
