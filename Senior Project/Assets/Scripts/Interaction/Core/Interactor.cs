@@ -1,8 +1,6 @@
-using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
