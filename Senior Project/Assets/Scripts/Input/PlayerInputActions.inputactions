@@ -37,19 +37,19 @@
                     "priority": 0
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Drop",
                     "type": "Button",
-                    "id": "641cd816-40e6-41b4-8c3d-04687c349290",
+                    "id": "54d85c0b-e27e-48fc-9f60-80eb73430243",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold,Press",
                     "initialStateCheck": false,
                     "priority": 0
                 },
                 {
-                    "name": "Drop",
+                    "name": "Sprint",
                     "type": "Button",
-                    "id": "54d85c0b-e27e-48fc-9f60-80eb73430243",
+                    "id": "641cd816-40e6-41b4-8c3d-04687c349290",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -259,7 +259,7 @@
                 {
                     "name": "",
                     "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -281,7 +281,7 @@
                 {
                     "name": "",
                     "id": "674f8480-623b-4245-97d0-477ca82e022c",
-                    "path": "<Keyboard>/g",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

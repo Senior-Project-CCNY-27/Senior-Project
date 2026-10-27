@@ -7,12 +7,17 @@ using UnityEngine.Events;
 public class Pickup : MonoBehaviour, IInteractionValidator
 {
     private Interactable _interactable;
-    private Rigidbody _rigidbody;
+    public Rigidbody RigidBody { get; private set; }
+
+    public bool IsPickedUp { get; private set; } = false;
+
+    [field: Header("Events")]
+    [field: SerializeField] public UnityEvent<PlayerPickupController> OnUse { get; private set; } = new();
 
     private void Awake()
     {
         _interactable = GetComponent<Interactable>();
-        _rigidbody = GetComponent<Rigidbody>();
+        RigidBody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -30,7 +35,7 @@ public class Pickup : MonoBehaviour, IInteractionValidator
         if (interactor == null)
             return false;
 
-        if (!interactor.TryGetComponent(out PlayerInventory inventory))
+        if (!interactor.TryGetComponent(out PlayerPickupController inventory))
             return false;
         
         return inventory.IsHandEmpty;
@@ -38,44 +43,53 @@ public class Pickup : MonoBehaviour, IInteractionValidator
     
     public void ExecutePickup(Interactor interactor)
     {
-        PlayerInventory inventory = interactor.GetComponent<PlayerInventory>();
-        if (inventory == null)
+        PlayerPickupController pickupController = interactor.GetComponent<PlayerPickupController>();
+        if (pickupController == null)
         {
             Debug.LogWarning($"Inventory is missing from interactor, can't pickup {name}");
             return;
         }
 
-        inventory.PickupItem(this);
+        pickupController.PickupItem(this);
     }
 
     public bool TryAttach(Transform targetTransform)
     {
-        if (_rigidbody == null)
+        if (RigidBody == null)
             return false;
 
         transform.SetParent(targetTransform);
         transform.position = targetTransform.position;
         transform.localRotation = Quaternion.identity;
         
-        _rigidbody.useGravity = false;
-        _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        RigidBody.useGravity = false;
+        RigidBody.constraints = RigidbodyConstraints.FreezeAll;
         
         _interactable.EnableInteractability(false);
+
+        IsPickedUp = true;
         
         return true;
     }
 
     public bool TryDetach()
     {
-        if (_rigidbody == null)
+        if (RigidBody == null)
             return false;
         
         transform.SetParent(null);
-        _rigidbody.useGravity = true;
-        _rigidbody.constraints = RigidbodyConstraints.None;
+        RigidBody.useGravity = true;
+        RigidBody.constraints = RigidbodyConstraints.None;
         
         _interactable.EnableInteractability(true);
+
+        IsPickedUp = false;
         
         return true;
+    }
+
+    public void Use(PlayerPickupController pickupController)
+    {
+        OnUse?.Invoke(pickupController);
     }
 }

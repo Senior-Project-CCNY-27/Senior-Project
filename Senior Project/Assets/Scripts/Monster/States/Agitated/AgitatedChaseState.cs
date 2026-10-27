@@ -53,6 +53,13 @@ namespace MonsterStates
                     _isTargetInAttackRange = true;
                     break;
                 }
+
+                if (attackableCollider.gameObject.CompareTag("Food"))
+                {
+                    _targetTransform = attackableCollider.gameObject.transform;
+                    _isTargetInAttackRange = true;
+                    break;
+                }
             }
             
             _context.SetDestination(_targetTransform.position);
@@ -71,6 +78,13 @@ namespace MonsterStates
 
             if (_isTargetInAttackRange)
             {
+                // Ignore food in player's hands
+                if (_targetTransform.TryGetComponent(out Pickup pickupComponent) && pickupComponent.IsPickedUp)
+                {
+                    _isTargetInAttackRange = false;
+                    return null;
+                }
+                
                 if (_targetTransform.gameObject.CompareTag("Food"))
                 {
                     GameObject.Destroy(_targetTransform.gameObject);
