@@ -201,6 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProximityInteractablesDetector
   _detectionOriginTransform: {fileID: 6248889060958525270}
+  _nonBlockingColliders:
+  - {fileID: 3891509819644572001}
   _detectionRange: 5
   <CurrentInteractable>k__BackingField: {fileID: 0}
   <OnInteractableDetected>k__BackingField:
