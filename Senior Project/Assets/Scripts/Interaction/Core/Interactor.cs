@@ -1,12 +1,13 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour
 {
     [SerializeField] private float _castDistance = 5f; // how far the raycast goes
 
-    [field: SerializeField, ReadOnly] public Interactable CurrentInteractable { get; private set; }
+    [field: SerializeField, ReadOnly] public Interactable CurrentInteractable { get; private set; }    
     
     private Transform _mainCamera => Camera.main.transform;
     private int _interactableLayerMask; // Only detect objects on the Interactable layer
@@ -23,7 +24,8 @@ public class Interactor : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.Instance.Actions.Player.Interact.performed -= Input_OnInteract;
+        if(InputManager.Instance != null)
+            InputManager.Instance.Actions.Player.Interact.performed -= Input_OnInteract;
     }
 
     /// <summary>
@@ -35,7 +37,10 @@ public class Interactor : MonoBehaviour
         if (CurrentInteractable == null)
             return;
 
-        if (!CurrentInteractable.CanInteract)
+        if (!CurrentInteractable.IsInteractionEnabled)
+            return;
+
+        if (!CurrentInteractable.CanInteractAfterValidation(this))
             return;
         
         CurrentInteractable.Interact(this);

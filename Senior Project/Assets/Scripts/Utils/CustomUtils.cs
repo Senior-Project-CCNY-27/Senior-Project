@@ -86,4 +86,33 @@ public static class CustomUtils
     /// Checks to see if a layer exists in the layer mask
     /// </summary>
     public static bool Contains(this LayerMask mask, int layer) => (mask.value & (1 << layer)) != 0;
+    
+    /// <summary>
+    /// Checks to see if a position is visible from the camera screen.
+    /// </summary>
+    public static bool IsPositionOnScreen(Camera camera, Vector3 worldPosition)
+    {
+        Vector3 viewport = camera.WorldToViewportPoint(worldPosition);
+        return viewport.z > 0f &&
+               viewport.x >= 0f && viewport.x <= 1f &&
+               viewport.y >= 0f && viewport.y <= 1f;
+    }
+    
+    /// <summary>
+    /// Checks to see if a collider is within the camera's view.
+    /// </summary>
+    public static bool IsColliderOnScreen(Camera camera, Collider collider)
+    {
+        Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera);
+        return GeometryUtility.TestPlanesAABB(frustumPlanes, collider.bounds);
+    }
+    
+    /// <summary>
+    /// Gets the screen-space distance in pixels from the camera's center to a world position.
+    /// </summary>
+    public static float GetScreenDistanceFromCenter(Camera camera, Vector3 worldPosition)
+    {
+        Vector3 screenPosition = camera.WorldToScreenPoint(worldPosition);
+        return Vector2.Distance(screenPosition, camera.pixelRect.center);
+    }
 }

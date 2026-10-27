@@ -18,19 +18,18 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            _context.NavMeshAgent.ResetPath();
+            
         }
 
         private protected override void OnUpdate()
         {
-            _context.NavMeshAgent.SetDestination(_context.PlayerTransform.position);
-            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
+            _context.SetDestination(_context.PlayerTransform.position);
+            _context.RotateTowardsDestination(_rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveInDirection(_context.NavMeshAgent.velocity, _moveSpeed);
-            _context.NavMeshAgent.nextPosition = _context.transform.position;
+            _context.MoveTowardsDestination(_moveSpeed);
         }
         
         private protected override State<MonsterController> GetTransition()

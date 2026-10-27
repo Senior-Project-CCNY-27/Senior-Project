@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using Animancer;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace MonsterStates
@@ -8,10 +11,15 @@ namespace MonsterStates
     {
         [SerializeField] private ClipTransition _animationClip;
 
-        [SerializeField] private Transform _attackHitBoxTransform;
-        [SerializeField] private float _attackColliderRadius = 2f;
+        [Header("Movement")]
         [SerializeField] private float _moveSpeed = 3f;
         [SerializeField] private float _rotateSpeed = 10f;
+        
+        [Header("Regular Hitbox")]
+        [SerializeField] private float _regularHitboxRadius = 2f;
+        
+        [Header("Mouth Hitbox")]
+        [SerializeField] private float _mouthHitboxRadius = 0.625f;
 
         private Transform _targetTransform;
         private bool _isTargetInAttackRange = false;
@@ -30,13 +38,14 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            _context.NavMeshAgent.ResetPath();
+            
         }
 
         private protected override void OnUpdate()
         {
-            Collider[] attackableColliders = Physics.OverlapSphere(_attackHitBoxTransform.position, _attackColliderRadius);
-            foreach (Collider attackableCollider in attackableColliders)
+            Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
             {
                 if (attackableCollider.gameObject == _targetTransform.gameObject)
                 {
@@ -45,14 +54,13 @@ namespace MonsterStates
                 }
             }
             
-            _context.NavMeshAgent.SetDestination(_targetTransform.position);
-            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
+            _context.SetDestination(_targetTransform.position);
+            _context.RotateTowardsDestination(_rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveInDirection(_context.NavMeshAgent.velocity, _moveSpeed);
-            _context.NavMeshAgent.nextPosition = _context.transform.position;
+            _context.MoveTowardsDestination(_moveSpeed);
         }
         
         private protected override State<MonsterController> GetTransition()
@@ -62,8 +70,9 @@ namespace MonsterStates
 
             if (_isTargetInAttackRange)
             {
-                if (_targetTransform.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+                if (_targetTransform.gameObject.CompareTag("Food"))
                 {
+                    GameObject.Destroy(_targetTransform.gameObject);
                     _context.Feed();
                     return null;
                 }
@@ -76,7 +85,8 @@ namespace MonsterStates
         public override void OnDrawGizmosInPlayMode()
         {
             Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
-            Gizmos.DrawWireSphere(_attackHitBoxTransform.position, _attackColliderRadius);
+            Gizmos.DrawWireSphere(_context.transform.position, _regularHitboxRadius);
+            Gizmos.DrawWireSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
         }
     }
 }

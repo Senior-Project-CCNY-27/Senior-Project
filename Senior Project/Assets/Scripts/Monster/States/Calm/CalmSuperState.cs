@@ -63,7 +63,7 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
                     _context.AgitatedSuperState
                     );
             }

@@ -34,7 +34,7 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            _context.NavMeshAgent.ResetPath();
+            
         }
 
         private protected override void OnUpdate()
@@ -44,13 +44,12 @@ namespace MonsterStates
             if (Vector3.Distance(_currentWaypoint.position, _context.transform.position) < 0.05f)
                 PickAndMoveToRandomAvailableWaypoint();
             
-            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
+            _context.RotateTowardsDestination(_rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveInDirection(_context.NavMeshAgent.velocity, _roamMoveSpeed);
-            _context.NavMeshAgent.nextPosition = _context.transform.position;
+            _context.MoveTowardsDestination(_roamMoveSpeed);
         }
 
         private protected override State<MonsterController> GetTransition()
@@ -62,7 +61,7 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
                     _context.AgitatedSuperState.ChaseState
                 );
             }
@@ -145,7 +144,7 @@ namespace MonsterStates
             _currentWaypoint = _availableWaypoints[randomIndex];
             _availableWaypoints.RemoveAt(randomIndex);
             
-            _context.NavMeshAgent.SetDestination(_currentWaypoint.position);
+            _context.SetDestination(_currentWaypoint.position);
         }
     }
 }

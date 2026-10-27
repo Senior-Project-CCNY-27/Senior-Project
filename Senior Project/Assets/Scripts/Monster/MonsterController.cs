@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Animancer;
 using MonsterStates;
 using NaughtyAttributes;
@@ -16,14 +17,15 @@ public class MonsterController : MonoBehaviour
     [field: SerializeField] public AgitatedSuperState AgitatedSuperState { get; private set; }
 
     [field: Header("Blackboard")]
-    [field: SerializeField] public Transform PlayerTransform { get; private set; }
-    [field: SerializeField] public Transform LOSOrigin { get; private set; }
-    [field: SerializeField] public ClipTransition EatingAnimationClip { get; private set; }
-    [field: SerializeField] public ClipTransition AgitatedAnimationClip { get; private set; }
+    [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
+    [field: SerializeField, Required] public Transform LOSOrigin { get; private set; }
+    [field: SerializeField, Required] public ClipTransition EatingAnimationClip { get; private set; }
     
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
     public NavMeshAgent NavMeshAgent { get; private set; }
+    public Vector3 Destination { get; private set; }
+    private List<Vector3> _path = new List<Vector3>();
 
     private void Awake()
     {
@@ -45,8 +47,7 @@ public class MonsterController : MonoBehaviour
         if (!Application.IsPlaying(this))
             return;
         
-        CalmSuperState?.OnDrawGizmosInPlayMode();
-        AgitatedSuperState?.OnDrawGizmosInPlayMode();
+        StateMachine.CurrentState?.OnDrawGizmosInPlayMode();
     }
 
     private void Update()
@@ -101,6 +102,10 @@ public class MonsterController : MonoBehaviour
     {
         Vector3 lookDirection = target - transform.position;
         lookDirection.y = 0;
+
+        if (lookDirection == Vector3.zero)
+            return;
+        
         lookDirection.Normalize();
         
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
@@ -168,5 +173,109 @@ public class MonsterController : MonoBehaviour
             visibleObjects.Add(obj);
         }
         return visibleObjects;
+    }
+    
+    public List<Vector3> GetPathToDestination(Vector3 dest)
+    {
+        var filter = new NavMeshQueryFilter
+        {
+            agentTypeID = NavMeshAgent.agentTypeID,
+            areaMask = NavMeshAgent.areaMask
+        };
+
+        // Sample using the same agent type and allowed areas.
+        if (!NavMesh.SamplePosition(dest, out NavMeshHit hit, 2f, filter))
+            return null;
+
+        NavMeshPath path = new NavMeshPath();
+        if (!NavMesh.CalculatePath(transform.position, hit.position, filter, path))
+            return null;
+
+        if (path.status != NavMeshPathStatus.PathComplete)
+            return null;
+
+        return path.corners.ToList();
+    }
+    
+    /// <summary>
+    /// Sets the destination for the monster to move towards.
+    /// </summary>
+    /// <param name="dest">The destination position.</param>
+    public void SetDestination(Vector3 dest)
+    {
+        Destination = dest;
+        _path = GetPathToDestination(dest);
+    }
+    
+    /// <summary>
+    /// Cancels the current path of the monster.
+    /// </summary>
+    public void CancelPath()
+    {
+        _path = null;
+    }
+    
+    /// <summary>
+    /// Checks if the current path of the monster is valid.
+    /// </summary>
+    /// <returns>True if the path is valid, false otherwise.</returns>
+    public bool IsCurrentPathValid()
+    {
+        if (_path == null) 
+            return false;
+        
+        if (_path.Count < 2) 
+            return false;
+
+        return true;
+    }
+    
+    /// <summary>
+    /// Moves the enemy towards its destination along the calculated path.
+    /// Call this in FixedUpdate
+    /// </summary>
+    public void MoveTowardsDestination(float moveSpeed)
+    {
+        if (_path == null)
+        {
+            Debug.LogWarning($"{gameObject.name} has no path to follow. Make sure you handle this using bool IsCurrentPathValid().");
+            return;
+        }
+        
+        if (_path.Count < 2)
+        {
+            Debug.LogWarning($"{gameObject.name} has a path with only 1 waypoint. Make sure you handle this bool IsCurrentPathValid().");
+            return;
+        }
+
+        #region Debug
+        Vector3 prevCorner = transform.position;
+        foreach (Vector3 wayPoint in _path)
+        {
+            Debug.DrawLine(prevCorner, wayPoint, Color.green);
+            prevCorner = wayPoint;
+        }
+        #endregion
+
+        Vector3 currentDestination = _path[1];
+        Vector3 direction = (currentDestination - transform.position).normalized;
+
+        MoveInDirection(direction, moveSpeed);
+        NavMeshAgent.nextPosition = transform.position;
+
+        if (Vector3.Dot(direction, (_path[1] - _path[0]).normalized) < 0 || Vector3.Distance(transform.position, currentDestination) <= 0.05f)
+            _path.RemoveAt(0);
+    }
+    
+    /// <summary>
+    /// Call this in Update
+    /// </summary>
+    public void RotateTowardsDestination(float rotateSpeed)
+    {
+        if (!IsCurrentPathValid())
+            return;
+        
+        Vector3 currentDestination = _path[1];
+        GraduallyLookAt(currentDestination, rotateSpeed);
     }
 }
