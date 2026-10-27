@@ -115,4 +115,28 @@ public static class CustomUtils
         Vector3 screenPosition = camera.WorldToScreenPoint(worldPosition);
         return Vector2.Distance(screenPosition, camera.pixelRect.center);
     }
+    
+    /// <summary>
+    /// Returns a new Color with its red component set to a new value.
+    /// </summary>
+    public static Color WithR(this Color color, float r) =>
+        new Color(r, color.g, color.b, color.a);
+
+    /// <summary>
+    /// Returns a new Color with its green component set to a new value.
+    /// </summary>
+    public static Color WithG(this Color color, float g) =>
+        new Color(color.r, g, color.b, color.a);
+
+    /// <summary>
+    /// Returns a new Color with its blue component set to a new value.
+    /// </summary>
+    public static Color WithB(this Color color, float b) =>
+        new Color(color.r, color.g, b, color.a);
+
+    /// <summary>
+    /// Returns a new Color with its alpha component set to a new value.
+    /// </summary>
+    public static Color WithA(this Color color, float a) =>
+        new Color(color.r, color.g, color.b, a);
 }

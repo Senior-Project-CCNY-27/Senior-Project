@@ -54,6 +54,13 @@ namespace MonsterStates
 
         private void TryDamageTarget()
         {
+            CustomDebug.InstantiateTemporarySphere(
+                _context.AgitatedSuperState.MouthHitboxTransform.position,
+                _attackRadius,
+                1f,
+                Color.red.WithA(0.5f)
+                );
+            
             Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _attackRadius);
             foreach (Collider mouthCollision in mouthCollisions)
             {
