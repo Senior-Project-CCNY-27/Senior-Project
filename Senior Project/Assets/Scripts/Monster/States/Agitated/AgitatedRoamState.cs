@@ -41,9 +41,10 @@ namespace MonsterStates
         {
             DetectTarget();
 
-            if (Vector3.Distance(_currentWaypoint.position, _context.transform.position) < 0.05f)
+            if (!_context.IsCurrentPathValid())
                 PickAndMoveToRandomAvailableWaypoint();
             
+            _context.SetDestination(_context.Destination); // To recalculate the path to the same destination in case the monster is moved
             _context.RotateTowardsDestination(_rotateSpeed);
         }
 
@@ -103,13 +104,13 @@ namespace MonsterStates
                 _context.LOSOrigin.position,
                 _context.transform.forward,
                 _losHalfAngleCone,
-                LayerMask.GetMask("Player") 
+                LayerMask.GetMask("Player", "Interactable") 
             );
             List<GameObject> detectedLOSObjects = _context.GetVisibleObjects(
                 losObjects,
                 _context.LOSOrigin.position,
                 _losDetectionRadius,
-                LayerMask.GetMask("Player"),
+                LayerMask.GetMask("Player", "Interactable"),
                 LayerMask.GetMask("Wall")
             );
 

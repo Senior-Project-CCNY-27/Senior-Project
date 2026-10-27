@@ -100,7 +100,7 @@ MonoBehaviour:
     <FollowState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 0.85
+        _Speed: 1.2
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
@@ -117,7 +117,7 @@ MonoBehaviour:
     <RoamState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 1.2
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
@@ -125,6 +125,7 @@ MonoBehaviour:
         _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
         _NormalizedStartTime: NaN
       _waypoints:
+      - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
@@ -290,7 +291,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5674973594923332841}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.125
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -302,7 +303,7 @@ NavMeshAgent:
   m_Height: 1.425
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5855619227845965456
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,6 +34,7 @@ namespace MonsterStates
             _context.Animator.Play(_animationClip, 0.1f);
 
             _isTargetInAttackRange = false;
+            _context.SetDestination(_targetTransform.position);
         }
 
         private protected override void OnExit()
@@ -77,6 +78,17 @@ namespace MonsterStates
                     return null;
                 }
                 return _context.AgitatedSuperState.AttackState;
+            }
+
+            if (!_context.IsCurrentPathValid())
+            {
+                return new TransitionState<MonsterController>(
+                    _stateMachine,
+                    _context,
+                    _context.Animator,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.ChaseState
+                );
             }
             
             return null;

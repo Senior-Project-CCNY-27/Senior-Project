@@ -12,6 +12,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterController : MonoBehaviour
 {
+    private const float NavMeshOverlapThreshold = 0.2f;
+    
     [field: SerializeReference, ReadOnly] public StateMachine<MonsterController> StateMachine { get; private set; }
     [field: SerializeField] public CalmSuperState CalmSuperState { get; private set; }
     [field: SerializeField] public AgitatedSuperState AgitatedSuperState { get; private set; }
@@ -92,7 +94,7 @@ public class MonsterController : MonoBehaviour
     /// </summary>
     public void MoveInDirection(Vector3 direction, float speed)
     {
-        Rigidbody.MovePosition(transform.position + direction.normalized * speed * Time.fixedDeltaTime);
+        Rigidbody.MovePosition(transform.position + direction.WithY(0).normalized * speed * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -250,20 +252,21 @@ public class MonsterController : MonoBehaviour
 
         #region Debug
         Vector3 prevCorner = transform.position;
-        foreach (Vector3 wayPoint in _path)
+        for (int i = 1; i < _path.Count; i++)
         {
-            Debug.DrawLine(prevCorner, wayPoint, Color.green);
-            prevCorner = wayPoint;
+            Debug.DrawLine(prevCorner, _path[i], Color.green);
+            prevCorner = _path[i];
         }
         #endregion
 
         Vector3 currentDestination = _path[1];
-        Vector3 direction = (currentDestination - transform.position).normalized;
+        Vector3 direction = (currentDestination - transform.position).WithY(0).normalized;
 
         MoveInDirection(direction, moveSpeed);
         NavMeshAgent.nextPosition = transform.position;
 
-        if (Vector3.Dot(direction, (_path[1] - _path[0]).normalized) < 0 || Vector3.Distance(transform.position, currentDestination) <= 0.05f)
+        // If close to or facing in the complete opposite direction towards current waypoint, move onto the next one
+        if (Vector3.Dot(direction, (_path[1] - _path[0]).normalized) < 0 || Vector3.Distance(transform.position, currentDestination) <= NavMeshOverlapThreshold)
             _path.RemoveAt(0);
     }
     
