@@ -51,8 +51,7 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            IdleState?.OnDrawGizmosInPlayMode();
-            FollowState?.OnDrawGizmosInPlayMode();
+            SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
         }
 
         private protected override State<MonsterController> GetTransition()
