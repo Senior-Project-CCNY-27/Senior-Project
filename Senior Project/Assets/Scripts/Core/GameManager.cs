@@ -98,6 +98,10 @@ public class GameManager : Singleton<GameManager>
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(true);
                 break;
+            case State.GameOver:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(true);
+                break;
         }
     }
 

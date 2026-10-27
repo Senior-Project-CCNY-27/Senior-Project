@@ -720,6 +720,7 @@ GameObject:
   - component: {fileID: 3489044853847964053}
   - component: {fileID: 7591860035926671457}
   - component: {fileID: 6772789837912382914}
+  - component: {fileID: 3017656859316801189}
   m_Layer: 5
   m_Name: DeathScreen
   m_TagString: Untagged
@@ -820,8 +821,34 @@ MonoBehaviour:
       m_Calls: []
   <OnUnfocused>k__BackingField:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3017656859316801189}
+        m_TargetAssemblyTypeName: GameStateChanger, Assembly-CSharp
+        m_MethodName: ReturnToPreviousState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <PreviousPanel>k__BackingField: {fileID: 0}
+--- !u!114 &3017656859316801189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7414801347840975127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6e23ce1a0349139af516df46f88f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStateChanger
+  _specifyState: 0
+  _targetState: 0
 --- !u!1 &9061910170325333574
 GameObject:
   m_ObjectHideFlags: 0
