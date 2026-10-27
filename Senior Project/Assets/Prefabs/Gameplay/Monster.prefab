@@ -100,7 +100,7 @@ MonoBehaviour:
     <FollowState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 0.85
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
@@ -139,7 +139,7 @@ MonoBehaviour:
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 0.9
         _Events:
           _NormalizedTimes: []
           _Callbacks: []

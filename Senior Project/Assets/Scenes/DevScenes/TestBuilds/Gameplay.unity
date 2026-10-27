@@ -646,6 +646,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1120643416}
     - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: <CalmSuperState>k__BackingField.<FollowState>k__BackingField._animationClip._Speed
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: <AgitatedSuperState>k__BackingField.<RoamState>k__BackingField._animationClip._Speed
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: '<AgitatedSuperState>k__BackingField.<RoamState>k__BackingField._waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1535384063}
