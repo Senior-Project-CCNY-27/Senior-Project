@@ -222,6 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   _handTransform: {fileID: 2907680414278467724}
   <HeldPickupItem>k__BackingField: {fileID: 0}
+  _throwForce: 20
 --- !u!1 &876998578852105867
 GameObject:
   m_ObjectHideFlags: 0

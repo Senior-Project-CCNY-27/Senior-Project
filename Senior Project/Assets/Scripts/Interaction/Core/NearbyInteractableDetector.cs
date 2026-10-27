@@ -35,7 +35,7 @@ public class NearbyInteractableDetector : MonoBehaviour
     private void Update()
     {
         Interactable newInteractable = GetNearbyInteractable();
-        if (CurrentInteractable != newInteractable)
+        if (!ReferenceEquals(CurrentInteractable, newInteractable))
         {
             CurrentInteractable = newInteractable;
             OnInteractableDetected.Invoke(CurrentInteractable);
