@@ -17,6 +17,8 @@ namespace MonsterStates
         
         private float _timeWithoutFood;
 
+        public float TimeWithoutFood => _timeWithoutFood;
+
         private protected override void OnInit()
         {
             SubStateMachine = new StateMachine<MonsterController>(_context);
