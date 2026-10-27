@@ -1,6 +1,7 @@
 using Animancer;
 using UnityEngine;
 
+[System.Serializable]
 public class TransitionState<TContext> : State<TContext> where TContext : MonoBehaviour
 {
     private AnimancerComponent _animator;
