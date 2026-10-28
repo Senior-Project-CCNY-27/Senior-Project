@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,26 +9,18 @@ public class Pickup : MonoBehaviour, IInteractionValidator
 {
     private Interactable _interactable;
     public Rigidbody RigidBody { get; private set; }
+    public PlayerPickupController PickupController { get; private set; }
 
     public bool IsPickedUp { get; private set; } = false;
 
-    [field: Header("Events")]
-    [field: SerializeField] public UnityEvent<PlayerPickupController> OnUse { get; private set; } = new();
+    [field: Header("Use")]
+    [field: SerializeField] public bool Usable { get; private set; } = false;
+    [field: SerializeField, ShowIf("Usable")] public UnityEvent<PlayerPickupController> OnUse { get; private set; } = new();
 
     private void Awake()
     {
         _interactable = GetComponent<Interactable>();
         RigidBody = GetComponent<Rigidbody>();
-    }
-
-    private void OnEnable()
-    {
-        _interactable.OnInteract.AddListener(ExecutePickup);
-    }
-
-    private void OnDisable()
-    {
-        _interactable.OnInteract.RemoveListener(ExecutePickup);
     }
 
     public bool CanInteract(Interactor interactor)
@@ -43,14 +36,14 @@ public class Pickup : MonoBehaviour, IInteractionValidator
     
     public void ExecutePickup(Interactor interactor)
     {
-        PlayerPickupController pickupController = interactor.GetComponent<PlayerPickupController>();
-        if (pickupController == null)
+        PickupController = interactor.GetComponent<PlayerPickupController>();
+        if (PickupController == null)
         {
             Debug.LogWarning($"Inventory is missing from interactor, can't pickup {name}");
             return;
         }
 
-        pickupController.PickupItem(this);
+        PickupController.PickupItem(this);
     }
 
     public bool TryAttach(Transform targetTransform)
@@ -88,8 +81,12 @@ public class Pickup : MonoBehaviour, IInteractionValidator
         return true;
     }
 
-    public void Use(PlayerPickupController pickupController)
+    public bool TryUse(PlayerPickupController pickupController)
     {
+        if (!Usable)
+            return false;
+        
         OnUse?.Invoke(pickupController);
+        return true;
     }
 }

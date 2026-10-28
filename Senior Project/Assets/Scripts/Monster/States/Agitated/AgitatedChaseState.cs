@@ -44,6 +44,10 @@ namespace MonsterStates
 
         private protected override void OnUpdate()
         {
+            // If player picks up the food, switch target to player
+            if (_targetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
+                _targetTransform = pickup.PickupController.transform;
+            
             Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
             Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
             foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))

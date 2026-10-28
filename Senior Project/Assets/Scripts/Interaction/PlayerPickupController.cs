@@ -99,7 +99,17 @@ public class PlayerPickupController : MonoBehaviour
     {
         if (IsHandEmpty)
             return;
+
+        if (!HeldPickupItem.TryUse(this))
+            return;
+    }
+
+    public void ConsumePickup()
+    {
+        if (IsHandEmpty)
+            return;
         
-        HeldPickupItem.Use(this);
+        Destroy(HeldPickupItem.gameObject);
+        HeldPickupItem = null;
     }
 }

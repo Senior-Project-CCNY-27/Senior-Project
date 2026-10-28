@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Interactor))]
 public class NearbyInteractableDetector : MonoBehaviour
 {
     [SerializeField, Required] private Transform _detectionOriginTransform;
@@ -17,11 +18,13 @@ public class NearbyInteractableDetector : MonoBehaviour
 
     private Camera _mainCamera;
     private LayerMask _detectionLayer;
+    private Interactor _interactor;
 
     private void Awake()
     {
         _mainCamera = Camera.main;
         _detectionLayer = LayerMask.GetMask("Interactable");
+        _interactor = GetComponent<Interactor>();
     }
 
     private void OnDrawGizmos()
@@ -44,7 +47,7 @@ public class NearbyInteractableDetector : MonoBehaviour
 
     private Interactable GetNearbyInteractable()
     {
-        Collider[] nearbyObjects = Physics.OverlapSphere(_detectionOriginTransform.position, _detectionRange, _detectionLayer);
+        Collider[] nearbyObjects = Physics.OverlapSphere(_detectionOriginTransform.position, _detectionRange, _detectionLayer, QueryTriggerInteraction.Collide);
         if (nearbyObjects.Length == 0)
             return null;
 
@@ -56,6 +59,9 @@ public class NearbyInteractableDetector : MonoBehaviour
                 continue;
 
             if (!interactable.IsInteractionEnabled)
+                continue;
+            
+            if(interactable.DisplayOnlyWhenValidated && !interactable.CanInteractAfterValidation(_interactor))
                 continue;
 
             if (!CustomUtils.IsColliderOnScreen(_mainCamera, nearbyObject))

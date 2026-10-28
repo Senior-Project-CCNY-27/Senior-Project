@@ -114,6 +114,12 @@ public class MonsterController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
     }
 
+    [Button("Agitate", EButtonEnableMode.Playmode)]
+    public void Agitate()
+    {
+        StateMachine.ChangeState(AgitatedSuperState);
+    }
+    
     [Button("Feed", EButtonEnableMode.Playmode)]
     public void Feed(GameObject foodObject = null)
     {

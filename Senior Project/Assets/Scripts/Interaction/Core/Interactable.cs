@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class Interactable : MonoBehaviour
 {
     [field: SerializeField] public string DisplayName { get; private set; } = "Interactable";
+    [field: SerializeField] public bool DisplayOnlyWhenValidated { get; private set; } = false;
     [field: SerializeField] public bool IsInteractionEnabled { get; private set; } = true;
 
     [field: Header("Event")]
