@@ -1391,6 +1391,7 @@ GameObject:
   - component: {fileID: 587415164}
   - component: {fileID: 587415166}
   - component: {fileID: 587415165}
+  - component: {fileID: 587415167}
   m_Layer: 5
   m_Name: MonsterAgitationTimer
   m_TagString: Untagged
@@ -1517,6 +1518,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587415163}
   m_CullTransparentMesh: 1
+--- !u!114 &587415167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587415163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e964cda8dc81d74fb35da08eac67711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterTimer
+  _monster: {fileID: 0}
+  _timerText: {fileID: 0}
 --- !u!43 &660617151
 Mesh:
   m_ObjectHideFlags: 0
@@ -1964,7 +1979,6 @@ GameObject:
   - component: {fileID: 898678424}
   - component: {fileID: 898678423}
   - component: {fileID: 898678422}
-  - component: {fileID: 898678426}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2058,20 +2072,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &898678426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898678421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e964cda8dc81d74fb35da08eac67711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MonsterTimer
-  monster: {fileID: 1112566813}
-  timer: {fileID: 587415165}
 --- !u!43 &953056035
 Mesh:
   m_ObjectHideFlags: 0
@@ -2973,17 +2973,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2167165202538946547, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
   m_PrefabInstance: {fileID: 1097097521}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1112566813 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
-  m_PrefabInstance: {fileID: 776801764}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fea929e0a5e849bcba4eea99c08d9d17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MonsterController
 --- !u!4 &1120643416 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6248889060958525270, guid: a936ab00389c6254d83469d338796764, type: 3}

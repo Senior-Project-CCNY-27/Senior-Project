@@ -12,9 +12,13 @@ public class MonsterFeeder : MonoBehaviour, IInteractionValidator
         if (_pickupController == null)
             _pickupController = interactor.GetComponent<PlayerPickupController>();
 
+        // Can't feed when not calm
+        if (_monsterController.StateMachine.CurrentState != _monsterController.CalmSuperState)
+            return false;
+        
         if (_pickupController.IsHandEmpty)
             return false;
-
+        
         return _pickupController.HeldPickupItem.CompareTag("Food");
     }
 

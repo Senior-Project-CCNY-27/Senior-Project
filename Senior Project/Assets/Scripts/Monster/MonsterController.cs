@@ -148,8 +148,9 @@ public class MonsterController : MonoBehaviour
             return objectsInRange;
         foreach (Collider hit in hits)
         {
-            if (hit.gameObject == gameObject)
+            if(hit.transform.IsChildOf(gameObject.transform))
                 continue;
+            
             objectsInRange.Add(hit.gameObject);
         }
 

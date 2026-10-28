@@ -1,16 +1,20 @@
 using MonsterStates;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
 public class MonsterTimer : MonoBehaviour
 {
-    [SerializeField] private MonsterController monster;
-    [SerializeField] private TMP_Text timer;
-
-    // Update is called once per frame
+    [SerializeField, Required] private MonsterController _monster;
+    [SerializeField, Required] private TMP_Text _timerText;
+    
     void Update()
     {
-        if (monster == null || monster.CalmSuperState == null) return;
-        timer.text = $"MonsterAgitation: {monster.CalmSuperState.TimeWithoutFood}s";
+        if (_monster == null || _monster.CalmSuperState == null) 
+            return;
+
+        string currentTime = CustomUtils.FloatToString(_monster.CalmSuperState.TimeWithoutFood);
+        string maxTime = CustomUtils.FloatToString(_monster.CalmSuperState.MaxTimeWithoutFood);
+        _timerText.text = $"MonsterAgitation: {currentTime}s/{maxTime}s";
     }
 }

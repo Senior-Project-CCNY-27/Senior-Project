@@ -21,7 +21,7 @@ namespace MonsterStates
         [Header("Mouth Hitbox")]
         [SerializeField] private float _mouthHitboxRadius = 0.625f;
 
-        private Transform _targetTransform;
+        [SerializeField, ReadOnly] private Transform _targetTransform;
         private bool _isTargetInAttackRange = false;
 
         public void SetTarget(Transform targetTransform)
