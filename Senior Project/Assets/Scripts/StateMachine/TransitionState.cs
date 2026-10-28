@@ -1,3 +1,4 @@
+using System;
 using Animancer;
 using UnityEngine;
 
@@ -10,12 +11,25 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
     private float _duration;
     private float _timer;
 
-    public TransitionState(StateMachine<TContext> stateMachine, TContext context, AnimancerComponent animator, ClipTransition animationClip, State<TContext> nextState)
+    private Action _onEnterCallback;
+    private Action _onExitCallback;
+
+    public TransitionState(
+        StateMachine<TContext> stateMachine, 
+        TContext context, 
+        AnimancerComponent animator, 
+        ClipTransition animationClip, 
+        State<TContext> nextState,
+        Action onEnterCallback = null,
+        Action onExitCallback = null)
     {
         Init(stateMachine, context);
         _animator = animator;
         _animationClip = animationClip;
         _nextState = nextState;
+        
+        _onEnterCallback = onEnterCallback;
+        _onExitCallback = onExitCallback;
     }
     
     private protected override void OnEnter()
@@ -23,11 +37,13 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
         _animator.Play(_animationClip, 0.1f);
         _duration = _animationClip.Length / _animationClip.Speed;
         _timer = 0f;
+        
+        _onEnterCallback?.Invoke();
     }
 
     private protected override void OnExit()
     {
-        
+        _onExitCallback?.Invoke();
     }
 
     private protected override void OnUpdate()

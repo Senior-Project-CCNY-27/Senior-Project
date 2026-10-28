@@ -87,8 +87,7 @@ namespace MonsterStates
                 
                 if (_targetTransform.gameObject.CompareTag("Food"))
                 {
-                    GameObject.Destroy(_targetTransform.gameObject);
-                    _context.Feed();
+                    _context.Feed(_targetTransform.gameObject);
                     return null;
                 }
                 return _context.AgitatedSuperState.AttackState;

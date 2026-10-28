@@ -33,14 +33,7 @@ public class Interactor : MonoBehaviour
     /// </summary>
     private void Input_OnInteract(InputAction.CallbackContext context)
     {
-        // Cant interact without an interactable
-        if (CurrentInteractable == null)
-            return;
-
-        if (!CurrentInteractable.IsInteractionEnabled)
-            return;
-
-        if (!CurrentInteractable.CanInteractAfterValidation(this))
+        if (!CanInteractWithCurrentInteractable())
             return;
         
         CurrentInteractable.Interact(this);
@@ -67,5 +60,20 @@ public class Interactor : MonoBehaviour
             return hit.collider.GetComponent<Interactable>();
 
         return null;
+    }
+
+    public bool CanInteractWithCurrentInteractable()
+    {
+        // Cant interact without an interactable
+        if (CurrentInteractable == null)
+            return false;
+
+        if (!CurrentInteractable.IsInteractionEnabled)
+            return false;
+
+        if (!CurrentInteractable.CanInteractAfterValidation(this))
+            return false;
+
+        return true;
     }
 }

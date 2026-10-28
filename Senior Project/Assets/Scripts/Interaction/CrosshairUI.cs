@@ -20,6 +20,6 @@ public class CrosshairUI : MonoBehaviour
 
     private void LateUpdate()
     {
-        _crosshairImage.color = _interactor.CurrentInteractable == null ? _defaultColor : _hasInteractableColor;
+        _crosshairImage.color = _interactor.CanInteractWithCurrentInteractable() ? _hasInteractableColor : _defaultColor;
     }
 }

@@ -184,7 +184,7 @@ MonoBehaviour:
     _Speed: 1
     _Events:
       _NormalizedTimes:
-      - 0.6582809
+      - 0.32285115
       _Callbacks: []
       _Names: []
     _Clip: {fileID: -5284272045877403231, guid: 7ece14db7c507c64089ee3e86e00ddb9, type: 3}

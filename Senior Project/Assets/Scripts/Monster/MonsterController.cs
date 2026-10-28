@@ -115,14 +115,22 @@ public class MonsterController : MonoBehaviour
     }
 
     [Button("Feed", EButtonEnableMode.Playmode)]
-    public void Feed()
+    public void Feed(GameObject foodObject = null)
     {
+        if(foodObject != null && foodObject.TryGetComponent(out Interactable interactable))
+            interactable.EnableInteractability(false);
+        
         StateMachine.ChangeState(new TransitionState<MonsterController>(
             StateMachine,
             this,
             Animator,
             EatingAnimationClip,
-            CalmSuperState
+            CalmSuperState,
+            onExitCallback: foodObject ==null ? null : () =>
+            {
+                if(foodObject != null)
+                    Destroy(foodObject);
+            }
         ));
     }
 
