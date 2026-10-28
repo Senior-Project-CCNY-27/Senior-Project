@@ -9,6 +9,9 @@ public class Destructible : MonoBehaviour
 {
     [SerializeField, Required] private MonsterController _monsterController;
     private NavMeshObstacle _navMeshObstacle;
+    
+    [Header("Camera Shake")]
+    [SerializeField] private CameraShakeSettings _shakeSettings;
 
     private void OnValidate()
     {
@@ -29,5 +32,11 @@ public class Destructible : MonoBehaviour
         bool isAgitatedChasing = _monsterController.StateMachine.CurrentState == agitatedSuperState &&
                                  agitatedSuperState.SubStateMachine.CurrentState == agitatedSuperState.ChaseState;
         _navMeshObstacle.enabled = !isAgitatedChasing;
+    }
+
+    public void Destroy()
+    {
+        CameraShakeManager.ShakeCamera(_shakeSettings);
+        Destroy(gameObject);
     }
 }

@@ -249,6 +249,7 @@ MonoBehaviour:
       _rotateSpeed: 10
       _regularHitboxRadius: 2
       _mouthHitboxRadius: 0.625
+      _targetTransform: {fileID: 0}
     <AttackState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -265,6 +266,10 @@ MonoBehaviour:
       _damage: 1
       _damageEventName: {fileID: 11400000, guid: f10a69466912a6741b5b08b528341c5b, type: 2}
       _attackRadius: 1.25
+      _onHitShakeSettings:
+        Duration: 1
+        Intensity: 10
+        Speed: 10
     <AgitatedAnimationClip>k__BackingField:
       _FadeDuration: 0.25
       _Speed: 1

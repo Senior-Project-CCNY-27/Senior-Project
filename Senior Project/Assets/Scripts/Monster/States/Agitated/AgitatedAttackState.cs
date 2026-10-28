@@ -13,6 +13,9 @@ namespace MonsterStates
         
         [Header("Mouth Hitbox")]
         [SerializeField] private float _attackRadius = 1f;
+        
+        [Header("Attack Camera Shake")]
+        [SerializeField] private CameraShakeSettings _onHitShakeSettings;
 
         private float _duration;
         private float _timer;
@@ -68,6 +71,7 @@ namespace MonsterStates
                 if(health == null)
                     continue;
                 
+                CameraShakeManager.ShakeCamera(_onHitShakeSettings);
                 health.TakeDamage(_damage);
             }
         }

@@ -23,7 +23,7 @@ public class GameManager : Singleton<GameManager>
     [field: SerializeField] public SceneReference MainMenuScene { get; private set; }
     [field: SerializeField] public SceneReference GameplayScene { get; private set; }
 
-    protected override void Awake()
+    private protected override void Awake()
     {
         base.Awake();
     }

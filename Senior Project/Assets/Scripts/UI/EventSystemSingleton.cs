@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class EventSystemSingleton : Singleton<EventSystemSingleton>
 {
-    protected override void Awake()
+    private protected override void Awake()
     {
         base.Awake();
 
@@ -12,7 +12,7 @@ public class EventSystemSingleton : Singleton<EventSystemSingleton>
         DestroyOtherEventSystems();
     }
 
-    protected override void OnDestroy()
+    private protected override void OnDestroy()
     {
         SceneManager.activeSceneChanged -= SceneManager_ActiveSceneChanged;
         

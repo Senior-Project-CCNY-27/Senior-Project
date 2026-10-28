@@ -51,6 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Destructible
   _monsterController: {fileID: 0}
+  _shakeSettings:
+    Duration: 1
+    Intensity: 5
+    Speed: 5
 --- !u!114 &2283171628779543812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +267,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 551
+  m_VersionIndex: 569
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
