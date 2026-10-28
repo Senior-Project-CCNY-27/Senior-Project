@@ -56,6 +56,11 @@ namespace MonsterStates
             SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
         }
 
+        public override void OnCollisionEnter(Collision collision)
+        {
+            SubStateMachine.CurrentState?.OnCollisionEnter(collision);
+        }
+
         private protected override State<MonsterController> GetTransition()
         {
             if (_timeWithoutFood > MaxTimeWithoutFood)

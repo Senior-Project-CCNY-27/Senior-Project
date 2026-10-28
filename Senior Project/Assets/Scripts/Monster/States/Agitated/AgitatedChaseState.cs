@@ -44,28 +44,9 @@ namespace MonsterStates
 
         private protected override void OnUpdate()
         {
-            // If player picks up the food, switch target to player
-            if (_targetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
-                _targetTransform = pickup.PickupController.transform;
-            
-            Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
-            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
-            foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
-            {
-                if (attackableCollider.gameObject == _targetTransform.gameObject)
-                {
-                    _isTargetInAttackRange = true;
-                    break;
-                }
+            HandleTargetPickedUp();
+            CheckIfTargetInRange();
 
-                if (attackableCollider.gameObject.CompareTag("Food"))
-                {
-                    _targetTransform = attackableCollider.gameObject.transform;
-                    _isTargetInAttackRange = true;
-                    break;
-                }
-            }
-            
             _context.SetDestination(_targetTransform.position);
             _context.RotateTowardsDestination(_rotateSpeed);
         }
@@ -116,6 +97,42 @@ namespace MonsterStates
             Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
             Gizmos.DrawWireSphere(_context.transform.position, _regularHitboxRadius);
             Gizmos.DrawWireSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+        }
+        
+        public override void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.TryGetComponent(out Destructible destructible))
+            {
+                GameObject.Destroy(destructible.gameObject);
+            }
+        }
+        
+        private void CheckIfTargetInRange()
+        {
+            Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
+            {
+                if (attackableCollider.gameObject == _targetTransform.gameObject)
+                {
+                    _isTargetInAttackRange = true;
+                    break;
+                }
+
+                if (attackableCollider.gameObject.CompareTag("Food"))
+                {
+                    _targetTransform = attackableCollider.gameObject.transform;
+                    _isTargetInAttackRange = true;
+                    break;
+                }
+            }
+        }
+
+        private void HandleTargetPickedUp()
+        {
+            // If player picks up the food, switch target to player
+            if (_targetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
+                _targetTransform = pickup.PickupController.transform;
         }
     }
 }

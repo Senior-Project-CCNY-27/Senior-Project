@@ -67,6 +67,11 @@ public class MonsterController : MonoBehaviour
         StateMachine.Destroy();
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        StateMachine.CurrentState?.OnCollisionEnter(other);
+    }
+
     private void InitStateMachine()
     {
         StateMachine = new StateMachine<MonsterController>(this);
