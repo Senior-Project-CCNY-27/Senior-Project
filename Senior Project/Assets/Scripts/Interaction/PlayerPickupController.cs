@@ -27,10 +27,13 @@ public class PlayerPickupController : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.Instance.Actions.Player.Interact.performed -= Input_InteractPerformed;
-        
-        InputManager.Instance.Actions.Player.Drop.performed -= Input_DropPerformed;
-        InputManager.Instance.Actions.Player.Drop.canceled -= Input_DropCanceled;
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.Actions.Player.Interact.performed -= Input_InteractPerformed;
+            
+            InputManager.Instance.Actions.Player.Drop.performed -= Input_DropPerformed;
+            InputManager.Instance.Actions.Player.Drop.canceled -= Input_DropCanceled;
+        }
     }
 
     private void Input_InteractPerformed(InputAction.CallbackContext context)
