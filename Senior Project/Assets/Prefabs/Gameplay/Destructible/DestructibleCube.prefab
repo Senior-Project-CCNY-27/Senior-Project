@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 580788480971371384}
   - component: {fileID: 2902847829937923778}
   - component: {fileID: 6884460665568282821}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DestructibleCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
