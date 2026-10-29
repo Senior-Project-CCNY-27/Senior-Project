@@ -13,6 +13,7 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
 
     private Action _onEnterCallback;
     private Action _onExitCallback;
+    private Action _onUpdateCallback;
 
     public TransitionState(
         StateMachine<TContext> stateMachine, 
@@ -21,7 +22,9 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
         ClipTransition animationClip, 
         State<TContext> nextState,
         Action onEnterCallback = null,
-        Action onExitCallback = null)
+        Action onExitCallback = null,
+        Action onUpdateCallback = null
+        )
     {
         Init(stateMachine, context);
         _animator = animator;
@@ -30,6 +33,7 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
         
         _onEnterCallback = onEnterCallback;
         _onExitCallback = onExitCallback;
+        _onUpdateCallback = onUpdateCallback;
     }
     
     private protected override void OnEnter()
@@ -49,6 +53,8 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
     private protected override void OnUpdate()
     {
         _timer += Time.deltaTime;
+
+        _onUpdateCallback?.Invoke();
     }
 
     private protected override void OnFixedUpdate()

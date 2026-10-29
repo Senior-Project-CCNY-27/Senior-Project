@@ -141,6 +141,11 @@ public class MonsterController : MonoBehaviour
             {
                 if(foodObject != null)
                     Destroy(foodObject);
+            },
+            onUpdateCallback: foodObject == null ? null : () =>
+            {
+                if(foodObject != null)
+                    GraduallyLookAt(foodObject.transform.position, 10f);
             }
         ));
     }

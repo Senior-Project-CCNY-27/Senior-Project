@@ -209,7 +209,7 @@ MonoBehaviour:
       Driver:
         AccelTime: 0
         DecelTime: 0
-  _sensitivity: 5
+  _sensitivity: 10
 --- !u!114 &8141499311858317067
 MonoBehaviour:
   m_ObjectHideFlags: 0
