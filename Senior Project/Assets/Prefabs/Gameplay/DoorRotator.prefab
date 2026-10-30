@@ -127,9 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorOpener
   isOpen: 0
-  isLocked: 0
-  rotationSpeed: 5
-  doorRatator: {fileID: 420770635663634013}
+  isLocked: 1
+  animationDuration: 0.5
+  animationEase: 30
+  doorRotator: {fileID: 420770635663634013}
   closedRotation: {x: 0, y: 0, z: 0}
   openRotation: {x: 0, y: -90, z: 0}
 --- !u!114 &6218920609987836495
@@ -152,11 +153,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3879688953485119061}
         m_TargetAssemblyTypeName: DoorOpener, Assembly-CSharp
-        m_MethodName: UseDoor
-        m_Mode: 2
+        m_MethodName: ToggleDoor
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: Interactor, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

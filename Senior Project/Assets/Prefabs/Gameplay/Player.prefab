@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2221678032211799703}
   - component: {fileID: 2545345226824468717}
   - component: {fileID: 4761778378643620791}
+  - component: {fileID: 2558347682521545660}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -222,6 +223,19 @@ MonoBehaviour:
   _handTransform: {fileID: 2907680414278467724}
   <HeldPickupItem>k__BackingField: {fileID: 0}
   _throwForce: 20
+--- !u!114 &2558347682521545660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439304884227378115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cd67648f545e4db5b7313e8d806732f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KeyPickup
+  <KeyPickedUp>k__BackingField: 0
 --- !u!1 &876998578852105867
 GameObject:
   m_ObjectHideFlags: 0
