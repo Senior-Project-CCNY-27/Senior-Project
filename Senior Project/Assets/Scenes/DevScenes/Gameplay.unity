@@ -655,7 +655,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
   m_PrefabInstance: {fileID: 4554190117332698801}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1712438376}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df4e8c588f90894fb0ccd93fae0911f, type: 3}
@@ -678,7 +678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1139410114
 RectTransform:
   m_ObjectHideFlags: 0
@@ -695,7 +695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -270, y: 99}
+  m_AnchoredPosition: {x: -270, y: 185.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1139410115
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Health: 2'
+  m_text: 'Health : 2 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1313,6 +1313,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
+--- !u!1 &1712438376 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 439304884227378115, guid: a936ab00389c6254d83469d338796764, type: 3}
+  m_PrefabInstance: {fileID: 4554190117332698801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1712438377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712438376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a075e58fe2a872469820b76afde7e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 2
+  invincibilityTime: 1.5
+  healthText: {fileID: 1139410115}
 --- !u!1 &1737435780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,10 +2076,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 741346971847979075, guid: a936ab00389c6254d83469d338796764, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 439304884227378115, guid: a936ab00389c6254d83469d338796764, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712438377}
   m_SourcePrefab: {fileID: 100100000, guid: a936ab00389c6254d83469d338796764, type: 3}
 --- !u!1001 &8179605456895930701
 PrefabInstance:
