@@ -1,3 +1,4 @@
+using Animancer;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -10,6 +11,10 @@ namespace MonsterStates
         [field: SerializeField] public AgitatedRoamState RoamState { get; private set; }
         [field: SerializeField] public AgitatedChaseState ChaseState { get; private set; }
         [field: SerializeField] public AgitatedAttackState AttackState { get; private set; }
+        
+        [field: Header("Blackboard")]
+        [field: SerializeField, Required] public ClipTransition AgitatedAnimationClip { get; private set; }
+        [field: SerializeField, Required] public Transform MouthHitboxTransform { get; private set; }
         
         private protected override void OnInit()
         {
@@ -42,9 +47,12 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            RoamState?.OnDrawGizmosInPlayMode();
-            ChaseState?.OnDrawGizmosInPlayMode();
-            AttackState?.OnDrawGizmosInPlayMode();
+            SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
+        }
+        
+        public override void OnCollisionEnter(Collision collision)
+        {
+            SubStateMachine.CurrentState?.OnCollisionEnter(collision);
         }
 
         private protected override State<MonsterController> GetTransition()

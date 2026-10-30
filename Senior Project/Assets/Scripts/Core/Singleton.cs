@@ -5,7 +5,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance { get; private set; }
 
-    protected virtual void Awake()
+    private protected virtual void Awake()
     {
         if (Instance != null)
         {
@@ -16,7 +16,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         Instance = this as T;
     }
 
-    protected virtual void OnDestroy()
+    private protected virtual void OnDestroy()
     {
         Instance = null;
     }

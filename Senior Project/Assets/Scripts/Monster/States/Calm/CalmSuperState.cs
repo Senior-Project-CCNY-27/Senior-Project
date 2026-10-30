@@ -17,6 +17,8 @@ namespace MonsterStates
         
         private float _timeWithoutFood;
 
+        public float TimeWithoutFood => _timeWithoutFood;
+
         private protected override void OnInit()
         {
             SubStateMachine = new StateMachine<MonsterController>(_context);
@@ -51,8 +53,12 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            IdleState?.OnDrawGizmosInPlayMode();
-            FollowState?.OnDrawGizmosInPlayMode();
+            SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
+        }
+
+        public override void OnCollisionEnter(Collision collision)
+        {
+            SubStateMachine.CurrentState?.OnCollisionEnter(collision);
         }
 
         private protected override State<MonsterController> GetTransition()
@@ -63,7 +69,7 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
                     _context.AgitatedSuperState
                     );
             }

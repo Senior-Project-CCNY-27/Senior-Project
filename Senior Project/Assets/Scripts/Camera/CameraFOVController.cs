@@ -1,11 +1,12 @@
-using System;
 using DG.Tweening;
+using NaughtyAttributes;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraFOVController : MonoBehaviour
 {
-    [SerializeField] private PlayerController _player;
-    [SerializeField] private Camera _camera;
+    [SerializeField, Required] private PlayerController _player;
+    [SerializeField, Required] private CinemachineCamera _camera;
     
     [Header("Sprinting")]
     [SerializeField] private float _sprintFOV = 85f;
@@ -16,7 +17,7 @@ public class CameraFOVController : MonoBehaviour
 
     private void Awake()
     {
-        _baseFOV = _camera.fieldOfView;
+        _baseFOV = _camera.Lens.FieldOfView;
     }
 
     private void OnEnable()
@@ -33,20 +34,25 @@ public class CameraFOVController : MonoBehaviour
     {
         if (previousState == PlayerController.State.Sprint)
         {
-            ChangeFOV(_baseFOV);
+            TweenFOV(_baseFOV);
             return;
         }
 
         if (newState == PlayerController.State.Sprint)
         {
-            ChangeFOV(_sprintFOV);
+            TweenFOV(_sprintFOV);
             return;
         }
     }
 
-    private void ChangeFOV(float newFOV)
+    private void TweenFOV(float newFOV)
     {
         _camera.DOKill();
-        _camera.DOFieldOfView(newFOV, _adjustmentDuration).SetEase(_adjustmentEase);
+        DOVirtual.Float(_camera.Lens.FieldOfView, newFOV, _adjustmentDuration, SetFOV).SetEase(_adjustmentEase).SetId(_camera);
+    }
+
+    private void SetFOV(float newFOV)
+    {
+        _camera.Lens.FieldOfView = newFOV;
     }
 }

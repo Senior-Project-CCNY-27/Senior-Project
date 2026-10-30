@@ -23,7 +23,7 @@ public class GameManager : Singleton<GameManager>
     [field: SerializeField] public SceneReference MainMenuScene { get; private set; }
     [field: SerializeField] public SceneReference GameplayScene { get; private set; }
 
-    protected override void Awake()
+    private protected override void Awake()
     {
         base.Awake();
     }
@@ -95,6 +95,10 @@ public class GameManager : Singleton<GameManager>
                 InputManager.Instance.Actions.Player.Disable();
                 break;
             case State.Pause:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(true);
+                break;
+            case State.GameOver:
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(true);
                 break;

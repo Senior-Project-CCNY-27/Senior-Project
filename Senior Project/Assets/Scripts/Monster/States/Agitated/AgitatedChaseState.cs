@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using Animancer;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace MonsterStates
@@ -8,12 +11,17 @@ namespace MonsterStates
     {
         [SerializeField] private ClipTransition _animationClip;
 
-        [SerializeField] private Transform _attackHitBoxTransform;
-        [SerializeField] private float _attackColliderRadius = 2f;
+        [Header("Movement")]
         [SerializeField] private float _moveSpeed = 3f;
         [SerializeField] private float _rotateSpeed = 10f;
+        
+        [Header("Regular Hitbox")]
+        [SerializeField] private float _regularHitboxRadius = 2f;
+        
+        [Header("Mouth Hitbox")]
+        [SerializeField] private float _mouthHitboxRadius = 0.625f;
 
-        private Transform _targetTransform;
+        [SerializeField, ReadOnly] private Transform _targetTransform;
         private bool _isTargetInAttackRange = false;
 
         public void SetTarget(Transform targetTransform)
@@ -26,33 +34,26 @@ namespace MonsterStates
             _context.Animator.Play(_animationClip, 0.1f);
 
             _isTargetInAttackRange = false;
+            _context.SetDestination(_targetTransform.position);
         }
 
         private protected override void OnExit()
         {
-            _context.NavMeshAgent.ResetPath();
+            
         }
 
         private protected override void OnUpdate()
         {
-            Collider[] attackableColliders = Physics.OverlapSphere(_attackHitBoxTransform.position, _attackColliderRadius);
-            foreach (Collider attackableCollider in attackableColliders)
-            {
-                if (attackableCollider.gameObject == _targetTransform.gameObject)
-                {
-                    _isTargetInAttackRange = true;
-                    break;
-                }
-            }
-            
-            _context.NavMeshAgent.SetDestination(_targetTransform.position);
-            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
+            HandleTargetPickedUp();
+            CheckIfTargetInRange();
+
+            _context.SetDestination(_targetTransform.position);
+            _context.RotateTowardsDestination(_rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveInDirection(_context.NavMeshAgent.velocity, _moveSpeed);
-            _context.NavMeshAgent.nextPosition = _context.transform.position;
+            _context.MoveTowardsDestination(_moveSpeed);
         }
         
         private protected override State<MonsterController> GetTransition()
@@ -62,12 +63,30 @@ namespace MonsterStates
 
             if (_isTargetInAttackRange)
             {
-                if (_targetTransform.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+                // Ignore food in player's hands
+                if (_targetTransform.TryGetComponent(out Pickup pickupComponent) && pickupComponent.IsPickedUp)
                 {
-                    _context.Feed();
+                    _isTargetInAttackRange = false;
+                    return null;
+                }
+                
+                if (_targetTransform.gameObject.CompareTag("Food"))
+                {
+                    _context.Feed(_targetTransform.gameObject);
                     return null;
                 }
                 return _context.AgitatedSuperState.AttackState;
+            }
+
+            if (!_context.IsCurrentPathValid())
+            {
+                return new TransitionState<MonsterController>(
+                    _stateMachine,
+                    _context,
+                    _context.Animator,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.ChaseState
+                );
             }
             
             return null;
@@ -76,7 +95,42 @@ namespace MonsterStates
         public override void OnDrawGizmosInPlayMode()
         {
             Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
-            Gizmos.DrawWireSphere(_attackHitBoxTransform.position, _attackColliderRadius);
+            Gizmos.DrawWireSphere(_context.transform.position, _regularHitboxRadius);
+            Gizmos.DrawWireSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+        }
+        
+        public override void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.TryGetComponent(out Destructible destructible))
+                destructible.Destroy();
+        }
+        
+        private void CheckIfTargetInRange()
+        {
+            Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
+            {
+                if (attackableCollider.gameObject == _targetTransform.gameObject)
+                {
+                    _isTargetInAttackRange = true;
+                    break;
+                }
+
+                if (attackableCollider.gameObject.CompareTag("Food"))
+                {
+                    _targetTransform = attackableCollider.gameObject.transform;
+                    _isTargetInAttackRange = true;
+                    break;
+                }
+            }
+        }
+
+        private void HandleTargetPickedUp()
+        {
+            // If player picks up the food, switch target to player
+            if (_targetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
+                _targetTransform = pickup.PickupController.transform;
         }
     }
 }

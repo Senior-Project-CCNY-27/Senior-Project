@@ -34,23 +34,23 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            _context.NavMeshAgent.ResetPath();
+            
         }
 
         private protected override void OnUpdate()
         {
             DetectTarget();
 
-            if (Vector3.Distance(_currentWaypoint.position, _context.transform.position) < 0.05f)
+            if (!_context.IsCurrentPathValid())
                 PickAndMoveToRandomAvailableWaypoint();
             
-            _context.GraduallyLookAt(_context.transform.position + _context.NavMeshAgent.velocity, _rotateSpeed);
+            _context.SetDestination(_context.Destination); // To recalculate the path to the same destination in case the monster is moved
+            _context.RotateTowardsDestination(_rotateSpeed);
         }
 
         private protected override void OnFixedUpdate()
         {
-            _context.MoveInDirection(_context.NavMeshAgent.velocity, _roamMoveSpeed);
-            _context.NavMeshAgent.nextPosition = _context.transform.position;
+            _context.MoveTowardsDestination(_roamMoveSpeed);
         }
 
         private protected override State<MonsterController> GetTransition()
@@ -62,7 +62,7 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedAnimationClip,
+                    _context.AgitatedSuperState.AgitatedAnimationClip,
                     _context.AgitatedSuperState.ChaseState
                 );
             }
@@ -104,13 +104,13 @@ namespace MonsterStates
                 _context.LOSOrigin.position,
                 _context.transform.forward,
                 _losHalfAngleCone,
-                LayerMask.GetMask("Player") 
+                LayerMask.GetMask("Player", "Interactable") 
             );
             List<GameObject> detectedLOSObjects = _context.GetVisibleObjects(
                 losObjects,
                 _context.LOSOrigin.position,
                 _losDetectionRadius,
-                LayerMask.GetMask("Player"),
+                LayerMask.GetMask("Player", "Interactable"),
                 LayerMask.GetMask("Wall")
             );
 
@@ -145,7 +145,7 @@ namespace MonsterStates
             _currentWaypoint = _availableWaypoints[randomIndex];
             _availableWaypoints.RemoveAt(randomIndex);
             
-            _context.NavMeshAgent.SetDestination(_currentWaypoint.position);
+            _context.SetDestination(_currentWaypoint.position);
         }
     }
 }

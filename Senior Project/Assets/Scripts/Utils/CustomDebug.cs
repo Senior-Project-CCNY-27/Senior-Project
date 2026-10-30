@@ -7,7 +7,7 @@ using UnityEditor;
 
 public static class CustomDebug
 {
-    private static int GIZMOS_SEGMENTS = 16;
+    private static int GIZMOS_SEGMENTS = 8;
 
     /// <summary>
     /// Draws a wireframe cone shape.
@@ -59,10 +59,8 @@ public static class CustomDebug
 
         horizontalDirection.Normalize();
         halfAngle = Mathf.Clamp(halfAngle, 0f, 180f);
-        int azimuthSegments = GIZMOS_SEGMENTS * 2;
-        int elevationSegments = GIZMOS_SEGMENTS;
-        float azimuthStep = (halfAngle * 2f) / azimuthSegments;
-        float elevationStep = 180f / elevationSegments;
+        float azimuthStep = (halfAngle * 2f) / GIZMOS_SEGMENTS;
+        float elevationStep = 180f / GIZMOS_SEGMENTS;
         Vector3 right = Vector3.Cross(Vector3.up, horizontalDirection).normalized;
 
         Vector3 PointOnSphere(float azimuth, float elevation)
@@ -77,12 +75,12 @@ public static class CustomDebug
         }
 
         // Draw horizontal latitude arcs across the spherical sector.
-        for (int elevationIndex = 0; elevationIndex <= elevationSegments; elevationIndex++)
+        for (int elevationIndex = 0; elevationIndex <= GIZMOS_SEGMENTS; elevationIndex++)
         {
             float elevation = -90f + elevationIndex * elevationStep;
             Vector3 lastPoint = PointOnSphere(-halfAngle, elevation);
 
-            for (int azimuthIndex = 1; azimuthIndex <= azimuthSegments; azimuthIndex++)
+            for (int azimuthIndex = 1; azimuthIndex <= GIZMOS_SEGMENTS; azimuthIndex++)
             {
                 float azimuth = -halfAngle + azimuthIndex * azimuthStep;
                 Vector3 nextPoint = PointOnSphere(azimuth, elevation);
@@ -92,12 +90,12 @@ public static class CustomDebug
         }
 
         // Draw the longitude arcs that form the rest of the spherical wire mesh.
-        for (int azimuthIndex = 0; azimuthIndex <= azimuthSegments; azimuthIndex++)
+        for (int azimuthIndex = 0; azimuthIndex <= GIZMOS_SEGMENTS; azimuthIndex++)
         {
             float azimuth = -halfAngle + azimuthIndex * azimuthStep;
             Vector3 lastPoint = PointOnSphere(azimuth, -90f);
 
-            for (int elevationIndex = 1; elevationIndex <= elevationSegments; elevationIndex++)
+            for (int elevationIndex = 1; elevationIndex <= GIZMOS_SEGMENTS; elevationIndex++)
             {
                 float elevation = -90f + elevationIndex * elevationStep;
                 Vector3 nextPoint = PointOnSphere(azimuth, elevation);

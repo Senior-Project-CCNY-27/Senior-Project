@@ -1,6 +1,8 @@
+using System;
 using Animancer;
 using UnityEngine;
 
+[System.Serializable]
 public class TransitionState<TContext> : State<TContext> where TContext : MonoBehaviour
 {
     private AnimancerComponent _animator;
@@ -9,12 +11,29 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
     private float _duration;
     private float _timer;
 
-    public TransitionState(StateMachine<TContext> stateMachine, TContext context, AnimancerComponent animator, ClipTransition animationClip, State<TContext> nextState)
+    private Action _onEnterCallback;
+    private Action _onExitCallback;
+    private Action _onUpdateCallback;
+
+    public TransitionState(
+        StateMachine<TContext> stateMachine, 
+        TContext context, 
+        AnimancerComponent animator, 
+        ClipTransition animationClip, 
+        State<TContext> nextState,
+        Action onEnterCallback = null,
+        Action onExitCallback = null,
+        Action onUpdateCallback = null
+        )
     {
         Init(stateMachine, context);
         _animator = animator;
         _animationClip = animationClip;
         _nextState = nextState;
+        
+        _onEnterCallback = onEnterCallback;
+        _onExitCallback = onExitCallback;
+        _onUpdateCallback = onUpdateCallback;
     }
     
     private protected override void OnEnter()
@@ -22,16 +41,20 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
         _animator.Play(_animationClip, 0.1f);
         _duration = _animationClip.Length / _animationClip.Speed;
         _timer = 0f;
+        
+        _onEnterCallback?.Invoke();
     }
 
     private protected override void OnExit()
     {
-        
+        _onExitCallback?.Invoke();
     }
 
     private protected override void OnUpdate()
     {
         _timer += Time.deltaTime;
+
+        _onUpdateCallback?.Invoke();
     }
 
     private protected override void OnFixedUpdate()

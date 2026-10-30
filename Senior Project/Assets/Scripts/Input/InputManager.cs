@@ -42,7 +42,7 @@ public class InputManager : Singleton<InputManager>
         _playerInput = GetComponent<PlayerInput>();
     }
 
-    protected override void Awake()
+    private protected override void Awake()
     {
         base.Awake();
         
@@ -69,7 +69,7 @@ public class InputManager : Singleton<InputManager>
         Actions.Disable();
     }
 
-    protected override void OnDestroy()
+    private protected override void OnDestroy()
     {
         _playerInput.onControlsChanged -= PlayerInput_OnControlsChanged;
         Actions?.Dispose();

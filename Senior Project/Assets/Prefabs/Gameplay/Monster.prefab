@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8989832198447431673}
   m_Layer: 0
-  m_Name: AttackHitboxCenter
+  m_Name: MouthHitboxCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,12 +25,110 @@ Transform:
   m_GameObject: {fileID: 1390518362615917083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.94, z: 2.695}
+  m_LocalPosition: {x: 0, y: 0.424, z: 1.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5947050458185536802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2269858874178222941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8721437208446809617}
+  - component: {fileID: 5675845786255750915}
+  - component: {fileID: 7618098204751412648}
+  - component: {fileID: 3650120677125249971}
+  m_Layer: 6
+  m_Name: HeadInteractable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8721437208446809617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269858874178222941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.187, y: 0.165, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1479164432836177180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5675845786255750915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269858874178222941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb2f6d444f7a41cba1b48433bb1f590, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  <DisplayName>k__BackingField: Feed
+  <DisplayOnlyWhenValidated>k__BackingField: 1
+  <IsInteractionEnabled>k__BackingField: 1
+  <OnInteract>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7618098204751412648}
+        m_TargetAssemblyTypeName: MonsterFeeder, Assembly-CSharp
+        m_MethodName: Feed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7618098204751412648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269858874178222941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58681136b4844ab181299dfdf752e8fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterFeeder
+  _monsterController: {fileID: 5118755737595468301}
+--- !u!135 &3650120677125249971
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269858874178222941}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5674973594923332841
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +198,7 @@ MonoBehaviour:
     <FollowState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 1.2
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
@@ -110,14 +208,14 @@ MonoBehaviour:
       _moveSpeed: 1.4
       _rotateSpeed: 10
     <FollowStopDistance>k__BackingField: 3.5
-    <MaxTimeWithoutFood>k__BackingField: 4
+    <MaxTimeWithoutFood>k__BackingField: 30
   <AgitatedSuperState>k__BackingField:
     <SubStateMachine>k__BackingField:
       rid: -2
     <RoamState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 1.2
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
@@ -125,6 +223,7 @@ MonoBehaviour:
         _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
         _NormalizedStartTime: NaN
       _waypoints:
+      - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
@@ -139,46 +238,59 @@ MonoBehaviour:
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1
+        _Speed: 0.9
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
         _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
         _NormalizedStartTime: NaN
-      _attackHitBoxTransform: {fileID: 8989832198447431673}
-      _attackColliderRadius: 1.25
       _moveSpeed: 3.5
       _rotateSpeed: 10
+      _regularHitboxRadius: 2
+      _mouthHitboxRadius: 0.625
+      _targetTransform: {fileID: 0}
     <AttackState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
         _Speed: 1
         _Events:
-          _NormalizedTimes: []
+          _NormalizedTimes:
+          - 0.54357594
+          - NaN
           _Callbacks: []
-          _Names: []
+          _Names:
+          - {fileID: 11400000, guid: f10a69466912a6741b5b08b528341c5b, type: 2}
         _Clip: {fileID: -6528749351906173395, guid: 168542ff75cc8964fb4e265f66c946cf, type: 3}
         _NormalizedStartTime: 0
+      _damage: 1
+      _damageEventName: {fileID: 11400000, guid: f10a69466912a6741b5b08b528341c5b, type: 2}
+      _attackRadius: 1.25
+      _onHitShakeSettings:
+        Duration: 1
+        Intensity: 10
+        Speed: 10
+    <AgitatedAnimationClip>k__BackingField:
+      _FadeDuration: 0.25
+      _Speed: 1
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: -6989946573967037462, guid: d614bdd708fc9914da3949d1b0c9cad8, type: 3}
+      _NormalizedStartTime: 0
+    <MouthHitboxTransform>k__BackingField: {fileID: 8989832198447431673}
   <PlayerTransform>k__BackingField: {fileID: 0}
   <LOSOrigin>k__BackingField: {fileID: 4110793275426171861}
   <EatingAnimationClip>k__BackingField:
     _FadeDuration: 0.25
     _Speed: 1
     _Events:
-      _NormalizedTimes: []
+      _NormalizedTimes:
+      - 0.32285115
       _Callbacks: []
       _Names: []
     _Clip: {fileID: -5284272045877403231, guid: 7ece14db7c507c64089ee3e86e00ddb9, type: 3}
-    _NormalizedStartTime: 0
-  <AgitatedAnimationClip>k__BackingField:
-    _FadeDuration: 0.25
-    _Speed: 1
-    _Events:
-      _NormalizedTimes: []
-      _Callbacks: []
-      _Names: []
-    _Clip: {fileID: -6989946573967037462, guid: d614bdd708fc9914da3949d1b0c9cad8, type: 3}
     _NormalizedStartTime: 0
   references:
     version: 2
@@ -219,10 +331,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
-  m_Height: 4
+  m_Radius: 0.75
+  m_Height: 2
   m_Direction: 2
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!54 &3585593536688389072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -269,10 +381,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.93
+  m_Radius: 0.25
+  m_Height: 0.965
   m_Direction: 2
-  m_Center: {x: 0, y: 1.63, z: 2.36}
+  m_Center: {x: 0, y: 0.815, z: 1.18}
 --- !u!195 &8932652977067262800
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -282,7 +394,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5674973594923332841}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2.25
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -291,7 +403,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 0
-  m_Height: 2.85
+  m_Height: 1.425
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -336,15 +448,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7292658344771522932, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       propertyPath: m_LocalPosition.x
@@ -400,6 +512,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5378164941576247392, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
       insertIndex: 0
       addedObject: {fileID: 4110793275426171861}
+    - targetCorrespondingSourceObject: {fileID: 5378164941576247392, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 8721437208446809617}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5b41ba4c79702547a89de7544b80656, type: 3}
 --- !u!4 &1479164432836177180 stripped

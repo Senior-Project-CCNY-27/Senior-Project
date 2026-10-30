@@ -13,10 +13,11 @@ GameObject:
   - component: {fileID: 5816828265371918302}
   - component: {fileID: 3966693119767414400}
   - component: {fileID: 6678814626649657824}
-  - component: {fileID: 994842252667517437}
+  - component: {fileID: 6762115962884605258}
+  - component: {fileID: 9128221770205823608}
   m_Layer: 6
   m_Name: Food
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,8 +141,8 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &994842252667517437
+  m_CollisionDetection: 1
+--- !u!114 &6762115962884605258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +151,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1099216390143750588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1accfbc359b3d4644b174c27ea81f2c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cb2f6d444f7a41cba1b48433bb1f590, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Meat
-  canInteract: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  <DisplayName>k__BackingField: Food
+  <DisplayOnlyWhenValidated>k__BackingField: 0
+  <IsInteractionEnabled>k__BackingField: 1
+  <OnInteract>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9128221770205823608}
+        m_TargetAssemblyTypeName: Pickup, Assembly-CSharp
+        m_MethodName: ExecutePickup
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &9128221770205823608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099216390143750588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78cc2565f34e4927b672cda8cf15246f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pickup
+  <Usable>k__BackingField: 0
+  <OnUse>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []

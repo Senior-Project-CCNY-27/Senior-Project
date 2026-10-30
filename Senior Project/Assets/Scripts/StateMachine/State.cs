@@ -57,6 +57,7 @@ public abstract class State<TContext> where TContext : MonoBehaviour
     }
 
     public virtual void OnDrawGizmosInPlayMode() { }
+    public virtual void OnCollisionEnter(Collision collision) { }
 
     private protected abstract void OnEnter();
     private protected abstract void OnExit();
