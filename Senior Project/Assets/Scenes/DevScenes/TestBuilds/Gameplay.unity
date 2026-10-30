@@ -3621,7 +3621,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
   m_PrefabInstance: {fileID: 4554190117332698801}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902303337}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df4e8c588f90894fb0ccd93fae0911f, type: 3}
@@ -7906,11 +7906,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1107920425073577512, guid: 4dea2f05a46a9a2488477f5b1ad5d125, type: 3}
   m_PrefabInstance: {fileID: 6902309978647087532}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1902303337 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 439304884227378115, guid: a936ab00389c6254d83469d338796764, type: 3}
-  m_PrefabInstance: {fileID: 4554190117332698801}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1930120492
 GameObject:
   m_ObjectHideFlags: 0
@@ -8301,20 +8296,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
+      propertyPath: _walkSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7841058051866017547, guid: a936ab00389c6254d83469d338796764, type: 3}
+      propertyPath: _sprintSpeed
+      value: 5.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 439304884227378115, guid: a936ab00389c6254d83469d338796764, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4554190117332698808}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a936ab00389c6254d83469d338796764, type: 3}
 --- !u!114 &4554190117332698803 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2221678032211799703, guid: a936ab00389c6254d83469d338796764, type: 3}
   m_PrefabInstance: {fileID: 4554190117332698801}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902303337}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5379f908528394ab3be53963ff88748c, type: 3}
@@ -8325,27 +8325,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2545345226824468717, guid: a936ab00389c6254d83469d338796764, type: 3}
   m_PrefabInstance: {fileID: 4554190117332698801}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902303337}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9365701e7e814cd7a66cbb75ff7697d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProximityInteractablesDetector
---- !u!114 &4554190117332698808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902303337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a075e58fe2a872469820b76afde7e08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 2
-  invincibilityTime: 1.5
-  healthText: {fileID: 1139410115}
 --- !u!1001 &6902309978647087532
 PrefabInstance:
   m_ObjectHideFlags: 0
