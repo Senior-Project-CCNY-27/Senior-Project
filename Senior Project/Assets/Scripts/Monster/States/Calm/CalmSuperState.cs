@@ -31,7 +31,7 @@ namespace MonsterStates
         {
             _timeWithoutFood = 0f;
             
-            SubStateMachine.ChangeState(IdleState);
+            SubStateMachine.ChangeState(IdleState, true);
         }
 
         private protected override void OnExit()
@@ -65,13 +65,8 @@ namespace MonsterStates
         {
             if (_timeWithoutFood > MaxTimeWithoutFood)
             {
-                return new TransitionState<MonsterController>(
-                    _stateMachine,
-                    _context,
-                    _context.Animator,
-                    _context.AgitatedSuperState.AgitatedAnimationClip,
-                    _context.AgitatedSuperState
-                    );
+                _context.Agitate();
+                return null;
             }
             
             return null;

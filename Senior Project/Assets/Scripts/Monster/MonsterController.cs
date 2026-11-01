@@ -122,7 +122,14 @@ public class MonsterController : MonoBehaviour
     [Button("Agitate", EButtonEnableMode.Playmode)]
     public void Agitate()
     {
-        StateMachine.ChangeState(AgitatedSuperState);
+        StateMachine.ChangeState(
+            new TransitionState<MonsterController>(
+                StateMachine,
+                this,
+                Animator,
+                AgitatedSuperState.AgitatedAnimationClip,
+                AgitatedSuperState
+        ));
     }
     
     [Button("Feed", EButtonEnableMode.Playmode)]

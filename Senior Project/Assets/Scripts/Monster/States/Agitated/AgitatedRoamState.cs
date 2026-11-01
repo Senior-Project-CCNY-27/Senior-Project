@@ -114,16 +114,13 @@ namespace MonsterStates
                 LayerMask.GetMask("Wall")
             );
 
-            foreach (GameObject innerObject in detectedInnerObjects)
+            // Make sure interactables are food
+            foreach (GameObject target in detectedInnerObjects.Concat(detectedLOSObjects))
             {
-                if(!targets.Contains(innerObject))
-                    targets.Add(innerObject);
-            }
-            
-            foreach (GameObject losObject in detectedLOSObjects)
-            {
-                if(!targets.Contains(losObject))
-                    targets.Add(losObject);
+                if (target.layer == LayerMask.GetMask("Interactable") && !target.CompareTag("Food"))
+                    continue;
+                
+                targets.Add(target);
             }
 
             if (targets.Count == 0)

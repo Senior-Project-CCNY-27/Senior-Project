@@ -194,7 +194,8 @@ MonoBehaviour:
           _Callbacks: []
           _Names: []
         _Clip: {fileID: 4033287618177238278, guid: 1e0dfdbe57c95664481b506ea14982ba, type: 3}
-        _NormalizedStartTime: NaN
+        _NormalizedStartTime: 0
+      _cooldown: 1
     <FollowState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -249,7 +250,7 @@ MonoBehaviour:
       _rotateSpeed: 10
       _regularHitboxRadius: 2
       _mouthHitboxRadius: 0.625
-      _targetTransform: {fileID: 0}
+      <TargetTransform>k__BackingField: {fileID: 0}
     <AttackState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25

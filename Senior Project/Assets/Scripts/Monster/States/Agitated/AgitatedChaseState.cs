@@ -21,12 +21,12 @@ namespace MonsterStates
         [Header("Mouth Hitbox")]
         [SerializeField] private float _mouthHitboxRadius = 0.625f;
 
-        [SerializeField, ReadOnly] private Transform _targetTransform;
+        [field: SerializeField, ReadOnly] public Transform TargetTransform { get; private set; }
         private bool _isTargetInAttackRange = false;
 
         public void SetTarget(Transform targetTransform)
         {
-            _targetTransform = targetTransform;
+            TargetTransform = targetTransform;
         }
         
         private protected override void OnEnter()
@@ -34,7 +34,7 @@ namespace MonsterStates
             _context.Animator.Play(_animationClip, 0.1f);
 
             _isTargetInAttackRange = false;
-            _context.SetDestination(_targetTransform.position);
+            _context.SetDestination(TargetTransform.position);
         }
 
         private protected override void OnExit()
@@ -47,7 +47,7 @@ namespace MonsterStates
             HandleTargetPickedUp();
             CheckIfTargetInRange();
 
-            _context.SetDestination(_targetTransform.position);
+            _context.SetDestination(TargetTransform.position);
             _context.RotateTowardsDestination(_rotateSpeed);
         }
 
@@ -58,21 +58,21 @@ namespace MonsterStates
         
         private protected override State<MonsterController> GetTransition()
         {
-            if (_targetTransform == null)
+            if (TargetTransform == null)
                 return _context.AgitatedSuperState.RoamState;
 
             if (_isTargetInAttackRange)
             {
                 // Ignore food in player's hands
-                if (_targetTransform.TryGetComponent(out Pickup pickupComponent) && pickupComponent.IsPickedUp)
+                if (TargetTransform.TryGetComponent(out Pickup pickupComponent) && pickupComponent.IsPickedUp)
                 {
                     _isTargetInAttackRange = false;
                     return null;
                 }
                 
-                if (_targetTransform.gameObject.CompareTag("Food"))
+                if (TargetTransform.gameObject.CompareTag("Food"))
                 {
-                    _context.Feed(_targetTransform.gameObject);
+                    _context.Feed(TargetTransform.gameObject);
                     return null;
                 }
                 return _context.AgitatedSuperState.AttackState;
@@ -111,7 +111,7 @@ namespace MonsterStates
             Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
             foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
             {
-                if (attackableCollider.gameObject == _targetTransform.gameObject)
+                if (attackableCollider.gameObject == TargetTransform.gameObject)
                 {
                     _isTargetInAttackRange = true;
                     break;
@@ -119,7 +119,7 @@ namespace MonsterStates
 
                 if (attackableCollider.gameObject.CompareTag("Food"))
                 {
-                    _targetTransform = attackableCollider.gameObject.transform;
+                    TargetTransform = attackableCollider.gameObject.transform;
                     _isTargetInAttackRange = true;
                     break;
                 }
@@ -129,8 +129,8 @@ namespace MonsterStates
         private void HandleTargetPickedUp()
         {
             // If player picks up the food, switch target to player
-            if (_targetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
-                _targetTransform = pickup.PickupController.transform;
+            if (TargetTransform.TryGetComponent(out Pickup pickup) && pickup.IsPickedUp)
+                TargetTransform = pickup.PickupController.transform;
         }
     }
 }

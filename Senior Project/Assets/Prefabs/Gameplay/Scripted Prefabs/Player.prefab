@@ -62,20 +62,20 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: -203655887218126122, guid: e2810034716fe4b46add0384423136fb, type: 3}
     _NormalizedStartTime: NaN
-  _walkSpeed: 1.5
+  _walkSpeed: 3
   _walkClip:
     _FadeDuration: 0.25
-    _Speed: 0.8
+    _Speed: 1.6
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
     _Clip: {fileID: -203655887218126122, guid: 61935ba2f3a653f4093d30cac4531629, type: 3}
     _NormalizedStartTime: NaN
-  _sprintSpeed: 2.75
+  _sprintSpeed: 5.5
   _sprintClip:
     _FadeDuration: 0.25
-    _Speed: 0.75
+    _Speed: 1.5
     _Events:
       _NormalizedTimes: []
       _Callbacks: []

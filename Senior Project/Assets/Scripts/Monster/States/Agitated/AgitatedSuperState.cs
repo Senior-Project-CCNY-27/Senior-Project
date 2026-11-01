@@ -27,7 +27,7 @@ namespace MonsterStates
         
         private protected override void OnEnter()
         {
-            SubStateMachine.ChangeState(RoamState);
+            SubStateMachine.ChangeState(RoamState, true);
         }
 
         private protected override void OnExit()

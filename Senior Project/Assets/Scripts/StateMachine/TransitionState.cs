@@ -15,6 +15,8 @@ public class TransitionState<TContext> : State<TContext> where TContext : MonoBe
     private Action _onExitCallback;
     private Action _onUpdateCallback;
 
+    public State<TContext> DestinationState => _nextState;
+
     public TransitionState(
         StateMachine<TContext> stateMachine, 
         TContext context, 
