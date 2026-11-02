@@ -1,9 +1,11 @@
 using System;
 using Animancer;
+using AYellowpaper.SerializedCollections;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(AnimancerComponent))]
@@ -15,11 +17,15 @@ public class PlayerController : MonoBehaviour
     [Header("Walk")]
     [SerializeField] private float _walkSpeed = 3f;
     [SerializeField] private ClipTransition _walkClip;
+    [SerializeField] private bool _isWalking = false;
     
     [Header("Sprint")]
     [SerializeField] private float _sprintSpeed = 4.5f;
     [SerializeField] private ClipTransition _sprintClip;
-    
+
+    [Header("Stamina")]
+    [HideInInspector] public StaminaController _staminaController;
+
     public enum State
     {
         Idle,
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        _staminaController = GetComponent<StaminaController>();
         _input = InputManager.Instance.Actions;
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<AnimancerComponent>();
