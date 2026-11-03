@@ -1,16 +1,14 @@
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStaminaUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField, Required] private PlayerController _playerController;
+    [SerializeField, Required] private Slider _staminaSlider;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        _staminaSlider.value = _playerController.CurrentStamina / _playerController.MaxStamina;
     }
 }

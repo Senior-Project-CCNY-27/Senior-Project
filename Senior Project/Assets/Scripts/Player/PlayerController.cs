@@ -17,14 +17,18 @@ public class PlayerController : MonoBehaviour
     [Header("Walk")]
     [SerializeField] private float _walkSpeed = 3f;
     [SerializeField] private ClipTransition _walkClip;
-    [SerializeField] private bool _isWalking = false;
     
     [Header("Sprint")]
     [SerializeField] private float _sprintSpeed = 4.5f;
+    [field: SerializeField, ReadOnly] public float CurrentStamina { get; private set; }
+    [field: SerializeField] public float MaxStamina { get; private set; } = 100f;
+    [SerializeField] private float _minStaminaToSprint = 10f;
     [SerializeField] private ClipTransition _sprintClip;
 
-    [Header("Stamina")]
-    [HideInInspector] public StaminaController _staminaController;
+    [Header("Stamina Regen Parameters")]
+    [SerializeField] private float _drainRate = 20f;
+    [SerializeField] private float _regenRate = 10f;
+    
 
     public enum State
     {
@@ -46,7 +50,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _staminaController = GetComponent<StaminaController>();
         _input = InputManager.Instance.Actions;
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<AnimancerComponent>();
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        CurrentStamina = MaxStamina;
         ChangeState(State.Idle, true);
     }
 
@@ -122,7 +126,7 @@ public class PlayerController : MonoBehaviour
                     ChangeState(State.Walk);
                     return;
                 }
-                
+                RegenStamina();
                 break;
             case State.Walk:
                 if (_moveInput == Vector3.zero)
@@ -131,12 +135,13 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
 
-                if (_input.Player.Sprint.IsPressed())
+                if (_input.Player.Sprint.IsPressed() && CurrentStamina > _minStaminaToSprint)
                 {
                     ChangeState(State.Sprint);
                     return;
                 }
-                
+
+                RegenStamina();
                 ApplyMovement();
                 break;
             case State.Sprint:
@@ -152,6 +157,13 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
                 
+                DrainStamina();
+                if (CurrentStamina <= 0)
+                {
+                    ChangeState(State.Idle);
+                    return;
+                }
+
                 ApplyMovement();
                 break;
         }
@@ -176,5 +188,27 @@ public class PlayerController : MonoBehaviour
     private void ApplyRotation()
     {
         transform.rotation = Quaternion.Euler(0f, Camera.main.transform.eulerAngles.y, 0f);
+    }
+
+    private void DrainStamina()
+    {
+        if (CurrentStamina <= 0)
+        {
+            CurrentStamina = 0;
+            return;
+        }
+
+        CurrentStamina -= _drainRate * Time.deltaTime;
+    }
+
+    private void RegenStamina()
+    {
+        if(CurrentStamina >= MaxStamina)
+        {
+            CurrentStamina = MaxStamina;
+            return;
+        }
+
+        CurrentStamina += _regenRate * Time.deltaTime;
     }
 }
