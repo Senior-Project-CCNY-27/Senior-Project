@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterTimer
   _monster: {fileID: 0}
-  _timerText: {fileID: 148523897}
+  _displayText: {fileID: 0}
 --- !u!114 &148523897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +271,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148523894}
   m_CullTransparentMesh: 1
+--- !u!1 &238238543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 238238545}
+  - component: {fileID: 238238544}
+  - component: {fileID: 238238546}
+  m_Layer: 0
+  m_Name: GoalZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &238238544
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238238543}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &238238545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238238543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.14, y: 1.17, z: 12.49}
+  m_LocalScale: {x: 1.182, y: 2.0677452, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &238238546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238238543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7260f7ddd9760e3468038e359a207e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoalZone
+  ObjectiveHitbox: {fileID: 0}
 --- !u!1001 &370549095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2140,6 +2207,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 238238546}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ObjectivesMet
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: GoalZone, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218920609987836495, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: <OnInteract>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6660047680750730031, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
       propertyPath: m_Name
       value: DoorRotator
@@ -2162,3 +2257,4 @@ SceneRoots:
   - {fileID: 1831584757}
   - {fileID: 1851818699}
   - {fileID: 1270490543}
+  - {fileID: 238238545}
