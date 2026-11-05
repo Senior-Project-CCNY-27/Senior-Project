@@ -14,7 +14,7 @@ public class Interactor : MonoBehaviour
 
     private void Awake()
     {
-        _interactableLayerMask = LayerMask.GetMask("Interactable");
+        _interactableLayerMask = LayerMask.GetMask("Interactable", "Wall");
     }
 
     private void OnEnable()

@@ -12,7 +12,8 @@ public class GameManager : Singleton<GameManager>
         MainMenu,
         Gameplay,
         Pause,
-        GameOver
+        GameOver,
+        Win
     }
 
     [field: SerializeField, ReadOnly] public State CurrentState { get; private set; }
@@ -82,6 +83,11 @@ public class GameManager : Singleton<GameManager>
                 InputManager.Instance.LockCursor(false);
                 DeathScreenManager.Instance.Open();
                 break;
+            case State.Win:
+                Time.timeScale = 0f;
+                InputManager.Instance.LockCursor(false);
+                WinScreenManager.Instance.Open();
+                break;
         }
     }
 
@@ -99,6 +105,10 @@ public class GameManager : Singleton<GameManager>
                 InputManager.Instance.LockCursor(true);
                 break;
             case State.GameOver:
+                Time.timeScale = 1f;
+                InputManager.Instance.LockCursor(true);
+                break;
+            case State.Win:
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(true);
                 break;
