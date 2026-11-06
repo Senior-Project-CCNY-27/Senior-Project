@@ -175,38 +175,9 @@ public static class CustomDebug
         sphere.transform.localScale = radius * 2f * Vector3.one;
 
         Renderer sphereRenderer = sphere.GetComponent<Renderer>();
-        sphereRenderer.material = GetTransparentMaterial();
-        sphereRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         sphereRenderer.material.color = color;
         GameObject.Destroy(sphere, expireDuration);
 
         return sphere;
-    }
-
-    /// <summary>
-    /// Generates a transparent material.
-    /// </summary>
-    /// <returns>The transparent material.</returns>
-    public static Material GetTransparentMaterial()
-    {
-        Material transparentMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-
-        // Change Surface Type to Transparent
-        transparentMaterial.SetFloat("_Surface", 1); // 1 = Transparent, 0 = Opaque
-
-        // Enable required shader keywords
-        transparentMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-        transparentMaterial.DisableKeyword("_SURFACE_TYPE_OPAQUE");
-
-        // Set rendering mode for transparency
-        transparentMaterial.SetOverrideTag("RenderType", "Transparent");
-        transparentMaterial.SetInt("_ZWrite", 0); // Disable ZWrite for transparency
-        transparentMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        transparentMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-
-        // Apply the changes to the material
-        transparentMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-
-        return transparentMaterial;
     }
 }
