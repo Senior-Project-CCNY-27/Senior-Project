@@ -16,9 +16,9 @@ public class MonsterDebugUI : MonoBehaviour
 
         if (_monster.StateMachine.CurrentState == _monster.CalmSuperState)
         {
-            string currentTime = CustomUtils.FloatToString(_monster.CalmSuperState.CurrentAgitation);
-            string maxTime = CustomUtils.FloatToString(_monster.CalmSuperState.AgitateThreshold);
-            SetDisplayText($"Time to agitation: {currentTime}s/{maxTime}s");
+            string currentAgitation = CustomUtils.FloatToString(_monster.CalmSuperState.CurrentAgitation, 1);
+            string agitationThreshold = CustomUtils.FloatToString(_monster.CalmSuperState.AgitateThreshold, 1);
+            SetDisplayText($"Agitation Meter: {currentAgitation}/{agitationThreshold}");
         }
         else if (_monster.StateMachine.CurrentState == _monster.AgitatedSuperState &&
                  _monster.AgitatedSuperState.SubStateMachine.CurrentState == _monster.AgitatedSuperState.ChaseState)
