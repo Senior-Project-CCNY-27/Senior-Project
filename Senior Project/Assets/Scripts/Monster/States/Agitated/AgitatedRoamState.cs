@@ -63,7 +63,12 @@ namespace MonsterStates
                     _context,
                     _context.Animator,
                     _context.AgitatedSuperState.AgitatedAnimationClip,
-                    _context.AgitatedSuperState.ChaseState
+                    _context.AgitatedSuperState.ChaseState,
+                    onUpdateCallback: () =>
+                    {
+                        if (_targetTransform != null)
+                            _context.GraduallyLookAt(_targetTransform.position, _rotateSpeed);
+                    }
                 );
             }
             
