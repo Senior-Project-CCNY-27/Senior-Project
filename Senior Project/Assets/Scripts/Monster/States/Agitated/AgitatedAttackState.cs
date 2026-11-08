@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Animancer;
 using NaughtyAttributes;
 using UnityEngine;
@@ -65,12 +66,17 @@ namespace MonsterStates
                 );
             
             Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _attackRadius);
+            HashSet<Health> damagedHealths = new HashSet<Health>();
             foreach (Collider mouthCollision in mouthCollisions)
             {
                 Health health = mouthCollision.GetComponentInParent<Health>();
                 if(health == null)
                     continue;
+
+                if (damagedHealths.Contains(health))
+                    continue;
                 
+                damagedHealths.Add(health);
                 CameraShakeManager.ShakeCamera(_onHitShakeSettings);
                 health.TakeDamage(_damage);
             }
