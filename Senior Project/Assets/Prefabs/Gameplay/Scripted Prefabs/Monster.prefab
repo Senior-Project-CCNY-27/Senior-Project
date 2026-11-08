@@ -240,17 +240,17 @@ MonoBehaviour:
     <CurrentAgitation>k__BackingField: 0
     _hungryAgitationSpeed: 5
     _playerHoldingFoodAgitationSpeed: 25
-  <AgitatedSuperState>k__BackingField:
+  <AggressiveSuperState>k__BackingField:
     <RoamState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 1.2
+        _Speed: 1
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
         _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
-        _NormalizedStartTime: NaN
+        _NormalizedStartTime: 0
       _waypoints:
       - {fileID: 0}
       - {fileID: 0}
@@ -259,22 +259,22 @@ MonoBehaviour:
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
-      _innerDetectionRadius: 4
+      _innerDetectionRadius: 3
       _losDetectionRadius: 10
-      _losHalfAngleCone: 30
+      _losHalfAngleCone: 45
       _rotateSpeed: 10
       _roamMoveSpeed: 1.5
     <ChaseState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
-        _Speed: 0.9
+        _Speed: 1
         _Events:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
         _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
         _NormalizedStartTime: NaN
-      _moveSpeed: 3.5
+      _moveSpeed: 3
       _rotateSpeed: 10
       _regularHitboxRadius: 2
       _mouthHitboxRadius: 0.625
@@ -285,7 +285,7 @@ MonoBehaviour:
         _Speed: 1
         _Events:
           _NormalizedTimes:
-          - 0.54357594
+          - 0.56473213
           - NaN
           _Callbacks: []
           _Names:
@@ -294,12 +294,12 @@ MonoBehaviour:
         _NormalizedStartTime: 0
       _damage: 1
       _damageEventName: {fileID: 11400000, guid: f10a69466912a6741b5b08b528341c5b, type: 2}
-      _attackRadius: 1.25
+      _attackRadius: 2
       _onHitShakeSettings:
         Duration: 1
-        Intensity: 10
-        Speed: 10
-    <AgitatedAnimationClip>k__BackingField:
+        Intensity: 5
+        Speed: 5
+    <RoarAnimationClip>k__BackingField:
       _FadeDuration: 0.25
       _Speed: 1
       _Events:

@@ -75,7 +75,7 @@ namespace MonsterStates
         {
             if (CurrentAgitation > AgitateThreshold)
             {
-                _context.Agitate();
+                _context.ForceAggressive();
                 return null;
             }
             

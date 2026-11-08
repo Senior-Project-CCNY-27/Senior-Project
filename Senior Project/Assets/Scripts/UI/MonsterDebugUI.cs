@@ -20,10 +20,10 @@ public class MonsterDebugUI : MonoBehaviour
             string agitationThreshold = CustomUtils.FloatToString(_monster.CalmSuperState.AgitateThreshold, 1);
             SetDisplayText($"Agitation Meter: {currentAgitation}/{agitationThreshold}");
         }
-        else if (_monster.StateMachine.CurrentState == _monster.AgitatedSuperState &&
-                 _monster.AgitatedSuperState.SubStateMachine.CurrentState == _monster.AgitatedSuperState.ChaseState)
+        else if (_monster.StateMachine.CurrentState == _monster.AggressiveSuperState &&
+                 _monster.AggressiveSuperState.SubStateMachine.CurrentState == _monster.AggressiveSuperState.ChaseState)
         {
-            SetDisplayText($"Target: {_monster.AgitatedSuperState.ChaseState.TargetTransform.name}");
+            SetDisplayText($"Target: {_monster.AggressiveSuperState.ChaseState.TargetTransform.name}");
         }
         else
         {

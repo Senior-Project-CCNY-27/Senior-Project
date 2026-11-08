@@ -7,7 +7,7 @@ using UnityEngine;
 namespace MonsterStates
 {
     [System.Serializable]
-    public class AgitatedChaseState : State<MonsterController>
+    public class AggressiveChaseState : State<MonsterController>
     {
         [SerializeField] private ClipTransition _animationClip;
 
@@ -59,7 +59,7 @@ namespace MonsterStates
         private protected override State<MonsterController> GetTransition()
         {
             if (TargetTransform == null)
-                return _context.AgitatedSuperState.RoamState;
+                return _context.AggressiveSuperState.RoamState;
 
             if (_isTargetInAttackRange)
             {
@@ -75,7 +75,7 @@ namespace MonsterStates
                     _context.Feed(TargetTransform.gameObject);
                     return null;
                 }
-                return _context.AgitatedSuperState.AttackState;
+                return _context.AggressiveSuperState.AttackState;
             }
 
             if (!_context.IsCurrentPathValid())
@@ -84,8 +84,8 @@ namespace MonsterStates
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedSuperState.AgitatedAnimationClip,
-                    _context.AgitatedSuperState.ChaseState
+                    _context.AggressiveSuperState.RoarAnimationClip,
+                    _context.AggressiveSuperState.ChaseState
                 );
             }
             
@@ -96,7 +96,7 @@ namespace MonsterStates
         {
             Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
             Gizmos.DrawWireSphere(_context.transform.position, _regularHitboxRadius);
-            Gizmos.DrawWireSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            Gizmos.DrawWireSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
         }
         
         public override void OnCollisionEnter(Collision collision)
@@ -108,7 +108,7 @@ namespace MonsterStates
         private void CheckIfTargetInRange()
         {
             Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
-            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
             foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
             {
                 if (attackableCollider.gameObject == TargetTransform.gameObject)

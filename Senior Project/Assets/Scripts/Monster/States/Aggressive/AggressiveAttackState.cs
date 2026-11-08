@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MonsterStates
 {
     [System.Serializable]
-    public class AgitatedAttackState : State<MonsterController>
+    public class AggressiveAttackState : State<MonsterController>
     {
         [SerializeField] private ClipTransition _animationClip;
         [SerializeField] private int _damage = 1;
@@ -50,7 +50,7 @@ namespace MonsterStates
         {
             if (_timer >= _duration)
             {
-                return _context.AgitatedSuperState.ChaseState;
+                return _context.AggressiveSuperState.ChaseState;
             }
             
             return null;
@@ -59,13 +59,13 @@ namespace MonsterStates
         private void TryDamageTarget()
         {
             CustomDebug.InstantiateTemporarySphere(
-                _context.AgitatedSuperState.MouthHitboxTransform.position,
+                _context.AggressiveSuperState.MouthHitboxTransform.position,
                 _attackRadius,
                 1f,
                 Color.red.WithA(0.5f)
                 );
             
-            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _attackRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _attackRadius);
             HashSet<Health> damagedHealths = new HashSet<Health>();
             foreach (Collider mouthCollision in mouthCollisions)
             {
@@ -85,7 +85,7 @@ namespace MonsterStates
         public override void OnDrawGizmosInPlayMode()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_context.AgitatedSuperState.MouthHitboxTransform.position, _attackRadius);
+            Gizmos.DrawWireSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _attackRadius);
         }
     }
 }

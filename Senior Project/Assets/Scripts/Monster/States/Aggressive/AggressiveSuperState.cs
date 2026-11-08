@@ -5,15 +5,15 @@ using UnityEngine;
 namespace MonsterStates
 {
     [System.Serializable]
-    public class AgitatedSuperState : State<MonsterController>
+    public class AggressiveSuperState : State<MonsterController>
     {
         public StateMachine<MonsterController> SubStateMachine { get; private set; }
-        [field: SerializeField] public AgitatedRoamState RoamState { get; private set; }
-        [field: SerializeField] public AgitatedChaseState ChaseState { get; private set; }
-        [field: SerializeField] public AgitatedAttackState AttackState { get; private set; }
+        [field: SerializeField] public AggressiveRoamState RoamState { get; private set; }
+        [field: SerializeField] public AggressiveChaseState ChaseState { get; private set; }
+        [field: SerializeField] public AggressiveAttackState AttackState { get; private set; }
         
         [field: Header("Blackboard")]
-        [field: SerializeField, Required] public ClipTransition AgitatedAnimationClip { get; private set; }
+        [field: SerializeField, Required] public ClipTransition RoarAnimationClip { get; private set; }
         [field: SerializeField, Required] public Transform MouthHitboxTransform { get; private set; }
         
         private protected override void OnInit()

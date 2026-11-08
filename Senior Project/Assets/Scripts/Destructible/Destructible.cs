@@ -28,9 +28,9 @@ public class Destructible : MonoBehaviour
 
     private void Update()
     {
-        AgitatedSuperState agitatedSuperState = _monsterController.AgitatedSuperState;
-        bool isAgitatedChasing = _monsterController.StateMachine.CurrentState == agitatedSuperState &&
-                                 agitatedSuperState.SubStateMachine.CurrentState == agitatedSuperState.ChaseState;
+        AggressiveSuperState aggressiveSuperState = _monsterController.AggressiveSuperState;
+        bool isAgitatedChasing = _monsterController.StateMachine.CurrentState == aggressiveSuperState &&
+                                 aggressiveSuperState.SubStateMachine.CurrentState == aggressiveSuperState.ChaseState;
         _navMeshObstacle.enabled = !isAgitatedChasing;
     }
 

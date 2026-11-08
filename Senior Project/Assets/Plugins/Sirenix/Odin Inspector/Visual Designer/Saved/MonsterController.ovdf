@@ -18,7 +18,7 @@ Position: $C4qxzsGesPGM8ZZUax4KgT:1
 	GroupName = "Agitated"
 
 # $QDAptWypbwukhEC9w8HCwq
-Position: $root:63
+Position: $root:62
 + [Sirenix.OdinInspector.BoxGroupAttribute]
 	GroupName = "DebugButtons"
 	LabelText = "Debug Buttons"
@@ -30,7 +30,7 @@ Position: $root:2
 	GroupName = "Blackboard"
 
 # $HfAfMmueeGAiRYvCRjcyEf
-Position: $root:54
+Position: $root:53
 + [Sirenix.OdinInspector.BoxGroupAttribute]
 	ShowLabel = True
 	GroupName = "States"
@@ -62,3 +62,10 @@ Position: $FVVDHR7N9zZVSQh5WHu2mx:2
 
 # <EatingAnimationClip>k__BackingField
 Position: $FVVDHR7N9zZVSQh5WHu2mx:3
+
+# <AggressiveSuperState>k__BackingField
+Position: $BRU4vpD9TiR62uBr4dJYgJ:0
++ [Sirenix.OdinInspector.HideLabelAttribute]
+
+# ForceAggressive()
+Position: $QDAptWypbwukhEC9w8HCwq:0

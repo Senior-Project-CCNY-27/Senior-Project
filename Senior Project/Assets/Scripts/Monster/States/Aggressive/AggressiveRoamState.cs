@@ -7,7 +7,7 @@ using System.Linq;
 namespace MonsterStates
 {
     [System.Serializable]
-    public class AgitatedRoamState : State<MonsterController>
+    public class AggressiveRoamState : State<MonsterController>
     {
         [SerializeField] private ClipTransition _animationClip;
 
@@ -57,13 +57,13 @@ namespace MonsterStates
         {
             if (_targetTransform != null)
             {
-                _context.AgitatedSuperState.ChaseState.SetTarget(_targetTransform);
+                _context.AggressiveSuperState.ChaseState.SetTarget(_targetTransform);
                 return new TransitionState<MonsterController>(
                     _stateMachine,
                     _context,
                     _context.Animator,
-                    _context.AgitatedSuperState.AgitatedAnimationClip,
-                    _context.AgitatedSuperState.ChaseState,
+                    _context.AggressiveSuperState.RoarAnimationClip,
+                    _context.AggressiveSuperState.ChaseState,
                     onUpdateCallback: () =>
                     {
                         if (_targetTransform != null)

@@ -17,7 +17,7 @@ public class MonsterController : MonoBehaviour
     
     public StateMachine<MonsterController> StateMachine { get; private set; }
     [field: SerializeField] public CalmSuperState CalmSuperState { get; private set; }
-    [field: SerializeField] public AgitatedSuperState AgitatedSuperState { get; private set; }
+    [field: SerializeField] public AggressiveSuperState AggressiveSuperState { get; private set; }
 
     [field: Header("Blackboard")]
     [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
@@ -79,7 +79,7 @@ public class MonsterController : MonoBehaviour
         StateMachine = new StateMachine<MonsterController>(this);
         
         CalmSuperState.Init(StateMachine, this);
-        AgitatedSuperState.Init(StateMachine, this);
+        AggressiveSuperState.Init(StateMachine, this);
         
         StateMachine.ChangeState(CalmSuperState);
     }
@@ -121,16 +121,16 @@ public class MonsterController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
     }
 
-    [Button("Agitate", ButtonSizes.Large)]
-    public void Agitate()
+    [Button("Force Aggressive", ButtonSizes.Large)]
+    public void ForceAggressive()
     {
         StateMachine.ChangeState(
             new TransitionState<MonsterController>(
                 StateMachine,
                 this,
                 Animator,
-                AgitatedSuperState.AgitatedAnimationClip,
-                AgitatedSuperState
+                AggressiveSuperState.RoarAnimationClip,
+                AggressiveSuperState
         ));
     }
     
