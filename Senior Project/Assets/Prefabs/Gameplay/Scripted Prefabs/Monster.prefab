@@ -189,7 +189,7 @@ MonoBehaviour:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
-        _Clip: {fileID: 4097811536844401092, guid: 5505d12703e333b499d0c8ed300b5c01, type: 3}
+        _Clip: {fileID: -5284272045877403231, guid: 68e39c10348d2194aae6368340a726dd, type: 3}
         _NormalizedStartTime: 0
       _durationRange:
         Min: 1
@@ -206,6 +206,7 @@ MonoBehaviour:
         _NormalizedStartTime: NaN
       _moveSpeed: 1.4
       _rotateSpeed: 10
+      _closeToPlayerWanderChance: 0.25
     <WanderState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25

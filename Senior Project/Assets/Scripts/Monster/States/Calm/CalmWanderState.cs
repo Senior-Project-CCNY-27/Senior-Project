@@ -18,7 +18,7 @@ namespace MonsterStates
         {
             _context.Animator.Play(_animationClip, 0.1f);
 
-            _wanderCenter = _context.transform.position;
+            _wanderCenter = _context.PlayerTransform.position;
             Vector3 destination = _context.GetRandomVisibleWanderPoint(_wanderCenter, _wanderRadiusRange);
             _context.SetDestination(destination);
         }
@@ -40,16 +40,10 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-#if UNITY_EDITOR
-            UnityEditor.Handles.color = Color.cyan;
-            UnityEditor.Handles.DrawWireDisc(_wanderCenter, Vector3.up, Mathf.Max(0f, _wanderRadiusRange.Max));
-            UnityEditor.Handles.color = Color.blue;
-            UnityEditor.Handles.DrawWireDisc(_wanderCenter, Vector3.up, Mathf.Max(0f, _wanderRadiusRange.Min));
-#endif
-
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(_context.transform.position, _context.Destination);
-            Gizmos.DrawWireSphere(_context.Destination, 0.2f);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(_wanderCenter, _wanderRadiusRange.Max);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(_wanderCenter, _wanderRadiusRange.Min);
         }
         
         private protected override State<MonsterController> GetTransition()

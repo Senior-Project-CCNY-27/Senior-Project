@@ -110,7 +110,7 @@ namespace MonsterStates
             // Make sure interactables are food
             foreach (GameObject target in detectedInnerObjects.Concat(detectedLOSObjects))
             {
-                if (target.layer == LayerMask.GetMask("Interactable") && !target.CompareTag("Food"))
+                if (target.layer == LayerMask.NameToLayer("Interactable") && !target.CompareTag("Food"))
                     continue;
                 
                 targets.Add(target);

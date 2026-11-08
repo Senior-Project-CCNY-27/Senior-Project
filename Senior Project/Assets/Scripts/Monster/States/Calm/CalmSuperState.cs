@@ -60,11 +60,8 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            if (_context.PlayerTransform != null)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireSphere(_context.PlayerTransform.position, CatchupDistance);
-            }
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_context.transform.position, CatchupDistance);
 
             SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
         }

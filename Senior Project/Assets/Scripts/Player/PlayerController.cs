@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AnimancerComponent))]
 public class PlayerController : MonoBehaviour
 {
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     }
     
     private PlayerInputActions _input;
-    private CharacterController _characterController;
+    private Rigidbody _rigidbody;
     private AnimancerComponent _animator;
     
     [field: Header("Debug")]
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _input = InputManager.Instance.Actions;
-        _characterController = GetComponent<CharacterController>();
+        _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<AnimancerComponent>();
     }
 
@@ -69,7 +69,12 @@ public class PlayerController : MonoBehaviour
         
         ApplyRotation();
     }
-    
+
+    private void FixedUpdate()
+    {
+        FixedUpdateState(CurrentState);
+    }
+
     public void ChangeState(State newState, bool forceChange = false)
     {
         if (CurrentState == newState && !forceChange)
@@ -142,7 +147,6 @@ public class PlayerController : MonoBehaviour
                 }
 
                 RegenStamina();
-                ApplyMovement();
                 break;
             case State.Sprint:
                 if (_moveInput == Vector3.zero)
@@ -163,7 +167,20 @@ public class PlayerController : MonoBehaviour
                     ChangeState(State.Idle);
                     return;
                 }
+                break;
+        }
+    }
 
+    private void FixedUpdateState(State state)
+    {
+        switch (state)
+        {
+            case State.Idle:
+                break;
+            case State.Walk:
+                ApplyMovement();
+                break;
+            case State.Sprint:
                 ApplyMovement();
                 break;
         }
@@ -175,6 +192,9 @@ public class PlayerController : MonoBehaviour
         _moveInput = new Vector3(input.x, 0f, input.y);
     }
 
+    /// <summary>
+    /// Call this in FixedUpdate
+    /// </summary>
     private void ApplyMovement()
     {
         Vector3 normalizedMoveInput = _moveInput.normalized;
@@ -182,7 +202,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetMoveDirection = cameraYRotation * normalizedMoveInput;
         
-        _characterController.Move(targetMoveDirection * CurrentSpeed * Time.deltaTime);
+        _rigidbody.MovePosition(transform.position + targetMoveDirection * CurrentSpeed * Time.fixedDeltaTime);
     }
 
     private void ApplyRotation()

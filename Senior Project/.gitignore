@@ -110,3 +110,5 @@ InitTestScene*.unity*
 
 .idea/*
 .vscode/*
+.vsconfig
+.DS_Store

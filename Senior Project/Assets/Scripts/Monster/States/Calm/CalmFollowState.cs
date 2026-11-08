@@ -35,12 +35,8 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-            if (_context.PlayerTransform == null)
-                return;
-
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_context.PlayerTransform.position, _context.CalmSuperState.FollowStopDistance);
-            Gizmos.DrawLine(_context.transform.position, _context.PlayerTransform.position);
+            Gizmos.DrawWireSphere(_context.transform.position, _context.CalmSuperState.FollowStopDistance);
         }
         
         private protected override State<MonsterController> GetTransition()

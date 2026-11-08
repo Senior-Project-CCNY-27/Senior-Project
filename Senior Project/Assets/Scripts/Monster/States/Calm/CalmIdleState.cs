@@ -37,11 +37,7 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
-#if UNITY_EDITOR
-            UnityEditor.Handles.Label(
-                _context.transform.position + Vector3.up * 2f,
-                $"Idle: {Mathf.Max(0f, _duration - _timer):0.0}s");
-#endif
+            
         }
 
         private protected override State<MonsterController> GetTransition()
