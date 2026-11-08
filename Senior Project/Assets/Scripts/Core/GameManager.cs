@@ -24,11 +24,6 @@ public class GameManager : Singleton<GameManager>
     [field: SerializeField] public SceneReference MainMenuScene { get; private set; }
     [field: SerializeField] public SceneReference GameplayScene { get; private set; }
 
-    private protected override void Awake()
-    {
-        base.Awake();
-    }
-
     private void Start()
     {
         ChangeState(State.MainMenu, true);
@@ -152,6 +147,9 @@ public class GameManager : Singleton<GameManager>
             return;
 
         if (CurrentState == State.Pause)
+            return;
+
+        if (CurrentState == State.GameOver || CurrentState == State.Win)
             return;
 
         ChangeState(State.Pause);
