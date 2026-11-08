@@ -1,5 +1,5 @@
 using DG.Tweening;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using Unity.Cinemachine;
 using UnityEngine;
 

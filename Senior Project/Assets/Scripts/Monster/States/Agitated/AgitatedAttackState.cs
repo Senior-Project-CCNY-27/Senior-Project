@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Animancer;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace MonsterStates

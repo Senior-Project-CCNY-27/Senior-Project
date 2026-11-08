@@ -3389,6 +3389,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1120643416}
     - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: <PlayerPickupController>k__BackingField
+      value: 
+      objectReference: {fileID: 4554190117332698811}
+    - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: '<AgitatedSuperState>k__BackingField.<RoamState>k__BackingField._waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1535384063}
@@ -10875,6 +10879,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9365701e7e814cd7a66cbb75ff7697d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProximityInteractablesDetector
+--- !u!114 &4554190117332698811 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4761778378643620791, guid: a936ab00389c6254d83469d338796764, type: 3}
+  m_PrefabInstance: {fileID: 4554190117332698801}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00752629508b243abad696ae53e72390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
 --- !u!1001 &6902309978647087532
 PrefabInstance:
   m_ObjectHideFlags: 0

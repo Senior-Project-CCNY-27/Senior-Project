@@ -1,6 +1,6 @@
 ﻿using System;
 using Eflatun.SceneReference;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

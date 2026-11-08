@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Animancer;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace MonsterStates

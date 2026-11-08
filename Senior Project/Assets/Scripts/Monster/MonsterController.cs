@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Animancer;
 using MonsterStates;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,12 +14,13 @@ public class MonsterController : MonoBehaviour
 {
     private const float NavMeshOverlapThreshold = 0.2f;
     
-    [field: SerializeReference, ReadOnly] public StateMachine<MonsterController> StateMachine { get; private set; }
+    public StateMachine<MonsterController> StateMachine { get; private set; }
     [field: SerializeField] public CalmSuperState CalmSuperState { get; private set; }
     [field: SerializeField] public AgitatedSuperState AgitatedSuperState { get; private set; }
 
     [field: Header("Blackboard")]
     [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
+    [field: SerializeField, Required] public PlayerPickupController PlayerPickupController { get; private set; }
     [field: SerializeField, Required] public Transform LOSOrigin { get; private set; }
     [field: SerializeField, Required] public ClipTransition EatingAnimationClip { get; private set; }
     
@@ -119,7 +120,7 @@ public class MonsterController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
     }
 
-    [Button("Agitate", EButtonEnableMode.Playmode)]
+    [Button("Agitate", ButtonSizes.Large)]
     public void Agitate()
     {
         StateMachine.ChangeState(
@@ -132,7 +133,7 @@ public class MonsterController : MonoBehaviour
         ));
     }
     
-    [Button("Feed", EButtonEnableMode.Playmode)]
+    [Button("Feed", ButtonSizes.Large)]
     public void Feed(GameObject foodObject = null)
     {
         if(foodObject != null && foodObject.TryGetComponent(out Interactable interactable))

@@ -1,6 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 
 public class DoorOpener : MonoBehaviour, IInteractionValidator
 {

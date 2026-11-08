@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -37,7 +37,7 @@ public class Menu : MonoBehaviour
     /// <summary>
     /// Globally accessible reference to the current active panel.
     /// </summary>
-    public static Menu CurrentActiveMenu { get; private set; }
+    [ShowInInspector] public static Menu CurrentActiveMenu { get; private set; }
     public static event Action<Menu> OnPanelChanged = delegate { };
 
     private void OnValidate()
@@ -274,13 +274,5 @@ public class Menu : MonoBehaviour
         }
 
         return false;
-    }
-
-    [Button("Debug Print Menu System Info", EButtonEnableMode.Playmode)]
-    public void DebugPrintMenuSystemInfo()
-    {
-        string currentMenuString = CurrentActiveMenu == null ? "null" : CurrentActiveMenu.gameObject.name;
-        string previousMenuString = PreviousPanel == null ? "null" : PreviousPanel.gameObject.name;
-        Debug.Log($"Menu System - Current: {currentMenuString}, Previous: {previousMenuString}");
     }
 }

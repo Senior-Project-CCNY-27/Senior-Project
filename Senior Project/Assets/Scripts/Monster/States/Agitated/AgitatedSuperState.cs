@@ -1,5 +1,5 @@
 using Animancer;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace MonsterStates
@@ -7,7 +7,7 @@ namespace MonsterStates
     [System.Serializable]
     public class AgitatedSuperState : State<MonsterController>
     {
-        [field: SerializeReference, ReadOnly] public StateMachine<MonsterController> SubStateMachine { get; private set; }
+        public StateMachine<MonsterController> SubStateMachine { get; private set; }
         [field: SerializeField] public AgitatedRoamState RoamState { get; private set; }
         [field: SerializeField] public AgitatedChaseState ChaseState { get; private set; }
         [field: SerializeField] public AgitatedAttackState AttackState { get; private set; }

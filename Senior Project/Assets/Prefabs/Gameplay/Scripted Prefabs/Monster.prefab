@@ -209,7 +209,10 @@ MonoBehaviour:
       _moveSpeed: 1.4
       _rotateSpeed: 10
     <FollowStopDistance>k__BackingField: 3.5
-    <MaxTimeWithoutFood>k__BackingField: 30
+    <AgitateThreshold>k__BackingField: 100
+    <CurrentAgitation>k__BackingField: 0
+    _hungryAgitationSpeed: 5
+    _playerHoldingFoodAgitationSpeed: 25
   <AgitatedSuperState>k__BackingField:
     <SubStateMachine>k__BackingField:
       rid: -2
@@ -282,6 +285,7 @@ MonoBehaviour:
       _NormalizedStartTime: 0
     <MouthHitboxTransform>k__BackingField: {fileID: 8989832198447431673}
   <PlayerTransform>k__BackingField: {fileID: 0}
+  <PlayerPickupController>k__BackingField: {fileID: 0}
   <LOSOrigin>k__BackingField: {fileID: 4110793275426171861}
   <EatingAnimationClip>k__BackingField:
     _FadeDuration: 0.25

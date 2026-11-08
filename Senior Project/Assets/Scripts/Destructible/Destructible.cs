@@ -1,6 +1,6 @@
 using System;
 using MonsterStates;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 
