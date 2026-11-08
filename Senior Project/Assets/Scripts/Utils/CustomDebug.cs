@@ -7,7 +7,8 @@ using UnityEditor;
 
 public static class CustomDebug
 {
-    private static int GIZMOS_SEGMENTS = 8;
+    private const int GizmosSegments = 8;
+    private const string TemporarySpherePrefabPath = "TransparentSphere";
 
     /// <summary>
     /// Draws a wireframe cone shape.
@@ -27,11 +28,11 @@ public static class CustomDebug
         Gizmos.DrawLine(center, tip);
 
         // Draw the base circle at maxDistance along the direction vector
-        float angleStep = 360f / GIZMOS_SEGMENTS;
+        float angleStep = 360f / GizmosSegments;
         Vector3 lastPoint = tip + Vector3.up * radius;  // Start from a point on the circle
 
         // Loop to draw the circle around the base of the cone
-        for (int i = 1; i <= GIZMOS_SEGMENTS; i++)
+        for (int i = 1; i <= GizmosSegments; i++)
         {
             float angle = angleStep * i;
             // Generate a point on the circle in the XZ plane at maxDistance
@@ -59,8 +60,8 @@ public static class CustomDebug
 
         horizontalDirection.Normalize();
         halfAngle = Mathf.Clamp(halfAngle, 0f, 180f);
-        float azimuthStep = (halfAngle * 2f) / GIZMOS_SEGMENTS;
-        float elevationStep = 180f / GIZMOS_SEGMENTS;
+        float azimuthStep = (halfAngle * 2f) / GizmosSegments;
+        float elevationStep = 180f / GizmosSegments;
         Vector3 right = Vector3.Cross(Vector3.up, horizontalDirection).normalized;
 
         Vector3 PointOnSphere(float azimuth, float elevation)
@@ -75,12 +76,12 @@ public static class CustomDebug
         }
 
         // Draw horizontal latitude arcs across the spherical sector.
-        for (int elevationIndex = 0; elevationIndex <= GIZMOS_SEGMENTS; elevationIndex++)
+        for (int elevationIndex = 0; elevationIndex <= GizmosSegments; elevationIndex++)
         {
             float elevation = -90f + elevationIndex * elevationStep;
             Vector3 lastPoint = PointOnSphere(-halfAngle, elevation);
 
-            for (int azimuthIndex = 1; azimuthIndex <= GIZMOS_SEGMENTS; azimuthIndex++)
+            for (int azimuthIndex = 1; azimuthIndex <= GizmosSegments; azimuthIndex++)
             {
                 float azimuth = -halfAngle + azimuthIndex * azimuthStep;
                 Vector3 nextPoint = PointOnSphere(azimuth, elevation);
@@ -90,12 +91,12 @@ public static class CustomDebug
         }
 
         // Draw the longitude arcs that form the rest of the spherical wire mesh.
-        for (int azimuthIndex = 0; azimuthIndex <= GIZMOS_SEGMENTS; azimuthIndex++)
+        for (int azimuthIndex = 0; azimuthIndex <= GizmosSegments; azimuthIndex++)
         {
             float azimuth = -halfAngle + azimuthIndex * azimuthStep;
             Vector3 lastPoint = PointOnSphere(azimuth, -90f);
 
-            for (int elevationIndex = 1; elevationIndex <= GIZMOS_SEGMENTS; elevationIndex++)
+            for (int elevationIndex = 1; elevationIndex <= GizmosSegments; elevationIndex++)
             {
                 float elevation = -90f + elevationIndex * elevationStep;
                 Vector3 nextPoint = PointOnSphere(azimuth, elevation);
@@ -158,26 +159,32 @@ public static class CustomDebug
 
     /// <summary>
     /// Instantiates a temporary sphere GameObject with the specified center, radius, expire duration, and color.
-    /// The sphere is created as a primitive sphere with a Collider set as a trigger.
-    /// The sphere's material is set to be transparent using the Universal Render Pipeline/Unlit shader.
+    /// The sphere is instantiated from the TransparentSphere prefab in Resources.
     /// The sphere is destroyed after the specified expire duration.
     /// </summary>
     /// <param name="center">The center position of the sphere.</param>
     /// <param name="radius">The radius of the sphere.</param>
     /// <param name="expireDuration">The duration in seconds before the sphere is destroyed.</param>
     /// <param name="color">The color of the sphere.</param>
-    public static GameObject InstantiateTemporarySphere(Vector3 center, float radius, float expireDuration, UnityEngine.Color color)
+    public static GameObject InstantiateTemporarySphere(Vector3 center, float radius, float expireDuration, UnityEngine.Color? color)
     {
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.GetComponent<Collider>().enabled = false;
+        GameObject spherePrefab = Resources.Load<GameObject>(TemporarySpherePrefabPath);
+        if (spherePrefab == null)
+        {
+            Debug.LogError($"Can't find temporary sphere prefab at Resources/{TemporarySpherePrefabPath}");
+            return null;
+        }
+
+        GameObject sphere = GameObject.Instantiate(spherePrefab, center, Quaternion.identity);
         sphere.name = "Temporary Sphere";
-        sphere.transform.position = center;
         sphere.transform.localScale = radius * 2f * Vector3.one;
+        GameObject.Destroy(sphere, expireDuration);
 
         Renderer sphereRenderer = sphere.GetComponent<Renderer>();
-        sphereRenderer.material.color = color;
-        GameObject.Destroy(sphere, expireDuration);
+        if (color.HasValue && sphereRenderer != null)
+            sphereRenderer.material.color = color.Value;
 
         return sphere;
     }
+
 }
