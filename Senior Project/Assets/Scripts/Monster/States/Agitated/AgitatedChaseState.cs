@@ -39,7 +39,7 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            
+            _context.CancelPath();
         }
 
         private protected override void OnUpdate()

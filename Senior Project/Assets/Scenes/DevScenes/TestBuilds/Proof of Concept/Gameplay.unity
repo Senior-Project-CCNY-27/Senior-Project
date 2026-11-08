@@ -3393,6 +3393,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4554190117332698811}
     - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: <CalmSuperState>k__BackingField.<AgitateThreshold>k__BackingField
+      value: 1.9387128e+16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: <CalmSuperState>k__BackingField.<IdleState>k__BackingField._animationClip._Clip
+      value: 
+      objectReference: {fileID: -3807713292936911783, guid: 9526e1dddf33ebc43a98d410f7e49d8e, type: 3}
+    - target: {fileID: 5118755737595468301, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: '<AgitatedSuperState>k__BackingField.<RoamState>k__BackingField._waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1535384063}

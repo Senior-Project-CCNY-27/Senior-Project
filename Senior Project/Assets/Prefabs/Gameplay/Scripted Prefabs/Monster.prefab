@@ -180,11 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea929e0a5e849bcba4eea99c08d9d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterController
-  <StateMachine>k__BackingField:
-    rid: -2
   <CalmSuperState>k__BackingField:
-    <SubStateMachine>k__BackingField:
-      rid: -2
     <IdleState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -193,9 +189,11 @@ MonoBehaviour:
           _NormalizedTimes: []
           _Callbacks: []
           _Names: []
-        _Clip: {fileID: 4033287618177238278, guid: 1e0dfdbe57c95664481b506ea14982ba, type: 3}
+        _Clip: {fileID: 4097811536844401092, guid: 5505d12703e333b499d0c8ed300b5c01, type: 3}
         _NormalizedStartTime: 0
-      _cooldown: 1
+      _durationRange:
+        Min: 1
+        Max: 2
     <FollowState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -208,14 +206,40 @@ MonoBehaviour:
         _NormalizedStartTime: NaN
       _moveSpeed: 1.4
       _rotateSpeed: 10
-    <FollowStopDistance>k__BackingField: 3.5
+    <WanderState>k__BackingField:
+      _animationClip:
+        _FadeDuration: 0.25
+        _Speed: 1.2
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
+        _NormalizedStartTime: NaN
+      _wanderRadiusRange:
+        Min: 5
+        Max: 7.5
+      _moveSpeed: 1.4
+      _rotateSpeed: 10
+    <CatchupState>k__BackingField:
+      _animationClip:
+        _FadeDuration: 0.25
+        _Speed: 0.9
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
+        _NormalizedStartTime: NaN
+      _moveSpeed: 3.5
+      _rotateSpeed: 10
+    <FollowStopDistance>k__BackingField: 7
+    <CatchupDistance>k__BackingField: 17.5
     <AgitateThreshold>k__BackingField: 100
     <CurrentAgitation>k__BackingField: 0
     _hungryAgitationSpeed: 5
     _playerHoldingFoodAgitationSpeed: 25
   <AgitatedSuperState>k__BackingField:
-    <SubStateMachine>k__BackingField:
-      rid: -2
     <RoamState>k__BackingField:
       _animationClip:
         _FadeDuration: 0.25
@@ -299,9 +323,7 @@ MonoBehaviour:
     _NormalizedStartTime: 0
   references:
     version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    RefIds: []
 --- !u!114 &293364263455553691
 MonoBehaviour:
   m_ObjectHideFlags: 0

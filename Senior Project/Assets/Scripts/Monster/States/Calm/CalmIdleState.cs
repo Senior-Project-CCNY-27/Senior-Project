@@ -7,15 +7,17 @@ namespace MonsterStates
     public class CalmIdleState : State<MonsterController>
     {
         [SerializeField] private ClipTransition _animationClip;
-        [SerializeField] private float _cooldown = 1f;
+        [SerializeField] private FloatRange _durationRange = new FloatRange(1f, 1.5f);
 
         private float _timer;
+        private float _duration;
         
         private protected override void OnEnter()
         {
             _context.Animator.Play(_animationClip, 0.1f);
 
             _timer = 0f;
+            _duration = _durationRange.RandomValue();
         }
 
         private protected override void OnExit()
@@ -33,9 +35,18 @@ namespace MonsterStates
             
         }
 
+        public override void OnDrawGizmosInPlayMode()
+        {
+#if UNITY_EDITOR
+            UnityEditor.Handles.Label(
+                _context.transform.position + Vector3.up * 2f,
+                $"Idle: {Mathf.Max(0f, _duration - _timer):0.0}s");
+#endif
+        }
+
         private protected override State<MonsterController> GetTransition()
         {
-            if (_timer >= _cooldown && Vector3.Distance(_context.transform.position, _context.PlayerTransform.position) > _context.CalmSuperState.FollowStopDistance)
+            if (_timer >= _duration)
                 return _context.CalmSuperState.FollowState;
             
             return null;

@@ -34,7 +34,7 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            
+            _context.CancelPath();
         }
 
         private protected override void OnUpdate()
@@ -96,13 +96,7 @@ namespace MonsterStates
                 _context.transform.position,
                 LayerMask.GetMask("Player", "Interactable") 
             );
-            List<GameObject> detectedInnerObjects = _context.GetVisibleObjects(
-                innerObjects,
-                _context.transform.position,
-                _innerDetectionRadius,
-                LayerMask.GetMask("Player", "Interactable"),
-                LayerMask.GetMask("Wall")
-            );
+            List<GameObject> detectedInnerObjects = _context.GetVisibleObjects(innerObjects);
                 
             List<GameObject> losObjects = _context.GetObjectsInConeRange(
                 _losDetectionRadius,
@@ -111,13 +105,7 @@ namespace MonsterStates
                 _losHalfAngleCone,
                 LayerMask.GetMask("Player", "Interactable") 
             );
-            List<GameObject> detectedLOSObjects = _context.GetVisibleObjects(
-                losObjects,
-                _context.LOSOrigin.position,
-                _losDetectionRadius,
-                LayerMask.GetMask("Player", "Interactable"),
-                LayerMask.GetMask("Wall")
-            );
+            List<GameObject> detectedLOSObjects = _context.GetVisibleObjects(losObjects);
 
             // Make sure interactables are food
             foreach (GameObject target in detectedInnerObjects.Concat(detectedLOSObjects))

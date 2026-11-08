@@ -10,9 +10,12 @@ namespace MonsterStates
         public StateMachine<MonsterController> SubStateMachine { get; private set; }
         [field: SerializeField] public CalmIdleState IdleState { get; private set; }
         [field: SerializeField] public CalmFollowState FollowState { get; private set; }
+        [field: SerializeField] public CalmWanderState WanderState { get; private set; }
+        [field: SerializeField] public CalmCatchupState CatchupState { get; private set; }
 
         [field: Header("Movement")]
-        [field: SerializeField] public float FollowStopDistance { get; private set; }  = 1.5f;
+        [field: SerializeField] public float FollowStopDistance { get; private set; } = 2.5f;
+        [field: SerializeField] public float CatchupDistance { get; private set; } = 10f;
 
         [field: Header("Agitation")]
         [field: SerializeField] public float AgitateThreshold { get; private set; } = 100f;
@@ -26,13 +29,15 @@ namespace MonsterStates
         
             IdleState.Init(SubStateMachine, _context);
             FollowState.Init(SubStateMachine, _context);
+            WanderState.Init(SubStateMachine, _context);
+            CatchupState.Init(SubStateMachine, _context);
         }
 
         private protected override void OnEnter()
         {
             CurrentAgitation = 0f;
             
-            SubStateMachine.ChangeState(IdleState, true);
+            SubStateMachine.ChangeState(FollowState, true);
         }
 
         private protected override void OnExit()
@@ -42,6 +47,7 @@ namespace MonsterStates
 
         private protected override void OnUpdate()
         {
+            HandleCatchup();
             HandleAgitationBuildup();
             
             SubStateMachine.Update();
@@ -54,6 +60,12 @@ namespace MonsterStates
 
         public override void OnDrawGizmosInPlayMode()
         {
+            if (_context.PlayerTransform != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(_context.PlayerTransform.position, CatchupDistance);
+            }
+
             SubStateMachine.CurrentState?.OnDrawGizmosInPlayMode();
         }
 
@@ -93,6 +105,12 @@ namespace MonsterStates
                 return;
             
             CurrentAgitation += _playerHoldingFoodAgitationSpeed * Time.deltaTime;
+        }
+
+        private void HandleCatchup()
+        {
+            if (Vector3.Distance(_context.transform.position, _context.PlayerTransform.position) > CatchupDistance)
+                SubStateMachine.ChangeState(CatchupState);
         }
     }
 }

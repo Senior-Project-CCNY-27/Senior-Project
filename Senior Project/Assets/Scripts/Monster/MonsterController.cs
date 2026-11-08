@@ -6,6 +6,7 @@ using MonsterStates;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Rigidbody))]
@@ -191,7 +192,7 @@ public class MonsterController : MonoBehaviour
         return objectsInCone;
     }
 
-    public List<GameObject> GetVisibleObjects(List<GameObject> objects, Vector3 origin, float radius, LayerMask searchLayers, LayerMask wallLayers)
+    public List<GameObject> GetVisibleObjects(List<GameObject> objects)
     {
         List<GameObject> visibleObjects = new List<GameObject>();
         if (objects.Count == 0) 
@@ -199,12 +200,9 @@ public class MonsterController : MonoBehaviour
         
         foreach (GameObject obj in objects)
         {
-            Vector3 directionToTarget = obj.transform.position - origin;
-            if (Physics.Raycast(origin, directionToTarget, out RaycastHit hit, radius , searchLayers | wallLayers))
-            {
-                if (wallLayers.Contains(hit.collider.gameObject.layer))
-                    continue;
-            }
+            if (IsPositionBlockedByWall(obj.transform.position))
+                continue;
+
             visibleObjects.Add(obj);
         }
         return visibleObjects;
@@ -263,6 +261,96 @@ public class MonsterController : MonoBehaviour
             return false;
 
         return true;
+    }
+    
+    /// <summary>
+    /// Checks if a given point is on the NavMesh using raycast from maxHeight above the point.
+    /// Also returns the valid point on the NavMesh or the enemy's current position if not valid.
+    /// The y value doesn't matter, and the point will always be checked at the navmesh ground level.
+    /// </summary>
+    /// <param name="point">The point to check.</param>
+    /// <param name="maxHeight">The max height above the point to start raycasting down from.</param>
+    /// <param name="outputPoint">The output point.</param>
+    /// <returns>True if the point is on the NavMesh, false otherwise.</returns>
+    public bool IsValidPointOnNavMesh(Vector3 point, float maxHeight, out Vector3 outputPoint)
+    {
+        var filter = new NavMeshQueryFilter
+        {
+            agentTypeID = NavMeshAgent.agentTypeID,
+            areaMask = NavMeshAgent.areaMask
+        };
+
+        RaycastHit raycastHit;
+        bool isValidPoint =
+            Physics.Raycast(point + maxHeight * Vector3.up, Vector3.down, out raycastHit, Mathf.Infinity, LayerMask.GetMask("Ground"))
+            && NavMesh.SamplePosition(raycastHit.point, out _, 0.5f, filter);
+
+        outputPoint = isValidPoint ? raycastHit.point : transform.position;
+
+        return isValidPoint;
+    }
+
+    /// <summary>
+    /// Checks whether a wall blocks the line from the monster to a position.
+    /// </summary>
+    public bool IsPositionBlockedByWall(Vector3 position)
+    {
+        Vector3 direction = position - transform.position;
+        return Physics.Raycast(transform.position, direction, direction.magnitude, LayerMask.GetMask("Wall"), QueryTriggerInteraction.Ignore);
+    }
+    
+    /// <summary>
+    /// Generates a random wander point between inner and outer radii about a center position.
+    /// Returns itself it cannot find a valid point after a certain number of iterations.
+    /// Iteration count is set to 16 by default.
+    /// </summary>
+    /// <param name="center">The center position for generating the wander point.</param>
+    /// <param name="wanderRadiusBounds">The inner and outer radius bounds.</param>
+    /// <param name="iterationTryCount">The number of iterations to try finding a valid point.</param>
+    /// <returns>The randomly generated wander point.</returns>
+    public Vector3 GetRandomWanderPoint(Vector3 center, FloatRange wanderRadiusBounds, int iterationTryCount = 16)
+    {
+        return FindRandomWanderPoint(center, wanderRadiusBounds, iterationTryCount, false);
+    }
+
+    /// <summary>
+    /// Generates a random NavMesh wander point that is visible from the monster.
+    /// Returns the monster's position if no visible point is found.
+    /// </summary>
+    public Vector3 GetRandomVisibleWanderPoint(Vector3 center, FloatRange wanderRadiusBounds, int iterationTryCount = 16)
+    {
+        return FindRandomWanderPoint(center, wanderRadiusBounds, iterationTryCount, true);
+    }
+
+    private Vector3 FindRandomWanderPoint(Vector3 center, FloatRange wanderRadiusBounds, int iterationTryCount, bool requireVisibility)
+    {
+        float innerRadius = Mathf.Max(0f, wanderRadiusBounds.Min);
+        float outerRadius = wanderRadiusBounds.Max;
+        if (outerRadius <= innerRadius)
+            return transform.position;
+
+        float innerRadiusSquared = innerRadius * innerRadius;
+        float outerRadiusSquared = outerRadius * outerRadius;
+
+        for (int i = 0; i < iterationTryCount; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * outerRadius;
+            if (offset.sqrMagnitude < innerRadiusSquared)
+                continue;
+
+            Vector3 randomPoint = center + new Vector3(offset.x, 0f, offset.y);
+
+            if (!IsValidPointOnNavMesh(randomPoint, 100f, out Vector3 validPoint))
+                continue;
+
+            float distanceSquared = (validPoint - center).WithY(0).sqrMagnitude;
+            if (distanceSquared >= innerRadiusSquared
+                && distanceSquared <= outerRadiusSquared
+                && (!requireVisibility || !IsPositionBlockedByWall(validPoint)))
+                return validPoint;
+        }
+
+        return transform.position;
     }
     
     /// <summary>

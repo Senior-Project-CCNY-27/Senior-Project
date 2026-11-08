@@ -7,6 +7,7 @@ public class StateMachine<TContext> where TContext : MonoBehaviour
     public TContext Context { get; private set; }
     [field: SerializeField, ReadOnly] public string CurrentStateName { get; private set; } = "None";
     [field: SerializeReference, ReadOnly] public State<TContext> CurrentState { get; private set; }
+    [field: SerializeReference, ReadOnly] public State<TContext> PreviousState { get; private set; }
     public bool HasTransitionedThisFrame { get; private set; } = false;
 
     public StateMachine(TContext context)
@@ -31,6 +32,8 @@ public class StateMachine<TContext> where TContext : MonoBehaviour
 
         HasTransitionedThisFrame = true;
 
+        PreviousState = CurrentState;
+        
         CurrentState?.Exit();
         CurrentState = newState;
         CurrentState?.Enter();
