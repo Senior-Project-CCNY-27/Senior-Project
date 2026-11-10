@@ -36,6 +36,9 @@ public class InputManager : Singleton<InputManager>
     /// Controllers will always be locked, but when switching back to mouse, this will be the applied lock state
     /// </summary>
     private CursorLockMode _desiredCursorLockState;
+    private CursorLockMode? _cursorLockOverride;
+    private bool _desiredPlayerActionsEnabled;
+    private bool? _actionsOverride;
 
     private void OnValidate()
     {
@@ -58,7 +61,7 @@ public class InputManager : Singleton<InputManager>
         if (Actions == null)
             return;
 
-        Actions.Enable();
+        ApplyActionsState();
     }
 
     private void OnDisable()
@@ -109,12 +112,69 @@ public class InputManager : Singleton<InputManager>
 
         ApplyCursorLockState();
     }
+
+    /// <summary>
+    /// Temporarily overrides the applied cursor lock state without changing the desired state.
+    /// Pass null to remove the override and reapply the desired state.
+    /// </summary>
+    public void SetCursorLockOverride(CursorLockMode? lockState)
+    {
+        _cursorLockOverride = lockState;
+        ApplyCursorLockState();
+    }
+
+    /// <summary>
+    /// Sets whether gameplay input should normally be enabled. This desired state is retained
+    /// while a temporary override, such as the developer console, disables the input asset.
+    /// </summary>
+    public void SetPlayerActionsEnabled(bool enabled)
+    {
+        _desiredPlayerActionsEnabled = enabled;
+        ApplyActionsState();
+    }
+
+    /// <summary>
+    /// Temporarily overrides whether the generated input actions are enabled without changing
+    /// the desired player action map state. Pass null to follow this component's active state.
+    /// </summary>
+    public void SetActionsOverride(bool? enabled)
+    {
+        _actionsOverride = enabled;
+        ApplyActionsState();
+    }
+
+    private void ApplyActionsState()
+    {
+        if (Actions == null)
+            return;
+
+        bool shouldEnable = _actionsOverride ?? isActiveAndEnabled;
+        if (!shouldEnable)
+        {
+            Actions.Player.Disable();
+            Actions.Disable();
+            return;
+        }
+
+        Actions.Enable();
+        if (_desiredPlayerActionsEnabled)
+            Actions.Player.Enable();
+        else
+            Actions.Player.Disable();
+    }
         
     /// <summary>
     /// Helper method to apply the desired cursor lock state based on the current control scheme.
     /// </summary>
     private void ApplyCursorLockState()
     {
+        if (_cursorLockOverride.HasValue)
+        {
+            Cursor.lockState = _cursorLockOverride.Value;
+            Cursor.visible = _cursorLockOverride.Value != CursorLockMode.Locked;
+            return;
+        }
+
         if (CurrentControlScheme == ControlScheme.Gamepad)
         {
             // Gamepad always locks

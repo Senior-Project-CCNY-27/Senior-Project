@@ -61,12 +61,12 @@ public class GameManager : Singleton<GameManager>
             case State.MainMenu:
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(false);
-                InputManager.Instance.Actions.Player.Disable();
+                InputManager.Instance.SetPlayerActionsEnabled(false);
                 break;
             case State.Gameplay:
                 Time.timeScale = 1f;
                 InputManager.Instance.LockCursor(true);
-                InputManager.Instance.Actions.Player.Enable();
+                InputManager.Instance.SetPlayerActionsEnabled(true);
                 break;
             case State.Pause:
                 Time.timeScale = 0f;
@@ -93,7 +93,7 @@ public class GameManager : Singleton<GameManager>
             case State.MainMenu:
                 break;
             case State.Gameplay:
-                InputManager.Instance.Actions.Player.Disable();
+                InputManager.Instance.SetPlayerActionsEnabled(false);
                 break;
             case State.Pause:
                 Time.timeScale = 1f;
