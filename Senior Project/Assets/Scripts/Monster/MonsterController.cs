@@ -15,15 +15,10 @@ public class MonsterController : MonoBehaviour
 {
     private const float NavMeshOverlapThreshold = 0.2f;
     
-    public StateMachine<MonsterController> StateMachine { get; private set; }
-    [field: SerializeField] public CalmSuperState CalmSuperState { get; private set; }
-    [field: SerializeField] public AggressiveSuperState AggressiveSuperState { get; private set; }
-
     [field: Header("Blackboard")]
     [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
     [field: SerializeField, Required] public PlayerPickupController PlayerPickupController { get; private set; }
     [field: SerializeField, Required] public Transform LOSOrigin { get; private set; }
-    [field: SerializeField, Required] public ClipTransition EatingAnimationClip { get; private set; }
     
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
@@ -36,8 +31,6 @@ public class MonsterController : MonoBehaviour
         Animator = GetComponent<AnimancerComponent>();
         Rigidbody = GetComponent<Rigidbody>();
         NavMeshAgent = GetComponent<NavMeshAgent>();
-        
-        InitStateMachine();
     }
 
     private void Start()
@@ -46,44 +39,6 @@ public class MonsterController : MonoBehaviour
         NavMeshAgent.updateRotation = false;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (!Application.IsPlaying(this))
-            return;
-        
-        StateMachine.CurrentState?.OnDrawGizmosInPlayMode();
-    }
-
-    private void Update()
-    {
-        StateMachine.Update();
-    }
-
-    private void FixedUpdate()
-    {
-        StateMachine.FixedUpdate();
-    }
-
-    private void OnDestroy()
-    {
-        StateMachine.Destroy();
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        StateMachine.CurrentState?.OnCollisionEnter(other);
-    }
-
-    private void InitStateMachine()
-    {
-        StateMachine = new StateMachine<MonsterController>(this);
-        
-        CalmSuperState.Init(StateMachine, this);
-        AggressiveSuperState.Init(StateMachine, this);
-        
-        StateMachine.ChangeState(CalmSuperState);
-    }
-    
     /// <summary>
     /// Call this in FixedUpdate.
     /// </summary>
@@ -121,42 +76,16 @@ public class MonsterController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
     }
 
-    [Button("Force Aggressive", ButtonSizes.Large)]
-    public void ForceAggressive()
+    public void FaceTransitionTarget(GameObject target)
     {
-        StateMachine.ChangeState(
-            new TransitionState<MonsterController>(
-                StateMachine,
-                this,
-                Animator,
-                AggressiveSuperState.RoarAnimationClip,
-                AggressiveSuperState
-        ));
+        if (target != null)
+            GraduallyLookAt(target.transform.position, 10f);
     }
-    
-    [Button("Feed", ButtonSizes.Large)]
-    public void Feed(GameObject foodObject = null)
+
+    public void DestroyTransitionTarget(GameObject target)
     {
-        if(foodObject != null && foodObject.TryGetComponent(out Interactable interactable))
-            interactable.EnableInteractability(false);
-        
-        StateMachine.ChangeState(new TransitionState<MonsterController>(
-            StateMachine,
-            this,
-            Animator,
-            EatingAnimationClip,
-            CalmSuperState,
-            onExitCallback: foodObject ==null ? null : () =>
-            {
-                if(foodObject != null)
-                    Destroy(foodObject);
-            },
-            onUpdateCallback: foodObject == null ? null : () =>
-            {
-                if(foodObject != null)
-                    GraduallyLookAt(foodObject.transform.position, 10f);
-            }
-        ));
+        if (target != null)
+            Destroy(target);
     }
 
     public List<GameObject> GetObjectsInRange(float radius, Vector3 origin, LayerMask searchLayers)

@@ -1,65 +1,121 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[System.Serializable]
-public class StateMachine<TContext> where TContext : MonoBehaviour
+[DisallowMultipleComponent]
+public class StateMachine : MonoBehaviour
 {
-    public TContext Context { get; private set; }
-    [field: SerializeField, ReadOnly] public string CurrentStateName { get; private set; } = "None";
-    [field: SerializeReference, ReadOnly] public State<TContext> CurrentState { get; private set; }
-    [field: SerializeReference, ReadOnly] public State<TContext> PreviousState { get; private set; }
-    public bool HasTransitionedThisFrame { get; private set; } = false;
+    [SerializeField, Required] private State _initialState;
+    [SerializeField] private bool _autoTick = true;
 
-    public StateMachine(TContext context)
+    [ShowInInspector, ReadOnly] public string CurrentStateName =>
+        CurrentState != null ? CurrentState.gameObject.name : "None";
+    [ShowInInspector, ReadOnly] public State CurrentState { get; private set; }
+    [ShowInInspector, ReadOnly] public State PreviousState { get; private set; }
+    public bool HasTransitionedThisFrame { get; private set; }
+    public bool IsRunning { get; private set; }
+
+    private void Awake()
     {
-        Context = context;
+        foreach (Transform child in transform)
+            if (child.TryGetComponent(out State state))
+                state.Init(this);
     }
 
-    /// <summary>
-    /// Changes the current state to the new state.
-    /// If the new state is the same as the current state, it will not change unless forceChangeToSameState is true.
-    /// </summary>
-    public void ChangeState(State<TContext> newState, bool forceChangeToSameState = false)
+    private void Start()
     {
-        if (HasTransitionedThisFrame)
-            return;
+        if (_autoTick)
+            StartMachine();
+    }
 
-        if (newState == null)
-            return;
+    private void Update()
+    {
+        if (_autoTick)
+            Tick();
+    }
 
-        if(CurrentState == newState && !forceChangeToSameState)
-            return;
+    private void FixedUpdate()
+    {
+        if (_autoTick)
+            FixedTick();
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_autoTick)
+            CurrentState?.HandleCollision(collision);
+    }
+
+    private void OnDestroy() => StopMachine();
+
+    public void DriveExternally() => _autoTick = false;
+
+    public bool TryGetRunningState<T>(out T state) where T : State
+    {
+        state = null;
+        if (!IsRunning || CurrentState == null || !CurrentState.IsRunning)
+            return false;
+        if (CurrentState is T runningState)
+        {
+            state = runningState;
+            return true;
+        }
+        return CurrentState is SuperState superState
+            && superState.SubStateMachine != null
+            && superState.SubStateMachine.TryGetRunningState(out state);
+    }
+
+    public void StartMachine()
+    {
+        if (IsRunning)
+            return;
+        IsRunning = true;
+        HasTransitionedThisFrame = false;
+        ChangeState(_initialState, true);
+    }
+
+    public void StopMachine()
+    {
+        if (!IsRunning)
+            return;
+        ExitCurrentState();
+        IsRunning = false;
+    }
+
+    public void ChangeState(State newState, bool forceChangeToSameState = false)
+    {
+        if (HasTransitionedThisFrame || newState == null ||
+            (CurrentState == newState && !forceChangeToSameState))
+            return;
+        if (newState.Owner != this)
+        {
+            Debug.LogError($"State {newState.name} is not a child of this state machine. Check its hierarchy and Inspector references.", newState);
+            return;
+        }
         HasTransitionedThisFrame = true;
-
         PreviousState = CurrentState;
-        
         CurrentState?.Exit();
         CurrentState = newState;
-        CurrentState?.Enter();
+        CurrentState.Enter();
     }
 
-    public void Update()
+    public void Tick()
     {
+        if (!IsRunning)
+            return;
         HasTransitionedThisFrame = false;
-        CurrentState?.Update();
-
-        CurrentStateName = CurrentState?.GetType().Name ?? "None";
+        CurrentState?.Tick();
     }
 
-    public void FixedUpdate()
+    public void FixedTick()
     {
-        CurrentState?.FixedUpdate();
+        if (IsRunning)
+            CurrentState?.FixedTick();
     }
 
     public void ExitCurrentState()
     {
         CurrentState?.Exit();
         CurrentState = null;
-    }
-
-    public void Destroy()
-    {
-        CurrentState?.Destroy();
+        HasTransitionedThisFrame = false;
     }
 }

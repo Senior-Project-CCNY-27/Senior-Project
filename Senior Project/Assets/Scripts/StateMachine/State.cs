@@ -1,73 +1,54 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[System.Serializable]
-public abstract class State<TContext> where TContext : MonoBehaviour
+// All attachable states share this non-generic type for Inspector references.
+public abstract class State : SerializedMonoBehaviour
 {
-    private protected StateMachine<TContext> _stateMachine;
-    private protected TContext _context;
-        
-    private static readonly bool EnableDebug = false; // Set to true to enable debug logs for state transitions
+    [Header("Debug")]
+    [SerializeField] private bool _showGizmos;
 
-    public virtual void Init(StateMachine<TContext> stateMachine, TContext context)
+    private protected StateMachine _stateMachine;
+    public StateMachine Owner => _stateMachine;
+    [field: SerializeField, ReadOnly] public bool IsRunning { get; private set; }
+    private protected bool ShouldDrawGizmos => _showGizmos && (!Application.isPlaying || IsRunning);
+
+    public virtual void Init(StateMachine stateMachine)
     {
-        this._stateMachine = stateMachine;
-        this._context = context;
+        _stateMachine = stateMachine;
         OnInit();
     }
 
     private protected virtual void OnInit() { }
-        
-    public virtual void Destroy()
+    public void Enter()
     {
-        if(EnableDebug)
-            Debug.Log($"Destroying state {GetType().Name}");
-        Exit();
-    }
-
-    public virtual void Enter()
-    {
-        if(EnableDebug)
-            Debug.Log($"Entering state {GetType().Name}");
+        IsRunning = true;
         OnEnter();
     }
 
-    public virtual void Exit()
+    public void Exit()
     {
-        if(EnableDebug)
-            Debug.Log($"Exiting state {GetType().Name}");
+        IsRunning = false;
         OnExit();
     }
 
-    public virtual void Update()
+    public void Tick()
     {
-        State<TContext> transitionState = GetTransition();
-        if (transitionState != null && !_stateMachine.HasTransitionedThisFrame)
+        State destination = GetTransition();
+        if (destination != null && !_stateMachine.HasTransitionedThisFrame)
         {
-            _stateMachine.ChangeState(transitionState);
+            _stateMachine.ChangeState(destination);
             return;
         }
-
-        OnUpdate();
+        if (_stateMachine.CurrentState != this)
+            return;
+        OnTick();
     }
 
-    public virtual void FixedUpdate()
-    {
-        OnFixedUpdate();
-    }
-
-    public virtual void OnDrawGizmosInPlayMode() { }
-    public virtual void OnCollisionEnter(Collision collision) { }
-
+    public void FixedTick() => OnFixedTick();
+    public virtual void HandleCollision(Collision collision) { }
     private protected abstract void OnEnter();
     private protected abstract void OnExit();
-    private protected abstract void OnUpdate();
-    private protected abstract void OnFixedUpdate();
-
-    /// <summary>
-    /// Polls for a transition to another state.
-    /// Update will call this method and if it returns a non-null state, the state machine will transition to that state.
-    /// Override this method to implement custom transition logic.
-    /// </summary>
-    private protected virtual State<TContext> GetTransition() => null;
+    private protected abstract void OnTick();
+    private protected abstract void OnFixedTick();
+    private protected virtual State GetTransition() => null;
 }

@@ -1,0 +1,7 @@
+OVDF v1.1
+MonsterStateActions, Assembly-CSharp
+MetaGuid:15a58cfd62254adfa24f4d12fae67ccb
+
+# Feed(GameObject)
+* [Sirenix.OdinInspector.ButtonAttribute]
+	DisplayParameters = False

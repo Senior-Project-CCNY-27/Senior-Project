@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class MonsterFeeder : MonoBehaviour, IInteractionValidator
 {
-    [SerializeField, Required] private MonsterController _monsterController;
+    [SerializeField, Required] private StateMachine _stateMachine;
+    [SerializeField, Required] private MonsterStateActions _stateActions;
+    [SerializeField, Required] private State _allowedRootState;
     
     private PlayerPickupController _pickupController;
     
@@ -12,8 +14,8 @@ public class MonsterFeeder : MonoBehaviour, IInteractionValidator
         if (_pickupController == null)
             _pickupController = interactor.GetComponent<PlayerPickupController>();
 
-        // Can't feed when not calm
-        if (_monsterController.StateMachine.CurrentState != _monsterController.CalmSuperState)
+        // The allowed root state is chosen in the Inspector.
+        if (_stateMachine.CurrentState != _allowedRootState)
             return false;
         
         if (_pickupController.IsHandEmpty)
@@ -30,7 +32,7 @@ public class MonsterFeeder : MonoBehaviour, IInteractionValidator
         if (_pickupController.IsHandEmpty)
             return;
         
-        _monsterController.Feed(_pickupController.HeldPickupItem.gameObject);
+        _stateActions.Feed(_pickupController.HeldPickupItem.gameObject);
         _pickupController.ConsumePickup();
     }
 }

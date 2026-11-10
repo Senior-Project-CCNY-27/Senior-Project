@@ -5,15 +5,24 @@ using UnityEngine;
 
 namespace MonsterStates
 {
-    [System.Serializable]
-    public class AggressiveAttackState : State<MonsterController>
+    public class MonsterAttackState : State
     {
+        [Header("References")]
+        [SerializeField, Required] private MonsterController _monster;
+
+        [Header("Transitions")]
+        [SerializeField] private State _onFinishedState;
+
+        [Header("Animation")]
         [SerializeField] private ClipTransition _animationClip;
+
+        [Header("Damage")]
         [SerializeField] private int _damage = 1;
         [SerializeField, Required] private StringAsset _damageEventName;
         
         [Header("Mouth Hitbox")]
         [SerializeField] private float _attackRadius = 1f;
+        [SerializeField] private Transform _mouthHitboxTransform;
         
         [Header("Attack Camera Shake")]
         [SerializeField] private CameraShakeSettings _onHitShakeSettings;
@@ -25,7 +34,7 @@ namespace MonsterStates
         {
             _animationClip.Events.SetCallback(_damageEventName, TryDamageTarget);
             
-            _context.Animator.Play(_animationClip, 0.1f);
+            _monster.Animator.Play(_animationClip, 0.1f);
             
             _duration = _animationClip.Length / _animationClip.Speed;
             _timer = 0f;
@@ -36,21 +45,21 @@ namespace MonsterStates
             _animationClip.Events.RemoveCallback(_damageEventName, TryDamageTarget);
         }
 
-        private protected override void OnUpdate()
+        private protected override void OnTick()
         {
             _timer += Time.deltaTime;
         }
 
-        private protected override void OnFixedUpdate()
+        private protected override void OnFixedTick()
         {
             
         }
 
-        private protected override State<MonsterController> GetTransition()
+        private protected override State GetTransition()
         {
             if (_timer >= _duration)
             {
-                return _context.AggressiveSuperState.ChaseState;
+                return _onFinishedState;
             }
             
             return null;
@@ -59,13 +68,13 @@ namespace MonsterStates
         private void TryDamageTarget()
         {
             CustomDebug.InstantiateTemporarySphere(
-                _context.AggressiveSuperState.MouthHitboxTransform.position,
+                _mouthHitboxTransform.position,
                 _attackRadius,
                 1f,
                 Color.red.WithA(0.5f)
                 );
             
-            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _attackRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_mouthHitboxTransform.position, _attackRadius);
             HashSet<Health> damagedHealths = new HashSet<Health>();
             foreach (Collider mouthCollision in mouthCollisions)
             {
@@ -82,10 +91,13 @@ namespace MonsterStates
             }
         }
         
-        public override void OnDrawGizmosInPlayMode()
+        private void OnDrawGizmos()
         {
+            if (!ShouldDrawGizmos)
+                return;
+
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _attackRadius);
+            Gizmos.DrawWireSphere(_mouthHitboxTransform.position, _attackRadius);
         }
     }
 }

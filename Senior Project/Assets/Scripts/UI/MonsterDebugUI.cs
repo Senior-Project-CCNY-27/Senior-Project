@@ -1,4 +1,4 @@
-using System.Reflection;
+using MonsterStates;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -8,22 +8,34 @@ public class MonsterDebugUI : MonoBehaviour
 {
     [SerializeField, Required] private MonsterController _monster;
     [SerializeField, Required] private TMP_Text _displayText;
+    private StateMachine _stateMachine;
+
+    private void Awake()
+    {
+        if (_monster != null)
+            _stateMachine = _monster.GetComponent<StateMachine>();
+    }
 
     private void Update()
     {
-        if (_monster == null)
+        if (_monster == null || _stateMachine == null)
             return;
 
-        if (_monster.StateMachine.CurrentState == _monster.CalmSuperState)
+        if (_stateMachine.TryGetRunningState(out MonsterCalmSuperState calm))
         {
-            string currentAgitation = CustomUtils.FloatToString(_monster.CalmSuperState.CurrentAgitation, 1);
-            string agitationThreshold = CustomUtils.FloatToString(_monster.CalmSuperState.AgitateThreshold, 1);
+            string currentAgitation = CustomUtils.FloatToString(calm.CurrentAgitation, 1);
+            string agitationThreshold = CustomUtils.FloatToString(calm.AgitateThreshold, 1);
             SetDisplayText($"Agitation Meter: {currentAgitation}/{agitationThreshold}");
         }
-        else if (_monster.StateMachine.CurrentState == _monster.AggressiveSuperState &&
-                 _monster.AggressiveSuperState.SubStateMachine.CurrentState == _monster.AggressiveSuperState.ChaseState)
+        else if (_stateMachine.TryGetRunningState(out MonsterAgitatedSuperState agitated))
         {
-            SetDisplayText($"Target: {_monster.AggressiveSuperState.ChaseState.TargetTransform.name}");
+            string currentAggression = CustomUtils.FloatToString(agitated.CurrentAggression, 1);
+            string aggressionThreshold = CustomUtils.FloatToString(agitated.AggressiveThreshold, 1);
+            SetDisplayText($"Agression Meter: {currentAggression}/{aggressionThreshold}");
+        }
+        else if (_stateMachine.TryGetRunningState(out MonsterChaseState chase))
+        {
+            SetDisplayText($"Target: {chase.TargetTransform?.name ?? "None"}");
         }
         else
         {
@@ -55,39 +67,28 @@ public class MonsterDebugUI : MonoBehaviour
 
     private string GetSuperState()
     {
-        return GetStateName(_monster.StateMachine.CurrentState) ?? "None";
+        return GetStateName(_stateMachine.CurrentState) ?? "None";
     }
 
-    private static string GetStateName(State<MonsterController> state)
+    private static string GetStateName(State state)
     {
-        if (state is TransitionState<MonsterController> transitionState)
+        if (state is TransitionState transitionState)
         {
-            string destination = transitionState.DestinationState?.GetType().Name ?? "None";
+            string destination = transitionState.DestinationState?.gameObject.name ?? "None";
             return $"TransitionState -> {destination}";
         }
 
-        return state?.GetType().Name;
+        return state?.gameObject.name;
     }
 
     private string TryGetSubState()
     {
-        State<MonsterController> currentState = _monster.StateMachine.CurrentState;
+        State currentState = _stateMachine.CurrentState;
         if (currentState == null)
             return null;
 
-        PropertyInfo subStateMachinePropertyInfo =
-            currentState.GetType().GetProperty(
-                "SubStateMachine",
-                BindingFlags.Instance | BindingFlags.Public
-                );
-
-        if (subStateMachinePropertyInfo == null)
-            return null;
-
-        StateMachine<MonsterController> subStateMachine = subStateMachinePropertyInfo.GetValue(currentState) as StateMachine<MonsterController>;
-        if (subStateMachine == null)
-            return null;
-
-        return GetStateName(subStateMachine.CurrentState);
+        return currentState is SuperState superState
+            ? GetStateName(superState.SubStateMachine.CurrentState)
+            : null;
     }
 }

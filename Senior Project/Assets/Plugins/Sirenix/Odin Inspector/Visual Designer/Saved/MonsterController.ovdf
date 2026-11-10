@@ -2,45 +2,12 @@ OVDF v1.1
 MonsterController, Assembly-CSharp
 MetaGuid:fea929e0a5e849bcba4eea99c08d9d17
 
-# $C4qxzsGesPGM8ZZUax4KgT
-Position: $HfAfMmueeGAiRYvCRjcyEf:0
-+ [Sirenix.OdinInspector.TabGroupAttribute]
-	GroupName = "StateTabGroup"
-
-# $CZqupRSwY7DrrTwDTo6Tp
-Position: $C4qxzsGesPGM8ZZUax4KgT:0
-+ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
-	GroupName = "Calm"
-
-# $BRU4vpD9TiR62uBr4dJYgJ
-Position: $C4qxzsGesPGM8ZZUax4KgT:1
-+ [Sirenix.OdinInspector.TabGroupAttribute+TabSubGroupAttribute]
-	GroupName = "Agitated"
-
-# $QDAptWypbwukhEC9w8HCwq
-Position: $root:62
-+ [Sirenix.OdinInspector.BoxGroupAttribute]
-	GroupName = "DebugButtons"
-	LabelText = "Debug Buttons"
-	ShowLabel = True
-
-# $FVVDHR7N9zZVSQh5WHu2mx
-Position: $root:2
-+ [Sirenix.OdinInspector.FoldoutGroupAttribute]
-	GroupName = "Blackboard"
-
-# $HfAfMmueeGAiRYvCRjcyEf
-Position: $root:53
-+ [Sirenix.OdinInspector.BoxGroupAttribute]
-	ShowLabel = True
-	GroupName = "States"
-
 # <CalmSuperState>k__BackingField
 Position: $CZqupRSwY7DrrTwDTo6Tp:0
 + [Sirenix.OdinInspector.HideLabelAttribute]
 
 # Feed(GameObject)
-Position: $QDAptWypbwukhEC9w8HCwq:1
+Position: $QDAptWypbwukhEC9w8HCwq:2
 * [Sirenix.OdinInspector.ButtonAttribute]
 	DisplayParameters = False
 
@@ -64,8 +31,11 @@ Position: $FVVDHR7N9zZVSQh5WHu2mx:2
 Position: $FVVDHR7N9zZVSQh5WHu2mx:3
 
 # <AggressiveSuperState>k__BackingField
-Position: $BRU4vpD9TiR62uBr4dJYgJ:0
+Position: $8Z3sj3baFzTeZQ52SQUrW4:0
 + [Sirenix.OdinInspector.HideLabelAttribute]
 
 # ForceAggressive()
+Position: $QDAptWypbwukhEC9w8HCwq:1
+
+# ForceAgitated()
 Position: $QDAptWypbwukhEC9w8HCwq:0

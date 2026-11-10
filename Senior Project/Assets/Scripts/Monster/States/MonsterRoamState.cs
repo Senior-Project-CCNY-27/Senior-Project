@@ -1,20 +1,36 @@
 using System;
 using System.Collections.Generic;
 using Animancer;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Linq;
 
 namespace MonsterStates
 {
-    [System.Serializable]
-    public class AggressiveRoamState : State<MonsterController>
+    public class MonsterRoamState : State
     {
+        [Header("References")]
+        [SerializeField, Required] private MonsterController _monster;
+
+        [Header("Transitions")]
+        [SerializeField] private State _onTargetFoundState;
+
+        [Header("Callbacks")]
+        [SerializeField] private UnityEvent<Transform> _onTargetDetected = new();
+
+        [Header("Animation")]
         [SerializeField] private ClipTransition _animationClip;
 
+        [Header("Waypoints")]
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
+
+        [Header("Detection")]
         [SerializeField] private float _innerDetectionRadius = 3f;
         [SerializeField] private float _losDetectionRadius = 10;
         [SerializeField] private float _losHalfAngleCone = 45;
+
+        [Header("Movement")]
         [SerializeField] private float _rotateSpeed = 10f;
         [SerializeField] private float _roamMoveSpeed = 1.5f;
         
@@ -24,7 +40,7 @@ namespace MonsterStates
         
         private protected override void OnEnter()
         {
-            _context.Animator.Play(_animationClip, 0.1f);
+            _monster.Animator.Play(_animationClip, 0.1f);
             
             _targetTransform = null;
             _availableWaypoints = new List<Transform>(_waypoints);
@@ -34,54 +50,48 @@ namespace MonsterStates
 
         private protected override void OnExit()
         {
-            _context.CancelPath();
+            _monster.CancelPath();
         }
 
-        private protected override void OnUpdate()
+        private protected override void OnTick()
         {
             DetectTarget();
 
-            if (!_context.IsCurrentPathValid())
+            if (!_monster.IsCurrentPathValid())
                 PickAndMoveToRandomAvailableWaypoint();
             
-            _context.SetDestination(_context.Destination); // To recalculate the path to the same destination in case the monster is moved
-            _context.RotateTowardsDestination(_rotateSpeed);
+            _monster.SetDestination(_monster.Destination); // To recalculate the path to the same destination in case the monster is moved
+            _monster.RotateTowardsDestination(_rotateSpeed);
         }
 
-        private protected override void OnFixedUpdate()
+        private protected override void OnFixedTick()
         {
-            _context.MoveTowardsDestination(_roamMoveSpeed);
+            _monster.MoveTowardsDestination(_roamMoveSpeed);
         }
 
-        private protected override State<MonsterController> GetTransition()
+        private protected override State GetTransition()
         {
             if (_targetTransform != null)
             {
-                _context.AggressiveSuperState.ChaseState.SetTarget(_targetTransform);
-                return new TransitionState<MonsterController>(
-                    _stateMachine,
-                    _context,
-                    _context.Animator,
-                    _context.AggressiveSuperState.RoarAnimationClip,
-                    _context.AggressiveSuperState.ChaseState,
-                    onUpdateCallback: () =>
-                    {
-                        if (_targetTransform != null)
-                            _context.GraduallyLookAt(_targetTransform.position, _rotateSpeed);
-                    }
-                );
+                _onTargetDetected?.Invoke(_targetTransform);
+                if (_onTargetFoundState is TransitionState transition)
+                    transition.SetTarget(_targetTransform.gameObject);
+                return _onTargetFoundState;
             }
             
             return null;
         }
 
-        public override void OnDrawGizmosInPlayMode()
+        private void OnDrawGizmos()
         {
+            if (!ShouldDrawGizmos)
+                return;
+
             Gizmos.color = _targetTransform != null ? Color.red : Color.white;
-            Gizmos.DrawWireSphere(_context.transform.position, _innerDetectionRadius);
+            Gizmos.DrawWireSphere(_monster.transform.position, _innerDetectionRadius);
             CustomDebug.DrawWireSphereSectorIgnoringY(
-                _context.LOSOrigin.position,
-                _context.transform.forward,
+                _monster.LOSOrigin.position,
+                _monster.transform.forward,
                 _losHalfAngleCone,
                 _losDetectionRadius
             );
@@ -91,21 +101,21 @@ namespace MonsterStates
         {
             List<GameObject> targets = new List<GameObject>();
             
-            List<GameObject> innerObjects = _context.GetObjectsInRange(
+            List<GameObject> innerObjects = _monster.GetObjectsInRange(
                 _innerDetectionRadius,
-                _context.transform.position,
+                _monster.transform.position,
                 LayerMask.GetMask("Player", "Interactable") 
             );
-            List<GameObject> detectedInnerObjects = _context.GetVisibleObjects(innerObjects);
+            List<GameObject> detectedInnerObjects = _monster.GetVisibleObjects(innerObjects);
                 
-            List<GameObject> losObjects = _context.GetObjectsInConeRange(
+            List<GameObject> losObjects = _monster.GetObjectsInConeRange(
                 _losDetectionRadius,
-                _context.LOSOrigin.position,
-                _context.transform.forward,
+                _monster.LOSOrigin.position,
+                _monster.transform.forward,
                 _losHalfAngleCone,
                 LayerMask.GetMask("Player", "Interactable") 
             );
-            List<GameObject> detectedLOSObjects = _context.GetVisibleObjects(losObjects);
+            List<GameObject> detectedLOSObjects = _monster.GetVisibleObjects(losObjects);
 
             // Make sure interactables are food
             foreach (GameObject target in detectedInnerObjects.Concat(detectedLOSObjects))
@@ -122,7 +132,7 @@ namespace MonsterStates
                 return;
             }
             
-            targets = targets.OrderBy((target) => Vector3.Distance(_context.transform.position, target.transform.position)).ToList();
+            targets = targets.OrderBy((target) => Vector3.Distance(_monster.transform.position, target.transform.position)).ToList();
             _targetTransform = targets[0].transform;
         }
 
@@ -135,7 +145,7 @@ namespace MonsterStates
             _currentWaypoint = _availableWaypoints[randomIndex];
             _availableWaypoints.RemoveAt(randomIndex);
             
-            _context.SetDestination(_currentWaypoint.position);
+            _monster.SetDestination(_currentWaypoint.position);
         }
     }
 }

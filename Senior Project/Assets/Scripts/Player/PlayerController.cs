@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(AnimancerComponent))]
 public class PlayerController : MonoBehaviour
 {
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     }
     
     private PlayerInputActions _input;
-    private Rigidbody _rigidbody;
+    private CharacterController _controller;
     private AnimancerComponent _animator;
     
     [field: Header("Debug")]
@@ -47,11 +47,12 @@ public class PlayerController : MonoBehaviour
     public event Action<State, State> OnStateChanged = delegate { };
 
     private Vector3 _moveInput;
+    private float _yVelocity;
 
     private void Awake()
     {
         _input = InputManager.Instance.Actions;
-        _rigidbody = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
         _animator = GetComponent<AnimancerComponent>();
     }
 
@@ -67,14 +68,10 @@ public class PlayerController : MonoBehaviour
         
         UpdateState(CurrentState);  
         
+        UpdateGravity();
         ApplyRotation();
     }
-
-    private void FixedUpdate()
-    {
-        FixedUpdateState(CurrentState);
-    }
-
+    
     public void ChangeState(State newState, bool forceChange = false)
     {
         if (CurrentState == newState && !forceChange)
@@ -147,6 +144,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 RegenStamina();
+                ApplyMovement();
                 break;
             case State.Sprint:
                 if (_moveInput == Vector3.zero)
@@ -167,20 +165,7 @@ public class PlayerController : MonoBehaviour
                     ChangeState(State.Idle);
                     return;
                 }
-                break;
-        }
-    }
-
-    private void FixedUpdateState(State state)
-    {
-        switch (state)
-        {
-            case State.Idle:
-                break;
-            case State.Walk:
-                ApplyMovement();
-                break;
-            case State.Sprint:
+                
                 ApplyMovement();
                 break;
         }
@@ -191,10 +176,7 @@ public class PlayerController : MonoBehaviour
         Vector2 input = _input.Player.Move.ReadValue<Vector2>();
         _moveInput = new Vector3(input.x, 0f, input.y);
     }
-
-    /// <summary>
-    /// Call this in FixedUpdate
-    /// </summary>
+    
     private void ApplyMovement()
     {
         Vector3 normalizedMoveInput = _moveInput.normalized;
@@ -202,7 +184,16 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetMoveDirection = cameraYRotation * normalizedMoveInput;
         
-        _rigidbody.MovePosition(transform.position + targetMoveDirection * CurrentSpeed * Time.fixedDeltaTime);
+        _controller.Move(targetMoveDirection * CurrentSpeed * Time.deltaTime);
+    }
+
+    private void UpdateGravity()
+    {
+        if (_controller.isGrounded && _yVelocity < 0f)
+            _yVelocity = 0f;
+
+        _yVelocity += Physics.gravity.y * Time.deltaTime;
+        _controller.Move(Vector3.up * (_yVelocity * Time.deltaTime));
     }
 
     private void ApplyRotation()

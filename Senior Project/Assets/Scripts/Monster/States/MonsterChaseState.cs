@@ -6,9 +6,18 @@ using UnityEngine;
 
 namespace MonsterStates
 {
-    [System.Serializable]
-    public class AggressiveChaseState : State<MonsterController>
+    public class MonsterChaseState : State
     {
+        [Header("References")]
+        [SerializeField, Required] private MonsterController _monster;
+        [SerializeField, Required] private MonsterStateActions _stateActions;
+
+        [Header("Transitions")]
+        [SerializeField] private State _onTargetLostState;
+        [SerializeField] private State _onTargetReachedState;
+        [SerializeField] private State _onPathLostState;
+
+        [Header("Animation")]
         [SerializeField] private ClipTransition _animationClip;
 
         [Header("Movement")]
@@ -20,7 +29,9 @@ namespace MonsterStates
         
         [Header("Mouth Hitbox")]
         [SerializeField] private float _mouthHitboxRadius = 0.625f;
+        [SerializeField] private Transform _mouthHitboxTransform;
 
+        [field: Header("Runtime")]
         [field: SerializeField, ReadOnly] public Transform TargetTransform { get; private set; }
         private bool _isTargetInAttackRange = false;
 
@@ -31,35 +42,35 @@ namespace MonsterStates
         
         private protected override void OnEnter()
         {
-            _context.Animator.Play(_animationClip, 0.1f);
+            _monster.Animator.Play(_animationClip, 0.1f);
 
             _isTargetInAttackRange = false;
-            _context.SetDestination(TargetTransform.position);
+            _monster.SetDestination(TargetTransform.position);
         }
 
         private protected override void OnExit()
         {
-            _context.CancelPath();
+            _monster.CancelPath();
         }
 
-        private protected override void OnUpdate()
+        private protected override void OnTick()
         {
             HandleTargetPickedUp();
             CheckIfTargetInRange();
 
-            _context.SetDestination(TargetTransform.position);
-            _context.RotateTowardsDestination(_rotateSpeed);
+            _monster.SetDestination(TargetTransform.position);
+            _monster.RotateTowardsDestination(_rotateSpeed);
         }
 
-        private protected override void OnFixedUpdate()
+        private protected override void OnFixedTick()
         {
-            _context.MoveTowardsDestination(_moveSpeed);
+            _monster.MoveTowardsDestination(_moveSpeed);
         }
         
-        private protected override State<MonsterController> GetTransition()
+        private protected override State GetTransition()
         {
             if (TargetTransform == null)
-                return _context.AggressiveSuperState.RoamState;
+                return _onTargetLostState;
 
             if (_isTargetInAttackRange)
             {
@@ -72,43 +83,40 @@ namespace MonsterStates
                 
                 if (TargetTransform.gameObject.CompareTag("Food"))
                 {
-                    _context.Feed(TargetTransform.gameObject);
+                    _stateActions.Feed(TargetTransform.gameObject);
                     return null;
                 }
-                return _context.AggressiveSuperState.AttackState;
+                return _onTargetReachedState;
             }
 
-            if (!_context.IsCurrentPathValid())
+            if (!_monster.IsCurrentPathValid())
             {
-                return new TransitionState<MonsterController>(
-                    _stateMachine,
-                    _context,
-                    _context.Animator,
-                    _context.AggressiveSuperState.RoarAnimationClip,
-                    _context.AggressiveSuperState.ChaseState
-                );
+                return _onPathLostState;
             }
             
             return null;
         }
 
-        public override void OnDrawGizmosInPlayMode()
+        private void OnDrawGizmos()
         {
+            if (!ShouldDrawGizmos)
+                return;
+
             Gizmos.color = _isTargetInAttackRange ? Color.red : Color.blueViolet;
-            Gizmos.DrawWireSphere(_context.transform.position, _regularHitboxRadius);
-            Gizmos.DrawWireSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            Gizmos.DrawWireSphere(_monster.transform.position, _regularHitboxRadius);
+            Gizmos.DrawWireSphere(_mouthHitboxTransform.position, _mouthHitboxRadius);
         }
         
-        public override void OnCollisionEnter(Collision collision)
+        public override void HandleCollision(Collision collision)
         {
             if (collision.gameObject.TryGetComponent(out Destructible destructible))
-                destructible.Destroy();
+                destructible.TryDestroy(this);
         }
         
         private void CheckIfTargetInRange()
         {
-            Collider[] regularCollisions = Physics.OverlapSphere(_context.transform.position, _regularHitboxRadius);
-            Collider[] mouthCollisions = Physics.OverlapSphere(_context.AggressiveSuperState.MouthHitboxTransform.position, _mouthHitboxRadius);
+            Collider[] regularCollisions = Physics.OverlapSphere(_monster.transform.position, _regularHitboxRadius);
+            Collider[] mouthCollisions = Physics.OverlapSphere(_mouthHitboxTransform.position, _mouthHitboxRadius);
             foreach (Collider attackableCollider in regularCollisions.Concat(mouthCollisions))
             {
                 if (attackableCollider.gameObject == TargetTransform.gameObject)
