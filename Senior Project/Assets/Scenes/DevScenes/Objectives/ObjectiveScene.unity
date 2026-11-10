@@ -1651,6 +1651,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2558347682521545660, guid: a936ab00389c6254d83469d338796764, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558347682521545660, guid: a936ab00389c6254d83469d338796764, type: 3}
       propertyPath: <OnDrop>k__BackingField.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1741,7 +1745,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1270490543}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cd67648f545e4db5b7313e8d806732f, type: 3}
   m_Name: 
@@ -1863,6 +1867,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 420770635663634013, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3879688953485119061, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}
+      propertyPath: isLocked
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6660047680750730031, guid: 910b99bd6f2014a468b05adb0b2506e5, type: 3}

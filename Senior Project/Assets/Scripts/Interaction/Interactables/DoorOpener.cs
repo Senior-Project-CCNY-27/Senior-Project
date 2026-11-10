@@ -16,6 +16,7 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
     [SerializeField] private Vector3 closedRotation = new Vector3(0, 90, 0); // Door rotation when closed.
     [SerializeField] private Vector3 openRotation = new Vector3(0, 0, 0);   // Door rotation when open.
 
+
     private void Start()
     {
         AnimateDoor();
@@ -25,17 +26,23 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
     {
         // If the door isn't locked, allow anyone to interact.
         if (!isLocked)
-        {
             return true;
-        }
 
-        // Get the KeyPickup component from the player.
-        KeyHolder keyHolder = interactor.GetComponent<KeyHolder>();
-        if (keyHolder == null)
+        if (interactor == null)
             return false;
 
-        // Only allow interaction if the player has picked up the key.
-        return keyHolder.KeyPickedUp;
+        // Get the player's pickup controller.
+        if (!interactor.TryGetComponent(out PlayerPickupController pickupController))
+            return false;
+
+        // Check if the player is holding something.
+        Pickup heldItem = pickupController.HeldPickupItem;
+
+        if (heldItem == null)
+            return false;
+
+        // Check if the held item is a key.
+        return heldItem.TryGetComponent<Key>(out _);
     }
 
     public void ToggleDoor(Interactor interactor)
