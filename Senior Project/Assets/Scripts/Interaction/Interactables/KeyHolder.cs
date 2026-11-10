@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class KeyHolder : MonoBehaviour
 {
@@ -8,5 +9,10 @@ public class KeyHolder : MonoBehaviour
     public void PickupKey()
     {
         KeyPickedUp = true; 
+    }
+
+    public void DropKey()
+    {
+        KeyPickedUp = false; 
     }
 }
