@@ -12,6 +12,8 @@ public abstract class State : SerializedMonoBehaviour
     [field: SerializeField, ReadOnly] public bool IsRunning { get; private set; }
     private protected bool ShouldDrawGizmos => _showGizmos && (!Application.isPlaying || IsRunning);
 
+    public void SetShowGizmos(bool enabled) => _showGizmos = enabled;
+
     public virtual void Init(StateMachine stateMachine)
     {
         _stateMachine = stateMachine;

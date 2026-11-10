@@ -6,9 +6,7 @@ public class StateMachine : MonoBehaviour
 {
     [SerializeField, Required] private State _initialState;
     [SerializeField] private bool _autoTick = true;
-
-    [ShowInInspector, ReadOnly] public string CurrentStateName =>
-        CurrentState != null ? CurrentState.gameObject.name : "None";
+    
     [ShowInInspector, ReadOnly] public State CurrentState { get; private set; }
     [ShowInInspector, ReadOnly] public State PreviousState { get; private set; }
     public bool HasTransitionedThisFrame { get; private set; }

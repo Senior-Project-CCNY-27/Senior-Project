@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.davidfdev.devconsole": {
+      "version": "https://github.com/DavidF-Dev/Unity-DeveloperConsole.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "dfee3427fbe3a69c70014b225f12562ecbe390ad"
+    },
     "com.kybernetik.animancer": {
       "version": "file:com.kybernetik.animancer",
       "depth": 0,

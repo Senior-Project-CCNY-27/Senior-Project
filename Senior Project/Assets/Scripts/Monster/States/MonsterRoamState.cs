@@ -90,7 +90,7 @@ namespace MonsterStates
             Gizmos.color = _targetTransform != null ? Color.red : Color.white;
             Gizmos.DrawWireSphere(_monster.transform.position, _innerDetectionRadius);
             CustomDebug.DrawWireSphereSectorIgnoringY(
-                _monster.LOSOrigin.position,
+                _monster.LosOrigin.position,
                 _monster.transform.forward,
                 _losHalfAngleCone,
                 _losDetectionRadius
@@ -110,7 +110,7 @@ namespace MonsterStates
                 
             List<GameObject> losObjects = _monster.GetObjectsInConeRange(
                 _losDetectionRadius,
-                _monster.LOSOrigin.position,
+                _monster.LosOrigin.position,
                 _monster.transform.forward,
                 _losHalfAngleCone,
                 LayerMask.GetMask("Player", "Interactable") 
