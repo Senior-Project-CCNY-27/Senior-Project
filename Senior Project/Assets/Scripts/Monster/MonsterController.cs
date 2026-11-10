@@ -10,33 +10,60 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(AnimancerComponent))]
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(NavMeshAgent))]
 public class MonsterController : MonoBehaviour
 {
-    private const float NavMeshOverlapThreshold = 0.2f;
-    
-    [field: Header("Blackboard")]
+    [field: Header("References")]
     [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
     [field: SerializeField, Required] public PlayerPickupController PlayerPickupController { get; private set; }
-    [field: SerializeField, Required] public Transform LOSOrigin { get; private set; }
+    [field: SerializeField, Required] public Transform LosOrigin { get; private set; }
+
+    [Header("Pathfinding")]
+    [SerializeField, ValueDropdown(nameof(GetAgentTypes))] private int _navMeshAgentTypeId;
+    [SerializeField] private Vector3 _navMeshCenterOffset;
+    [SerializeField] private float _navMeshOverlapThreshold = 0.2f;
+    private Vector3 _agentCenterPosition => transform.TransformPoint(_navMeshCenterOffset);
     
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
-    public NavMeshAgent NavMeshAgent { get; private set; }
     public Vector3 Destination { get; private set; }
     private List<Vector3> _path = new List<Vector3>();
 
+    private NavMeshQueryFilter _navMeshFilter;
+    
     private void Awake()
     {
         Animator = GetComponent<AnimancerComponent>();
         Rigidbody = GetComponent<Rigidbody>();
-        NavMeshAgent = GetComponent<NavMeshAgent>();
+        
+        _navMeshFilter = new NavMeshQueryFilter
+        {
+            agentTypeID = _navMeshAgentTypeId,
+            areaMask = NavMesh.AllAreas
+        };
     }
-
-    private void Start()
+    
+    private void OnDrawGizmos()
     {
-        NavMeshAgent.updatePosition = false;
-        NavMeshAgent.updateRotation = false;
+        NavMeshBuildSettings settings = NavMesh.GetSettingsByID(_navMeshAgentTypeId);
+
+        // Draws agent colliders
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(_agentCenterPosition, settings.agentRadius);
+        Gizmos.DrawSphere(_agentCenterPosition, 0.05f);
+        Gizmos.DrawSphere(_agentCenterPosition + settings.agentHeight * Vector3.up, 0.05f);
+        
+        // Draws current path
+        if (IsCurrentPathValid())
+        {
+            Gizmos.color = Color.red;
+            Vector3 prevCorner = _agentCenterPosition;
+            for (int i = 1; i < _path.Count; i++)
+            {
+                Gizmos.DrawLine(prevCorner, _path[i]);
+                prevCorner = _path[i];
+            }
+            Gizmos.DrawSphere(_path[^1], 0.2f);
+        }
     }
 
     /// <summary>
@@ -56,7 +83,7 @@ public class MonsterController : MonoBehaviour
     /// </summary>
     public void MoveInDirection(Vector3 direction, float speed)
     {
-        Rigidbody.MovePosition(transform.position + direction.WithY(0).normalized * speed * Time.fixedDeltaTime);
+        Rigidbody.MovePosition(transform.position + direction.WithY(0).normalized * (speed * Time.fixedDeltaTime));
     }
 
     /// <summary>
@@ -139,18 +166,13 @@ public class MonsterController : MonoBehaviour
     
     public List<Vector3> GetPathToDestination(Vector3 dest)
     {
-        var filter = new NavMeshQueryFilter
-        {
-            agentTypeID = NavMeshAgent.agentTypeID,
-            areaMask = NavMeshAgent.areaMask
-        };
-
-        // Sample using the same agent type and allowed areas.
-        if (!NavMesh.SamplePosition(dest, out NavMeshHit hit, 2f, filter))
+        // Pathfinding positions represent the agent center, not the monster pivot.
+        Vector3 agentDestination = dest + transform.rotation * _navMeshCenterOffset;
+        if (!NavMesh.SamplePosition(agentDestination, out NavMeshHit hit, 2f, _navMeshFilter))
             return null;
 
         NavMeshPath path = new NavMeshPath();
-        if (!NavMesh.CalculatePath(transform.position, hit.position, filter, path))
+        if (!NavMesh.CalculatePath(_agentCenterPosition, hit.position, _navMeshFilter, path))
             return null;
 
         if (path.status != NavMeshPathStatus.PathComplete)
@@ -203,20 +225,26 @@ public class MonsterController : MonoBehaviour
     /// <returns>True if the point is on the NavMesh, false otherwise.</returns>
     public bool IsValidPointOnNavMesh(Vector3 point, float maxHeight, out Vector3 outputPoint)
     {
-        var filter = new NavMeshQueryFilter
+        bool hitGround = Physics.Raycast(
+            point + maxHeight * Vector3.up,
+            Vector3.down,
+            out RaycastHit raycastHit,
+            Mathf.Infinity,
+            LayerMask.GetMask("Ground"));
+
+        if (hitGround)
         {
-            agentTypeID = NavMeshAgent.agentTypeID,
-            areaMask = NavMeshAgent.areaMask
-        };
+            Vector3 agentPoint = raycastHit.point + transform.rotation * _navMeshCenterOffset;
+            bool isValidPoint = NavMesh.SamplePosition(agentPoint, out NavMeshHit navMeshHit, 0.5f, _navMeshFilter);
+            outputPoint = isValidPoint
+                ? navMeshHit.position - transform.rotation * _navMeshCenterOffset
+                : transform.position;
 
-        RaycastHit raycastHit;
-        bool isValidPoint =
-            Physics.Raycast(point + maxHeight * Vector3.up, Vector3.down, out raycastHit, Mathf.Infinity, LayerMask.GetMask("Ground"))
-            && NavMesh.SamplePosition(raycastHit.point, out _, 0.5f, filter);
+            return isValidPoint;
+        }
 
-        outputPoint = isValidPoint ? raycastHit.point : transform.position;
-
-        return isValidPoint;
+        outputPoint = transform.position;
+        return false;
     }
 
     /// <summary>
@@ -300,23 +328,14 @@ public class MonsterController : MonoBehaviour
             return;
         }
 
-        #region Debug
-        Vector3 prevCorner = transform.position;
-        for (int i = 1; i < _path.Count; i++)
-        {
-            Debug.DrawLine(prevCorner, _path[i], Color.green);
-            prevCorner = _path[i];
-        }
-        #endregion
-
         Vector3 currentDestination = _path[1];
-        Vector3 direction = (currentDestination - transform.position).WithY(0).normalized;
+        Vector3 direction = (currentDestination - _agentCenterPosition).WithY(0).normalized;
 
         MoveInDirection(direction, moveSpeed);
-        NavMeshAgent.nextPosition = transform.position;
 
         // If close to or facing in the complete opposite direction towards current waypoint, move onto the next one
-        if (Vector3.Dot(direction, (_path[1] - _path[0]).normalized) < 0 || Vector3.Distance(transform.position, currentDestination) <= NavMeshOverlapThreshold)
+        if (Vector3.Dot(direction, (_path[1] - _path[0]).normalized) < 0 || 
+            Vector3.Distance(_agentCenterPosition, currentDestination) <= _navMeshOverlapThreshold)
             _path.RemoveAt(0);
     }
     
@@ -330,5 +349,25 @@ public class MonsterController : MonoBehaviour
         
         Vector3 currentDestination = _path[1];
         GraduallyLookAt(currentDestination, rotateSpeed);
+    }
+
+    private static IEnumerable<ValueDropdownItem<int>> GetAgentTypes()
+    {
+        for (int i = 0; i < NavMesh.GetSettingsCount(); i++)
+        {
+            var settings = NavMesh.GetSettingsByIndex(i);
+            int id = settings.agentTypeID;
+            string name = NavMesh.GetSettingsNameFromID(id);
+
+            yield return new ValueDropdownItem<int>(name, id);
+        }
+    }
+    
+    [Button("Open Agent ID Settings", ButtonSizes.Medium)]
+    private void OpenAgentIdSettings()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExecuteMenuItem("Window/AI/Navigation");
+#endif
     }
 }
