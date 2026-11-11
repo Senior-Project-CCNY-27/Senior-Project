@@ -144,7 +144,7 @@ MonoBehaviour:
   <IsRunning>k__BackingField: 0
   _monster: {fileID: 5118755737595468301}
   _onAggressionState: {fileID: 810000000000000142}
-  _catchupState: {fileID: 0}
+  _catchupState: {fileID: 810000000000000092}
   _onPlayerTouchState: {fileID: 810000000000000262}
   _catchupDistance: 17.5
   <AggressiveThreshold>k__BackingField: 100
@@ -737,14 +737,14 @@ MonoBehaviour:
   _onReachedState: {fileID: 810000000000000062}
   _animationClip:
     _FadeDuration: 0.25
-    _Speed: 1.5
+    _Speed: 0.9
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
     _Clip: {fileID: 860416348139661387, guid: 8a572efe21c51fe4aae52075a5bfe620, type: 3}
     _NormalizedStartTime: NaN
-  _moveSpeed: 1.5
+  _moveSpeed: 3.5
   _rotateSpeed: 10
   _stopDistance: 17.5
   references:
