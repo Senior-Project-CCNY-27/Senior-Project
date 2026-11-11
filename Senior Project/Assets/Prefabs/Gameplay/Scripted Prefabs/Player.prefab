@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactor
   _castDistance: 5
+  _sphereCastRadius: 0.1
   <CurrentInteractable>k__BackingField: {fileID: 0}
 --- !u!114 &2545345226824468717
 MonoBehaviour:
