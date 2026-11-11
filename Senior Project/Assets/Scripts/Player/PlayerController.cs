@@ -1,11 +1,8 @@
 using System;
 using Animancer;
-using AYellowpaper.SerializedCollections;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(AnimancerComponent))]
@@ -251,7 +248,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
-        if(!_controller.isGrounded)
+        if(!_isGrounded)
             return;
 
         float jumpVelocity = Mathf.Sqrt(_jumpHeight * -2f * Physics.gravity.y);
