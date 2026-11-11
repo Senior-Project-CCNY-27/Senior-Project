@@ -37,6 +37,16 @@
                     "priority": 0
                 },
                 {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "9eb5d5b5-283f-4d2a-9c82-d9c0ef181898",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
                     "name": "Drop",
                     "type": "Button",
                     "id": "54d85c0b-e27e-48fc-9f60-80eb73430243",
@@ -275,6 +285,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "22ec964c-961c-4fc3-a6b6-07cfc3af3edf",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "474f4f9a-3c3d-4692-b6e8-bdf55edac521",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -88,6 +88,13 @@ MonoBehaviour:
     _NormalizedStartTime: NaN
   _drainRate: 20
   _regenRate: 10
+  _jumpHeight: 2
+  _groundSphereCheckRadius: 0.18
+  _groundSphereCheckOffset: -0.11
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _isGrounded: 0
   <CurrentState>k__BackingField: 0
   <CurrentSpeed>k__BackingField: 0
   references:

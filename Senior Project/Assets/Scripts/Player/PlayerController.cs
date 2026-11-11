@@ -28,7 +28,13 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina Regen Parameters")]
     [SerializeField] private float _drainRate = 20f;
     [SerializeField] private float _regenRate = 10f;
-    
+
+    [Header("Jump")]
+    [SerializeField] private float _jumpHeight = 2f;
+    [SerializeField] private float _groundSphereCheckRadius = 0.2f;
+    [SerializeField] private float _groundSphereCheckOffset = 0.1f;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField, ReadOnly] private bool _isGrounded;
 
     public enum State
     {
@@ -62,16 +68,36 @@ public class PlayerController : MonoBehaviour
         ChangeState(State.Idle, true);
     }
 
+    private void OnEnable()
+    {
+        InputManager.Instance.Actions.Player.Jump.performed += OnJumpPerformed;
+    }
+
+    private void OnDisable()
+    {
+        if(InputManager.Instance == null)
+            return;
+
+        InputManager.Instance.Actions.Player.Jump.performed -= OnJumpPerformed;
+    }
+
     private void Update()
     {
         ReadMoveInput();
         
-        UpdateState(CurrentState);  
-        
+        UpdateState(CurrentState);
+
+        CheckGrounded();
         UpdateGravity();
         ApplyRotation();
     }
-    
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = _isGrounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position - Vector3.up * _groundSphereCheckOffset, _groundSphereCheckRadius);
+    }
+
     public void ChangeState(State newState, bool forceChange = false)
     {
         if (CurrentState == newState && !forceChange)
@@ -221,5 +247,20 @@ public class PlayerController : MonoBehaviour
         }
 
         CurrentStamina += _regenRate * Time.deltaTime;
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        if(!_controller.isGrounded)
+            return;
+
+        float jumpVelocity = Mathf.Sqrt(_jumpHeight * -2f * Physics.gravity.y);
+        _yVelocity = jumpVelocity;
+    }
+
+    private void CheckGrounded()
+    {
+        Vector3 spherePosition = transform.position - Vector3.up * _groundSphereCheckOffset;
+        _isGrounded = Physics.CheckSphere(spherePosition, _groundSphereCheckRadius, _groundLayer);
     }
 }

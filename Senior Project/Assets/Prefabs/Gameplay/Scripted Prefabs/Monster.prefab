@@ -2202,7 +2202,7 @@ MonoBehaviour:
   <PlayerPickupController>k__BackingField: {fileID: 0}
   <LosOrigin>k__BackingField: {fileID: 4110793275426171861}
   _navMeshAgentTypeId: 0
-  _navMeshCenterOffset: {x: 0, y: 0, z: 0.3}
+  _navMeshCenterOffset: {x: 0, y: 0, z: 0.02}
   _navMeshOverlapThreshold: 0.2
 --- !u!114 &810000000000000202
 MonoBehaviour:
