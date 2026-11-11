@@ -1,11 +1,13 @@
+using System;
 using MonsterStates;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshObstacle))]
 public class Destructible : MonoBehaviour
 {
-    [SerializeField] private MonsterChaseState _aggressiveChaseState;
+    [SerializeField, Required] private BoolScriptableEvent _onDestructibleEnabledEvent;
     private NavMeshObstacle _navMeshObstacle;
     
     [Header("Camera Shake")]
@@ -16,17 +18,24 @@ public class Destructible : MonoBehaviour
         _navMeshObstacle = GetComponent<NavMeshObstacle>();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        bool isChasing = _aggressiveChaseState != null && _aggressiveChaseState.IsRunning;
-        _navMeshObstacle.enabled = !isChasing;
+        _onDestructibleEnabledEvent.OnEventFired += OnDestructibleEnabledEvent;
     }
 
-    public void TryDestroy(MonsterChaseState chaseState)
+    private void OnDisable()
     {
-        if (chaseState == null || chaseState != _aggressiveChaseState || !chaseState.IsRunning)
-            return;
+        if(_onDestructibleEnabledEvent != null)
+            _onDestructibleEnabledEvent.OnEventFired -= OnDestructibleEnabledEvent;
+    }
 
+    private void OnDestructibleEnabledEvent(bool isEnabled)
+    {
+        _navMeshObstacle.enabled = !isEnabled;
+    }
+
+    public void TryDestroy()
+    {
         CameraShakeManager.ShakeCamera(_shakeSettings);
         Destroy(gameObject);
     }

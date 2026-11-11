@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cab4c0960beee846b743e98b392d4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Destructible
-  _aggressiveChaseState: {fileID: 0}
+  _onDestructibleEnabledEvent: {fileID: 11400000, guid: 402d6aa98a56c0e418d3ac8e8b8ff378, type: 2}
   _shakeSettings:
     Duration: 1
     Intensity: 10

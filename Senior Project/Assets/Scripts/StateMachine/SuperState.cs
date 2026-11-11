@@ -23,6 +23,9 @@ public class SuperState : State
     private protected override void OnFixedTick() =>
         SubStateMachine.FixedTick();
 
-    public override void HandleCollision(Collision collision) =>
+    public override void HandleCollision(Collision collision)
+    {
+        base.HandleCollision(collision);
         SubStateMachine.CurrentState?.HandleCollision(collision);
+    }
 }
