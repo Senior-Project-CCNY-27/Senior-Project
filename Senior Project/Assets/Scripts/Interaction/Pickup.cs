@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class Pickup : MonoBehaviour, IInteractionValidator
 {
     private Interactable _interactable;
-    //private Key _key;
     public Rigidbody RigidBody { get; private set; }
     public PlayerPickupController PickupController { get; private set; }
 
@@ -22,7 +21,6 @@ public class Pickup : MonoBehaviour, IInteractionValidator
     {
         _interactable = GetComponent<Interactable>();
         RigidBody = GetComponent<Rigidbody>();
-        // _key = GetComponent<Key>();
     }
 
     public bool CanInteract(Interactor interactor)
@@ -79,9 +77,6 @@ public class Pickup : MonoBehaviour, IInteractionValidator
         _interactable.EnableInteractability(true);
 
         IsPickedUp = false;
-
-        // If this pickup is a key, update the KeyHolder.
-        // _key?.DropKey();
 
         return true;
     }

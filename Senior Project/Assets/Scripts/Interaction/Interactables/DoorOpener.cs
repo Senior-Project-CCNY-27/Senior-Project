@@ -15,8 +15,7 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
     [Header("Rotation Angles")]
     [SerializeField] private Vector3 closedRotation = new Vector3(0, 90, 0); // Door rotation when closed.
     [SerializeField] private Vector3 openRotation = new Vector3(0, 0, 0);   // Door rotation when open.
-
-
+    
     private void Start()
     {
         AnimateDoor();
@@ -37,7 +36,6 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
 
         // Check if the player is holding something.
         Pickup heldItem = pickupController.HeldPickupItem;
-
         if (heldItem == null)
             return false;
 
