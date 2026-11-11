@@ -3222,6 +3222,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 810000000000000092, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
     - target: {fileID: 810000000000000102, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      propertyPath: _waypoints.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 810000000000000102, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: '_waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1535384063}
@@ -3252,7 +3256,7 @@ PrefabInstance:
     - target: {fileID: 810000000000000102, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 810000000000000102, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 810000000000000112, guid: f0169a08a577f4a4aa5bca2f549e11b4, type: 3}
       propertyPath: serializationData.Prefab
       value: 

@@ -13,8 +13,6 @@ using Random = UnityEngine.Random;
 public class MonsterController : MonoBehaviour
 {
     [field: Header("References")]
-    [field: SerializeField, Required] public Transform PlayerTransform { get; private set; }
-    [field: SerializeField, Required] public PlayerPickupController PlayerPickupController { get; private set; }
     [field: SerializeField, Required] public Transform LosOrigin { get; private set; }
 
     [Header("Pathfinding")]
@@ -23,6 +21,8 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private float _navMeshOverlapThreshold = 0.2f;
     private Vector3 _agentCenterPosition => transform.TransformPoint(_navMeshCenterOffset);
     
+    public PlayerPickupController PlayerPickupController { get; private set; }
+    public Transform PlayerTransform { get; private set; }
     public AnimancerComponent Animator { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
     public Vector3 Destination { get; private set; }
@@ -32,6 +32,11 @@ public class MonsterController : MonoBehaviour
     
     private void Awake()
     {
+        PlayerPickupController = FindFirstObjectByType<PlayerPickupController>();
+        if(PlayerPickupController == null)
+            Debug.LogError("Player not found");
+        PlayerTransform = PlayerPickupController.transform;
+        
         Animator = GetComponent<AnimancerComponent>();
         Rigidbody = GetComponent<Rigidbody>();
         

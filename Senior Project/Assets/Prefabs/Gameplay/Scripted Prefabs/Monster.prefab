@@ -831,14 +831,7 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
     _NormalizedStartTime: 0
-  _waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _waypoints: []
   _innerDetectionRadius: 3
   _losDetectionRadius: 10
   _losHalfAngleCone: 45
@@ -2253,8 +2246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea929e0a5e849bcba4eea99c08d9d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterController
-  <PlayerTransform>k__BackingField: {fileID: 0}
-  <PlayerPickupController>k__BackingField: {fileID: 0}
   <LosOrigin>k__BackingField: {fileID: 4110793275426171861}
   _navMeshAgentTypeId: 0
   _navMeshCenterOffset: {x: 0, y: 0, z: 0}

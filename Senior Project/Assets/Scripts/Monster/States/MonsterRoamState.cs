@@ -43,7 +43,6 @@ namespace MonsterStates
             _monster.Animator.Play(_animationClip, 0.1f);
             
             _targetTransform = null;
-            _availableWaypoints = new List<Transform>(_waypoints);
             
             PickAndMoveToRandomAvailableWaypoint();
         }
@@ -139,13 +138,38 @@ namespace MonsterStates
         private void PickAndMoveToRandomAvailableWaypoint()
         {
             if (_availableWaypoints.Count == 0)
-                _availableWaypoints = new List<Transform>(_waypoints);
+                RefillAvailableWaypoints();
             
             int randomIndex = UnityEngine.Random.Range(0, _availableWaypoints.Count);
             _currentWaypoint = _availableWaypoints[randomIndex];
             _availableWaypoints.RemoveAt(randomIndex);
             
             _monster.SetDestination(_currentWaypoint.position);
+        }
+
+        private void RefillAvailableWaypoints()
+        {
+            if (_waypoints == null)
+            {
+                _availableWaypoints = new();
+                _availableWaypoints.Add(_monster.PlayerTransform);
+                Debug.LogWarning($"{name} is missing waypoints, defaulting to roam towards player");
+                return;
+            }
+
+            _availableWaypoints.Clear();
+            foreach (Transform waypoint in _waypoints)
+            {
+                if(waypoint != null)
+                    _availableWaypoints.Add(waypoint);
+            }
+
+            if (_availableWaypoints.Count == 0)
+            {
+                _availableWaypoints.Add(_monster.PlayerTransform);
+                Debug.LogWarning($"{name} is missing waypoints, defaulting to roam towards player");
+                return;
+            }
         }
     }
 }
