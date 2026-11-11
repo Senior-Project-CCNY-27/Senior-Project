@@ -137,19 +137,44 @@ public class MonsterController : MonoBehaviour
         return objectsInRange;
     } 
 
-    public List<GameObject> GetObjectsInConeRange(float radius, Vector3 origin, Vector3 direction, float halfAngle, LayerMask searchLayers)
+    public List<GameObject> GetObjectsInConeRange(
+        float forwardRadius,
+        float lateralRadius,
+        Vector3 origin,
+        Vector3 direction,
+        float halfAngle,
+        LayerMask searchLayers)
     {
         List<GameObject> objectsInCone = new List<GameObject>();
-        List<GameObject> objectsInRange = GetObjectsInRange(radius, origin, searchLayers);
+        Vector3 horizontalForward = Vector3.ProjectOnPlane(direction, Vector3.up);
+        if (forwardRadius <= 0f || lateralRadius <= 0f || horizontalForward.sqrMagnitude < 0.0001f)
+            return objectsInCone;
+
+        horizontalForward.Normalize();
+        Vector3 horizontalRight = Vector3.Cross(Vector3.up, horizontalForward).normalized;
+        float broadphaseRadius = Mathf.Max(forwardRadius, lateralRadius);
+        List<GameObject> objectsInRange = GetObjectsInRange(broadphaseRadius, origin, searchLayers);
         if (objectsInRange.Count == 0)
             return objectsInCone;
+
+        halfAngle = Mathf.Clamp(halfAngle, 0f, 180f);
         foreach (GameObject objectInRange in objectsInRange)
         {
-            Vector3 directionToTarget = objectInRange.transform.position - origin; 
-            float angle = Vector3.Angle(directionToTarget.WithY(0), direction.WithY(0));
+            Vector3 offset = Vector3.ProjectOnPlane(objectInRange.transform.position - origin, Vector3.up);
+            float forwardDistance = Vector3.Dot(offset, horizontalForward);
+            float lateralDistance = Vector3.Dot(offset, horizontalRight);
+
+            float ellipseDistance =
+                (forwardDistance * forwardDistance) / (forwardRadius * forwardRadius) +
+                (lateralDistance * lateralDistance) / (lateralRadius * lateralRadius);
+            if (ellipseDistance > 1f)
+                continue;
+
+            float angle = Mathf.Atan2(Mathf.Abs(lateralDistance), forwardDistance) * Mathf.Rad2Deg;
             if (angle <= halfAngle)
                 objectsInCone.Add(objectInRange);
         }
+
         return objectsInCone;
     }
 

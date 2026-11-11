@@ -26,9 +26,13 @@ namespace MonsterStates
         [SerializeField] private List<Transform> _waypoints = new List<Transform>();
 
         [Header("Detection")]
-        [SerializeField] private float _innerDetectionRadius = 3f;
-        [SerializeField] private float _losDetectionRadius = 10;
-        [SerializeField] private float _losHalfAngleCone = 45;
+        [SerializeField] private float _innerDetectionRadius = 2f;
+        [SerializeField] private float _farLosDetectionRadius = 12.5f;
+        [SerializeField] private float _farLosLateralRadius = 8f;
+        [SerializeField] private float _farLosHalfAngleCone = 30f;
+        [SerializeField] private float _nearLosDetectionRadius = 3.5f;
+        [SerializeField] private float _nearLosLateralRadius = 7f;
+        [SerializeField] private float _nearLosHalfAngleCone = 85f;
 
         [Header("Movement")]
         [SerializeField] private float _rotateSpeed = 10f;
@@ -37,6 +41,9 @@ namespace MonsterStates
         private List<Transform> _availableWaypoints = new List<Transform>();
         private Transform _currentWaypoint;
         private Transform _targetTransform;
+        private bool _innerTargetDetected;
+        private bool _farLosTargetDetected;
+        private bool _nearLosTargetDetected;
         
         private protected override void OnEnter()
         {
@@ -86,13 +93,28 @@ namespace MonsterStates
             if (!ShouldDrawGizmos)
                 return;
 
-            Gizmos.color = _targetTransform != null ? Color.red : Color.white;
+            if (_monster == null)
+                return;
+
+            Gizmos.color = _innerTargetDetected ? Color.red : Color.magenta;
             Gizmos.DrawWireSphere(_monster.transform.position, _innerDetectionRadius);
-            CustomDebug.DrawWireSphereSectorIgnoringY(
+
+            Gizmos.color = _farLosTargetDetected ? Color.red : Color.green;
+            CustomDebug.DrawWireEllipseSector(
                 _monster.LosOrigin.position,
                 _monster.transform.forward,
-                _losHalfAngleCone,
-                _losDetectionRadius
+                _farLosDetectionRadius,
+                _farLosLateralRadius,
+                _farLosHalfAngleCone
+            );
+
+            Gizmos.color = _nearLosTargetDetected ? Color.red : Color.blue;
+            CustomDebug.DrawWireEllipseSector(
+                _monster.LosOrigin.position,
+                _monster.transform.forward,
+                _nearLosDetectionRadius,
+                _nearLosLateralRadius,
+                _nearLosHalfAngleCone
             );
         }
 
@@ -106,18 +128,35 @@ namespace MonsterStates
                 LayerMask.GetMask("Player", "Interactable") 
             );
             List<GameObject> detectedInnerObjects = _monster.GetVisibleObjects(innerObjects);
+            _innerTargetDetected = detectedInnerObjects.Count > 0;
                 
-            List<GameObject> losObjects = _monster.GetObjectsInConeRange(
-                _losDetectionRadius,
+            List<GameObject> farLosObjects = _monster.GetObjectsInConeRange(
+                _farLosDetectionRadius,
+                _farLosLateralRadius,
                 _monster.LosOrigin.position,
                 _monster.transform.forward,
-                _losHalfAngleCone,
+                _farLosHalfAngleCone,
                 LayerMask.GetMask("Player", "Interactable") 
             );
-            List<GameObject> detectedLOSObjects = _monster.GetVisibleObjects(losObjects);
+            List<GameObject> detectedFarLOSObjects = _monster.GetVisibleObjects(farLosObjects);
+            _farLosTargetDetected = detectedFarLOSObjects.Count > 0;
+            
+            List<GameObject> nearLosObjects = _monster.GetObjectsInConeRange(
+                _nearLosDetectionRadius,
+                _nearLosLateralRadius,
+                _monster.LosOrigin.position,
+                _monster.transform.forward,
+                _nearLosHalfAngleCone,
+                LayerMask.GetMask("Player", "Interactable") 
+            );
+            List<GameObject> detectedNearLOSObjects = _monster.GetVisibleObjects(nearLosObjects);
+            _nearLosTargetDetected = detectedNearLOSObjects.Count > 0;
 
-            // Make sure interactables are food
-            foreach (GameObject target in detectedInnerObjects.Concat(detectedLOSObjects))
+            var allDetectedObjects = detectedInnerObjects.Concat(detectedFarLOSObjects);
+            allDetectedObjects = allDetectedObjects.Concat(detectedNearLOSObjects);
+            
+            // Make sure interactables are food and remove dupes
+            foreach (GameObject target in allDetectedObjects.ToHashSet())
             {
                 if (target.layer == LayerMask.NameToLayer("Interactable") && !target.CompareTag("Food"))
                     continue;

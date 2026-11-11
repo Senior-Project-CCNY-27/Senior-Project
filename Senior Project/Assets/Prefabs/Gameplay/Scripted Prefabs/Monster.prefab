@@ -832,9 +832,13 @@ MonoBehaviour:
     _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
     _NormalizedStartTime: 0
   _waypoints: []
-  _innerDetectionRadius: 3
-  _losDetectionRadius: 10
-  _losHalfAngleCone: 45
+  _innerDetectionRadius: 2
+  _farLosDetectionRadius: 12.5
+  _farLosLateralRadius: 8
+  _farLosHalfAngleCone: 30
+  _nearLosDetectionRadius: 3.5
+  _nearLosLateralRadius: 7
+  _nearLosHalfAngleCone: 85
   _rotateSpeed: 10
   _roamMoveSpeed: 1.5
   references:
