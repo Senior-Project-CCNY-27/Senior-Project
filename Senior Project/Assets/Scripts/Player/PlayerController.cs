@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetMoveDirection = cameraYRotation * normalizedMoveInput;
         
-        _controller.Move(targetMoveDirection * CurrentSpeed * Time.deltaTime);
+        _controller.Move(targetMoveDirection * (CurrentSpeed * Time.deltaTime));
     }
 
     private void UpdateGravity()
