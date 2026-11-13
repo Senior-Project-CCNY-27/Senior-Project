@@ -5,16 +5,16 @@ using Sirenix.OdinInspector;
 public class DoorOpener : MonoBehaviour, IInteractionValidator
 {
     [Header("Door Settings")]
-    [SerializeField, ReadOnly] private bool isOpen = false;   // Determines whether the door starts open or closed.
-    [SerializeField] private bool isLocked = false; // Determines whether the door requires a key.
-    [SerializeField] private float animationDuration = 0.5f; // Controls how quickly the door rotates.
-    [SerializeField] private Ease animationEase = Ease.Linear; // Controls how quickly the door rotates.
+    [SerializeField, ReadOnly] private bool _isOpen = false;   // Determines whether the door starts open or closed.
+    [SerializeField] private bool _isLocked = false; // Determines whether the door requires a key.
+    [SerializeField] private float _animationDuration = 0.5f; // Controls how quickly the door rotates.
+    [SerializeField] private Ease _animationEase = Ease.Linear; // Controls how quickly the door rotates.
 
-    [SerializeField, Required] private Transform doorRotator; // Transform responsible for rotating the door.
+    [SerializeField, Required] private Transform _doorRotator; // Transform responsible for rotating the door.
 
     [Header("Rotation Angles")]
-    [SerializeField] private Vector3 closedRotation = new Vector3(0, 90, 0); // Door rotation when closed.
-    [SerializeField] private Vector3 openRotation = new Vector3(0, 0, 0);   // Door rotation when open.
+    [SerializeField] private Vector3 _closedRotation = new Vector3(0, 0, 0); // Door rotation when closed.
+    [SerializeField] private Vector3 _openRotation = new Vector3(0, -90, 0);   // Door rotation when open.
     
     private void Start()
     {
@@ -24,7 +24,7 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
     public bool CanInteract(Interactor interactor)
     {
         // If the door isn't locked, allow anyone to interact.
-        if (!isLocked)
+        if (!_isLocked)
             return true;
 
         if (interactor == null)
@@ -52,16 +52,16 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
         }
 
         // Toggle the door between open and closed.
-        isOpen = !isOpen;
+        _isOpen = !_isOpen;
         
         AnimateDoor();
     }
 
     private void AnimateDoor()
     {
-        doorRotator.DOKill();
+        _doorRotator.DOKill();
         
-        Vector3 targetEulerAngles = isOpen ? openRotation : closedRotation; 
-        doorRotator.DOLocalRotate(targetEulerAngles, animationDuration).SetEase(animationEase);
+        Vector3 targetEulerAngles = _isOpen ? _openRotation : _closedRotation; 
+        _doorRotator.DOLocalRotate(targetEulerAngles, _animationDuration).SetEase(_animationEase);
     }
 }
