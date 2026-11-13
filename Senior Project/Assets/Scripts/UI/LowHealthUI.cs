@@ -1,15 +1,15 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LowHealthUI : MonoBehaviour
 {
-    [SerializeField] Health _health;
-    [SerializeField] Image _bloodOverlay;
+    [SerializeField, Required] Health _health;
+    [SerializeField, Required] Image _bloodOverlay;
     [SerializeField] int _lowHealthThreshold = 1;
     [SerializeField] float _fadeSpeed = 5f;
     [SerializeField] float _pulseSpeed = 3f;
-    [SerializeField] float _minAlpha = 0.5f;
-    [SerializeField] float _maxAlpha = 0.9f;
+    [SerializeField] private FloatRange _alphaRange = new FloatRange(0.5f, 0.9f); 
 
     int currentHP;
 
@@ -34,7 +34,7 @@ public class LowHealthUI : MonoBehaviour
         if (currentHP > 0 && currentHP <= _lowHealthThreshold)
         {
             float t = (Mathf.Sin(Time.time * _pulseSpeed) + 1f) / 2f;
-            target = Mathf.Lerp(_minAlpha, _maxAlpha, t);
+            target = _alphaRange.Lerp(t);
         }
 
         c.a = Mathf.Lerp(c.a, target, Time.deltaTime * _fadeSpeed);
