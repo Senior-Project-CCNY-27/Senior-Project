@@ -24,6 +24,13 @@ namespace MonsterStates
         [SerializeField] private float _playerHoldingFoodAggressionSpeed = 25f;
         [SerializeField] private float _touchAggressionBuildup = 25f;
 
+        private protected override void OnEnter()
+        {
+            base.OnEnter();
+
+            CurrentAggression = 0;
+        }
+
         public override void HandleCollision(Collision collision)
         {
             if(collision.gameObject == _monster.PlayerPickupController.gameObject)
