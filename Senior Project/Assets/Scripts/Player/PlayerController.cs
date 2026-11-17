@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField, ReadOnly] private bool _isGrounded;
 
+    [Header("Whistle")]
+    [SerializeField] private float _whistleRadius = 5f;
+
+
     public enum State
     {
         Idle,
