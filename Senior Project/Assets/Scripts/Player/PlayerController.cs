@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Whistle")]
     [SerializeField] private float _whistleRadius = 5f;
-
+    [SerializeField] private float _whistleCooldown = 5f;
 
     public enum State
     {
