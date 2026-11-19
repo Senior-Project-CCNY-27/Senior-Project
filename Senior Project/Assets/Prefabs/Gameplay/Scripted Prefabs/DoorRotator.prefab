@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 6597052188967579294}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.735, y: 0.98300004, z: 0}
-  m_LocalScale: {x: 1.49, y: 2.2091, z: 0.17727}
+  m_LocalPosition: {x: -1, y: 1.5, z: 0}
+  m_LocalScale: {x: 2, y: 3, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 420770635663634013}
@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bbabd64f8f31487cb252855dd2bd913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorOpener
-  isOpen: 0
-  isLocked: 1
+  _isOpen: 0
+  _isLocked: 1
   _animationDuration: 0.5
   _animationEase: 25
   _doorRotator: {fileID: 420770635663634013}
@@ -163,18 +163,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GoalZone, Assembly-CSharp
-        m_MethodName: ObjectivesMet
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &6660047680750730031
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 420770635663634013}
+  - component: {fileID: 5458523992416041954}
   m_Layer: 0
   m_Name: DoorRotator
   m_TagString: Untagged
@@ -207,3 +196,60 @@ Transform:
   - {fileID: 5927117107242406408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5458523992416041954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6660047680750730031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52dee15ec6436c144ae9462b6b5f0e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Tsitski.ProBuilderTools::Tsitski.ProBuilderTools.TsitskiProBuilderCutter
+  stats: {fileID: 0}
+  shape: 0
+  cornerRadius:
+    topLeft: 0
+    topRight: 0
+    bottomLeft: 0
+    bottomRight: 0
+  cornerSegments: 8
+  cylinderSegments: 16
+  explosionSeed: 1
+  explosionSpikes: 12
+  explosionMinorSpikes: 3
+  explosionJaggedness: 0.6
+  polygonPoints:
+  - {x: -0.5, y: -0.5}
+  - {x: 0.5, y: -0.5}
+  - {x: 0.5, y: 0.5}
+  - {x: -0.5, y: 0.5}
+  polygonRadii: []
+  pathPoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 2}
+  pathRadii: []
+  pathRotations: []
+  pathWidth: 1
+  pathHeight: 2
+  shapeMesh: {fileID: 0}
+  center: {x: -1, y: 1.5, z: 0}
+  size: {x: 2, y: 3, z: 2}
+  cutMode: 0
+  cutThroughParent: 1
+  ignorePrefabMeshes: 0
+  createMesh: 1
+  facesOn: 0
+  generateFaces:
+    x: 1
+    y: 1
+    z: 1
+  clipToTunnel:
+    x: 0
+    y: 0
+    z: 0
+  revealMaterial: {fileID: 0}
+  smoothingAngle: 30
+  facesFilter: {fileID: 0}
