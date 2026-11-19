@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9181a0af64737ce4b99e6f3ccf662b18
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Runtime/TsitskiArray.cs
+  uploadId: 1045352

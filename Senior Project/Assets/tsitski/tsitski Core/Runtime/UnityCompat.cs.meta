@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5cca073dd6304e0b8bbcce87c70881ac
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Runtime/UnityCompat.cs
+  uploadId: 1045352

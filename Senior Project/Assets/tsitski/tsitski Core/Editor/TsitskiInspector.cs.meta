@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: dfa2e23656e28c347853faa71b29c34e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Editor/TsitskiInspector.cs
+  uploadId: 1045352

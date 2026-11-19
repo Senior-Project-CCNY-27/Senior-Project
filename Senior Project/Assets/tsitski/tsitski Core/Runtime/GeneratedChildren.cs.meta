@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a43d24cf096b4194499c6e38533bb172
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Runtime/GeneratedChildren.cs
+  uploadId: 1045352

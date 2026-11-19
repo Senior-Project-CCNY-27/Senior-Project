@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 89e3a08f2e37ead4c98f68b446e0167d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Runtime/RebuildQueue.cs
+  uploadId: 1045352

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 33a903cfa2e7c684e8303d78db2ba839
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Editor/OrientedBoundsPropertyDrawer.cs
+  uploadId: 1045352

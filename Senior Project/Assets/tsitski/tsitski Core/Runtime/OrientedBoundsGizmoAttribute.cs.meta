@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 473c4fd6a1b6c8f429d34933b99b905f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Runtime/OrientedBoundsGizmoAttribute.cs
+  uploadId: 1045352

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 36e904dad9fe08541a1216b8640d71d2
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski Core/Editor/OrientedBoundsGizmoDrawer.cs
+  uploadId: 1045352
