@@ -803,7 +803,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _showGizmos: 0
+  _showGizmos: 1
   <IsRunning>k__BackingField: 0
   _monster: {fileID: 5118755737595468301}
   _onTargetFoundState: {fileID: 810000000000000152}
@@ -831,7 +831,14 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: -8417493674830745442, guid: 1ab61e70786ce27449cbb57c2fe646ca, type: 3}
     _NormalizedStartTime: 0
-  _waypoints: []
+  _waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _innerDetectionRadius: 2
   _farLosDetectionRadius: 12.5
   _farLosLateralRadius: 8
@@ -2204,6 +2211,7 @@ GameObject:
   - component: {fileID: 810000000000000242}
   - component: {fileID: 293364263455553691}
   - component: {fileID: 6905549458166233107}
+  - component: {fileID: 7028321243438154744}
   - component: {fileID: 5164342651361651785}
   - component: {fileID: 4990973764900267045}
   - component: {fileID: 3585593536688389072}
@@ -2312,6 +2320,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StateMachineGizmoController
   _enableGizmosWhenStateIsActive: 1
+--- !u!114 &7028321243438154744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674973594923332841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3e058787db40a6be8771a237f44d90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterMeter
+  <Meters>k__BackingField:
+    _serializedList:
+    - Key: 0
+      Value: 0
+    - Key: 1
+      Value: 0
+    - Key: 2
+      Value: 0
 --- !u!135 &5164342651361651785
 SphereCollider:
   m_ObjectHideFlags: 0
