@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 30918c16a7c986f47ab80859733520a9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Runtime/Csg/Node.cs
+  uploadId: 1045352

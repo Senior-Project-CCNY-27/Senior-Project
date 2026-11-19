@@ -1,0 +1,158 @@
+VERSION 1.5
+New features
+ProBuilder Path (Tools > tsitski > ProBuilder > Create > Path)
+Builds a raised strip along curved branches for sidewalks, kerbs and paths. Every point has its own width (side handles) and can sit at its own height, and Height (the arrow) can be negative to extrude downwards. Points of different branches placed on top of each other join into a junction, so branches can meet as a T, a crossing or any number of ways; dragged points snap onto nearby points of other branches. Branch From Selected Point starts a new branch from a selected point. Store Width gives every point the same width. A branch end placed on another branch's curve joins it there too, and dragged ends snap onto other branches. Where a branch passes through a junction it stays unbroken, and the other branches stop at its edge. Height only curves between points at different heights, so flat stretches stay flat. Wide paths around tight corners pinch on the inside of the turn instead of folding over themselves. UVs run along the path (across the width and along its length) instead of being projected per face. The inspector has a top-down preview where points can be moved, added and deleted. Has top, side and bottom material slots and a Smoothing Angle.
+ProBuilder Polygon
+A polygon can have several outline paths, which are merged into one shape; touching or overlapping outlines join and separate ones stay separate pieces. Thickness can be negative to extrude downwards and has a height arrow in the Scene view. Copying a whole outline and pasting it adds a new outline, and Add Path adds one next to the shape.
+Deleting paths
+On Polygon (outlines and holes), Roof and Path, deleting every point of a path, or leaving it with too few points, removes the whole path. Also works from the polygon preview in the inspector.
+Split Path (Tools > tsitski > Core > Split Path)
+Also works on Polygon, Roof, Floor Plan, Path, Cutter and Mesh Support. Per-point settings like widths, rotations and corner radii carry over to each piece. Selecting a whole path on an object with several paths moves it into a new object.
+Center Transform To Mesh (Tools > tsitski > Core > Center Transform To Mesh)
+Moved next to Split Path, and works on every generator: Polygon, Roof, Path, Stairs, Trim, Floor Plan, Array, Path Assembly, Fence, Mesh Decal and Mesh Support keep all of their points in place, as do plain ProBuilder and mesh objects. Objects that can't move their pivot (pillars, ropes, generated pieces, paths stored in stats) are skipped with a message.
+Spiral stairs
+Stairs have a Mode: Path (as before) or Spiral. Spiral stairs wind around the pivot, set by Spiral Height, Spiral Radius (to the middle of the steps), Width and Spiral Angle (90 for a quarter turn, 360 for a full turn, more for several turns), clockwise or not. Drag the arrows for height and radius, the side handles for width, and the handle on the top step to change the angle. Trims follow the exact spiral along the inner and outer edges, and the cutter opens the floor above to match the top step.
+Cutter Mesh shape
+Cutters have a Mesh shape that cuts away an exact mesh, where each submesh is a convex part. Scripts can set it with TsitskiProBuilderCutter.SetMesh(mesh). Spiral stairs generate their cutter this way, so the opening matches the top step exactly. The default Smoothing Angle for new cutters is 30.
+Stairs UVs
+The treads and underside of winding and spiral stairs are mapped along the stairs instead of per face, so textures run smoothly around curves.
+Stairs materials
+Top Step, Forward Step and Side replace Top and Bottom. Top Step covers the treads and landing tops, Forward Step the risers, and Side the sides, underside, back and landing edges.
+Store toggles
+Floor Plan Stats have Store Height and Store Thickness, and Path Stats have Store Height and Store Width. Turning one off lets each object keep its own value.
+Smoothing angle
+Roofs and Roof Stats have a Smoothing Angle. Faces meeting at less than the angle are shaded smooth.
+Fence corners (Mesh Tools)
+Straight fences have a corner radius handle at each point; Bezier fences keep curving on their own. Match Rounding Segment To Piece Size (on by default) splits rounded corners using the same length rules as the center pieces, or Min Rounding Segment Length sets the length of each corner piece.
+Height gizmos
+Polygon thickness, Pillar height and Fence point heights use the same dotted line and arrow as Floor Plan and Path Assembly.
+Fixes
+Stairs with Smooth Collider no longer switch back to the render mesh collider when entering play mode.
+Splitting a path no longer leaves the pieces sharing one mesh, where rebuilding one piece changed the others.
+Fields that only show when a setting is on now hide correctly in every generator inspector.
+Upgrade notes
+Polygons and Polygon Stats are upgraded to the new outline list when they load; save scenes and stats assets to keep the new format. Scripts reading polygon.path or activePath should use paths or activePaths.
+Stairs Top Material becomes Top Step Material and Bottom Material becomes Side Material. Forward Step Material starts empty, so assign it to lock the risers again.
+Roofs pick up a Smoothing Angle of 30, so curved roofs shade smooth on their next rebuild. Set it to 0 to keep every edge hard.
+Existing Floor Plan Stats keep Store Height and Store Thickness on, so they behave as before.
+Center Transform To Mesh moved from Tools > tsitski > ProBuilder > Modelling to Tools > tsitski > Core. Shortcuts bound to the old path need to be set again.
+Custom generators can support Center Transform To Mesh by implementing IPivotShiftable, and can pass extra per-point values (heights, widths) through PathPointHandles.Do so they follow inserted and deleted points. GeneratorConventions.md lists the features every generator should share.
+
+VERSION 1.4
+New features
+Tools popup (Alt+X in the Scene view)
+Groups open as submenus to the right when you hover them. Number keys 1 to 0 press the matching button and Backspace goes back a level. Start typing to search every tool, then press Enter to run the top result or a number to pick one. Alt+X closes the popup again.
+Menu layout
+Tools > tsitski is split into Core and ProBuilder (and Mesh and Light when those packages are installed), each with a Create submenu at the top. Polygon, Floor Plan, Roof, Trim, Stairs, Pillar, Cutter and Array can be created from there or from the GameObject menu.
+Placement (Tools > tsitski > Core > Placement)
+Snap To Grid, Snap To Oriented Grid, Snap To Oriented Grid And Angle, Snap To Wall and Step Physics. Snap To Wall snaps onto the layers set in the new Placement Layers setting.
+Split Path (Tools > tsitski > Core > Split Path)
+Moves the selected run of path points into a new object. Works on trims and arrays. Replaces Split Into New Trim.
+Generate Lightmap UVs (Tools > tsitski > Core > Generate Lightmap UVs)
+Regenerates lightmap UVs on every generated and ProBuilder mesh in the open scenes. Also on the Mesh Filter right-click menu. Replaces Regenerate Lightmap UVs.
+Custom popup entries
+Add [TsitskiMenu("Group/Name")] to a static method, or a MenuItem under Tools/tsitski/, and it shows up in the popup and its search.
+Fixes
+Fixed error CS0234 (Tsitski.Core does not exist) in projects without ProBuilder installed.
+Upgrade notes
+ProBuilder menu items moved from Tools > tsitski > ... to Tools > tsitski > ProBuilder > .... Shortcuts bound to the old paths need to be set again.
+
+VERSION 1.3
+New features
+Setup Materials (Tools > tsitski > Setup Materials)
+Puts materials on every selected ProBuilder mesh in one step, replacing Setup Real Blend. Simple puts one material on every face. Complex casts rays to sort faces into inside and outside walls, floors, roofs and trims. Materials can be saved as a Building Material Group asset, and with Real Blend installed each slot also picks the layer to paint.
+Generator materials
+Trims, Arrays, Pillars and Roofs have a Material field that is locked onto every face. Polygons, Stairs and Floor Plans have their own material slots. Empty slots leave faces free to paint, and face materials you paint by hand are now kept when a generated mesh rebuilds.
+ProBuilder Roof
+Fill Roof builds a solid roof with a flat underside. Generate Gable Walls fills the gap under each gable. The profile can be edited on any wing.
+ProBuilder Floor Plan
+A Roof Stats slot puts a roof over every closed wall loop. Generated pieces you delete stay deleted, and you can restore them from Removed Layers. Outline Settings is now called Layers.
+ProBuilder Polygon
+Subdivision Step cuts the top and bottom into an even grid. Tops and bottoms are now built from clean quads.
+ProBuilder Pillar
+Width scales the profile in or out from the center.
+Cutters
+Faces On picks which mesh gets a tunnel’s faces when a cutter passes through several meshes. Apply Cuts To ProBuilder Mesh makes each cut its own ProBuilder face. Smoothing Angle shades the faces a cutter generates smooth where they meet at less than that angle.
+Other
+Trim and pillar profile graphs can be edited directly in the inspector. The Array moved to tsitski Core and can place ProBuilder meshes or Pillar Stats.
+Fixes
+Generators only rebuild when their settings change, so lightmaps no longer flicker after play mode, script reloads, reopening a scene, material drags or unrelated undos. Manually edited UVs and lightmap UVs are kept on rebuild. Coplanar faces are merged on trims and floor plans.
+Upgrade notes
+All menus moved to Tools > tsitski, and Regenerate Cut Lightmap UVs is now Regenerate Lightmap UVs. Classes are renamed from ProBuilderX to TsitskiProBuilderX, and ProBuilderArray is now TsitskiArray. Existing scenes and stats load unchanged; only code that references these classes needs updating. The settings asset moved to tsitski Core/tsitski Settings.asset.
+
+VERSION 1.2
+New features
+ProBuilder Polygon (Add Component > tsitski ProBuilder Tools > ProBuilder Polygon)
+An outline drawn in the scene and extruded up into a slab, for floors, ceilings, platforms and flat roofs. Point handles, rounding and rectangle selection all work.
+Add Hole adds a 2 by 2 hole in the middle of the outline. Holes are edited with the same point handles.
+Holes can now go anywhere. Overlapping or touching holes merge into one opening, and a hole that crosses the outline cuts a notch. A hole that cuts all the way across splits the polygon into separate pieces in the same mesh. Holes entirely outside the outline are ignored.
+Points are kept flat on the polygon's height while you edit.
+New Polygon Stats asset. With Save Polygon on, the asset stores the outline and holes, so every polygon using it shares the same shape. The inspector has Save As Polygon Stats… and Copy Stats Into Polygon buttons.
+New menu item Generate > Convert To Polygon turns the top outline of selected ProBuilder meshes, holes included, into a polygon.
+ProBuilder Roof (Add Component > tsitski ProBuilder Tools > ProBuilder Roof)
+Hip, valley and gable roofs generated from the center lines of a building's wings.
+Each path is a wing with its own Width and Height. Wings that overlap or touch merge into one roof, with hips at the ends, valleys where they meet and ridges along the middle. Wings of different widths and heights meet in proper valleys.
+Closed paths make a ring roof around a courtyard. Paths that don't touch become separate roofs in the same mesh.
+One profile is shared by the whole roof. It runs from the eave at (0, 0) to the ridge at (1, 1) and is stretched to each wing's half width and height. Two points give a plain pitch; more points give mansard, gambrel, curved or flat-topped roofs. Profile points support rounding.
+Each open path end can be a hip or a vertical gable.
+Thickness builds the roof as a shell, like a trim. The top surface is copied down by the thickness, fascias run along the eaves, and a band follows the profile across each gable end. The underside is left open for attics.
+Scene view handles: the profile is drawn on every wing, with editable points. Drag the eave point, or the dot opposite it, to change that wing's width, and drag the ridge point to change its height. Click the end markers to switch between hip and gable.
+If a wing can't be joined to the rest cleanly, it's built as its own roof and the inspector names it, instead of the mesh breaking. Building also stops after a time limit, so a bad layout can't freeze the editor.
+New Roof Stats asset holds the profile, rounding and thickness, and the paths when Save Paths is on. The inspector has Save As Roof Stats… and Copy Stats Into Roof buttons.
+Roofs work with cutters.
+Compatibility
+Now supports Unity 2021.3 or newer and ProBuilder 5.0.3 or newer. Unity 6 with ProBuilder 6 still works.
+Newer Unity and ProBuilder APIs are used only where they're available, with fallbacks for older versions: FindObjectsByType, Gizmos.DrawLineList, EditorSnapSettings.gridSize and ProBuilderMesh.MakeUnique.
+If ProBuilder isn't installed, the tools no longer throw compile errors. A prompt offers to install it, and the same option is under Tools > tsitski ProBuilder Tools > Install ProBuilder. Package Manager picks the newest ProBuilder that works with your Unity version.
+Settings
+Contribute GI By Default (on by default) turns on the Contribute GI static flag when a generator is added to an object, and on the child objects generators create.
+Gizmos Only On Selected only draws cutter gizmos for selected cutters.
+Other
+Pasted points now start right after the copied ones. While you drag them, they swap to before the copied point if that keeps the path tidier.
+Auto Name Generators and the default material now also cover polygons and roofs.
+Package structure
+New in Core: SliderHandles, with reusable width, length and toggle handles; and UnityCompat, with cross-version helpers.
+VERSION 1.1
+New features
+Outline Trim (Generate > Outline Trim)
+Select a mesh, a floor plan, or a floor plan's floor to generate closed trims around its outline. The settings preview live in the scene and the result can be undone.
+Side can be Outside, Inside or Center. Inside on a mesh with no inner outline runs inward along the edge.
+Height can be Bottom or Top, and there's an Offset setting.
+Create can be Trim or Array. Trims use optional Trim Stats. Arrays use optional Array Stats, take their source mesh from the stats, and fall back to a default cube. Stats that store their own path are ignored.
+Floor Plan rework
+Floor plans now have their own path (path, pathRadii, closed), which you edit in the scene. Point handles, rounding, extend buttons and rectangle selection all work.
+floor is now optional. When it's set, the path is generated from the floor outline: the path fields are greyed out and the path is drawn read-only. Extra outlines (holes when Walls Around Holes is on) still get walls.
+Open (non-closed) paths work, with end caps on the walls.
+New settings: Loop Cut Step, Vertical Loop Cut Step and Rounding Segments.
+New Floor Plan Stats asset. The inspector has Save As Floor Plan Stats… and Copy Stats Into Floor Plan buttons, and every floor plan using an asset updates when you edit it.
+Lightmapping
+Added a custom lightmap UV unwrapper for cut results and stairs. It replaces Unwrapping.GenerateSecondaryUVSet. It splits the mesh into charts by angle (keeping ProBuilder faces together), orients each chart to its smallest bounding box, and packs them with padding based on texels.
+Trims now generate their own UVs. UV0 runs along the path length and around the profile, and the end caps are planar. UV2 (lightmap) charts are packed per section of the path.
+Cut results now copy Scale In Lightmap, Receive GI and Stitch Seams from the source renderer.
+New menu item Generate > Regenerate Cut Lightmap UVs.
+Settings
+Rebuild After Dragging (on by default) waits until you release a handle before recutting.
+Auto Name Generators names cutters, trims, arrays, stairs, pillars and floor plans after their stats asset, or after the component if they have no stats. Turning it on renames everything already in the scene.
+Other
+In the pillar editor, profile handles now follow the stretched or repeated pillar shape, and repeated middle sections are drawn faded.
+Center Transform To Mesh now keeps the path in place for Trim, Array, Floor Plan and Stairs through the new IPathOwner interface. Before, it only handled Trim. It also checks for a path shared through a stats asset before changing anything.
+Performance
+The cut system works out which meshes each cutter touches once per rebuild, with cached world bounds checked first. It used to re-test cutters against meshes several times per rebuild.
+Penetration tests skip triangles whose bounds don't overlap the cutter box.
+CSG plane splitting reuses a buffer per thread and preallocates its lists.
+Cut targets skip the rebuild when nothing changed. A stable build hash covers the source mesh, materials, each cutter's shape and settings, box transforms and tunnel caps, so opening a scene or reloading scripts doesn't recut everything.
+Lightmap UVs are only generated after 1 second idle, on scene save, or when entering play mode, not on every recut.
+Collider repair runs at most every 0.5s.
+Cutter gizmos keep their mesh and line list and rebuild only when the shape hash changes.
+Bug fixes
+Build fix: using Tsitski.Core was inside #if UNITY_EDITOR in Array, Pillar, Stairs and Trim, which broke player builds.
+Cut results are now deterministic. Cutters are applied in hierarchy order, and the inside owner is only decided by GlobalObjectId when two meshes actually tie.
+Scenes are no longer marked dirty when a rebuild was skipped because the result was already current.
+The cut result's MeshCollider is refreshed after lightmap UVs regenerate.
+Stairs: generated cutters now stick out 0.01 above the top step instead of 0.1.
+Stairs: sloped underside quads are now built as triangle strips with their own smoothing group, so non-planar quads render and shade correctly.
+Outline Trim rebuilds its preview when you switch between Trim and Array or change the stats.
+Package structure
+These were moved from ProBuilder Tools into tsitski Core (new Tsitski.Core and Tsitski.Core.Editor asmdefs) and made public: PathPointHandles, PolygonPointHandles, PointClipboard, PasteOrder, RoundingHandle, SceneRectSelection and PointRounding.
+New in Core: HandleTheme (shared handle colours), TsitskiInspector.DrawProperties, and PathPointHandles.editableCount, which hides the insert, extend and delete controls.
+New StableHash struct, which gives hashes that stay the same across sessions.

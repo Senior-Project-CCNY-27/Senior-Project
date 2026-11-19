@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 12ec69869f6921d47a409ffec0d2865c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/BevelOperation.cs
+  uploadId: 1045352

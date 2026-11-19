@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2bf6cdc90b0adeb459eac399e1d71ba2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/ProfilePreview.cs
+  uploadId: 1045352

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0ef2deb8575a74048b62799d9f0d349e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/TsitskiProBuilderTrimEditor.cs
+  uploadId: 1045352

@@ -1,0 +1,30 @@
+{
+    "name": "Tsitski.ProBuilderTools",
+    "rootNamespace": "Tsitski.ProBuilderTools",
+    "references": [
+        "Unity.ProBuilder",
+        "Tsitski.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "TSITSKI_PROBUILDER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.probuilder",
+            "expression": "5.0.3",
+            "define": "TSITSKI_PROBUILDER"
+        },
+        {
+            "name": "com.unity.probuilder",
+            "expression": "5.1.0",
+            "define": "TSITSKI_PROBUILDER_5_1_OR_NEWER"
+        }
+    ],
+    "noEngineReferences": false
+}

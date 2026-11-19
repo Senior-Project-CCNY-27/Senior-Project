@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 52dee15ec6436c144ae9462b6b5f0e6e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Runtime/TsitskiProBuilderCutter.cs
+  uploadId: 1045352

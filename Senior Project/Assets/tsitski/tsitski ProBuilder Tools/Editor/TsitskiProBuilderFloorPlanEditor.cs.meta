@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 07f1fa1c0fc9e2647ad8e366ed04bbc9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/TsitskiProBuilderFloorPlanEditor.cs
+  uploadId: 1045352

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8446f6d13710d6d44a5fde20f3cdaeb4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Runtime/TsitskiProBuilderStairsStats.cs
+  uploadId: 1045352

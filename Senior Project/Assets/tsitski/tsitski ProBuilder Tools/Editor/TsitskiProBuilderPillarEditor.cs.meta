@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 69c657dc2e8960f47b5facdcfd3d771e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/TsitskiProBuilderPillarEditor.cs
+  uploadId: 1045352

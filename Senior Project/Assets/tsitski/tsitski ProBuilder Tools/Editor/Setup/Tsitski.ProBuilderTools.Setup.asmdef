@@ -1,0 +1,24 @@
+{
+    "name": "Tsitski.ProBuilderTools.Setup",
+    "rootNamespace": "Tsitski.ProBuilderTools",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "!TSITSKI_PROBUILDER"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.probuilder",
+            "expression": "5.0.3",
+            "define": "TSITSKI_PROBUILDER"
+        }
+    ],
+    "noEngineReferences": false
+}

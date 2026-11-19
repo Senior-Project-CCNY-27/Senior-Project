@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fe8603e9df604965a181c6a460c54453
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 416938
+  packageName: tsitski ProBuilder Tools
+  packageVersion: 1.5
+  assetPath: Assets/tsitski/tsitski ProBuilder Tools/Editor/Setup/Tsitski.ProBuilderTools.Setup.asmdef
+  uploadId: 1045352
