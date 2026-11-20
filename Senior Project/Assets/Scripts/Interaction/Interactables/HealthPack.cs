@@ -1,25 +1,18 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HealthPack : MonoBehaviour
 {
-    private Health _health;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Heal(PlayerPickupController playerPickupController)
     {
-       _health = FindFirstObjectByType<Health>();
-    }
+        if (!playerPickupController.TryGetComponent(out Health health))
+            return;
 
-    public void Heal()
-    {
-        if(_health.CurrentHealth < _health.MaxHealth)
-        {
-            int healAmount = _health.MaxHealth - _health.CurrentHealth;
+        if (health.CurrentHealth >= health.MaxHealth)
+            return;
+        
+        int healAmount = health.MaxHealth - health.CurrentHealth;
+        health.Heal(healAmount);
 
-            _health.Heal(healAmount);
-
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }
