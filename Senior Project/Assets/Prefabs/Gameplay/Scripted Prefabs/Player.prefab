@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 2558347682521545660}
   - component: {fileID: 5772216465307282984}
   - component: {fileID: 4959221770792741452}
+  - component: {fileID: 8385561581660614154}
+  - component: {fileID: 896556355817859664}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -277,6 +279,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &8385561581660614154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439304884227378115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de74dc556954854aa02316c04df3be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  _whistleRadius: 10
+  _whistleCooldown: 5
+  _volume: 100
+  _cooldownTimer: 0
+  _soundListener: {fileID: 11400000, guid: 67fda16ea26108c40b9bd56c55701e0c, type: 2}
+--- !u!114 &896556355817859664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439304884227378115}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d29a0001dd231340a4a65547666e18f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthRegen
+  _health: {fileID: 741346971847979075}
+  _regenDuration: 5
+  _regenTimer: 0
 --- !u!1 &876998578852105867
 GameObject:
   m_ObjectHideFlags: 0

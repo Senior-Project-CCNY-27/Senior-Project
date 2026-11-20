@@ -30,7 +30,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
             return;
         }
             
-        PlayerController player = FindObjectOfType<PlayerController>();
+        PlayerController player = FindFirstObjectByType<PlayerController>();
         if (player == null)
         {
             Debug.LogError("Player not found");
@@ -49,7 +49,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void AgitateMonster()
     {
-        MonsterStateActions monster = FindObjectOfType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -66,7 +66,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void AggressMonster()
     {
-        MonsterStateActions monster = FindObjectOfType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -83,7 +83,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void FeedMonster()
     {
-        MonsterStateActions monster = FindObjectOfType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -91,5 +91,39 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
         }
 
         monster.Feed();
+    }
+
+    [DevConsoleCommand(
+        name: "enableRegen",
+        aliases: "",
+        helpText: "Enable health regeneration"
+    )]
+    public static void EnableRegen()
+    {
+        PlayerHealthRegen healthRegen = FindFirstObjectByType<PlayerHealthRegen>();
+        if (healthRegen == null)
+        {
+            Debug.LogError("PlayerHealthRegen not found");
+            return;
+        }
+        
+        healthRegen.enabled = true;
+    }
+
+    [DevConsoleCommand(
+        name: "disableRegen",
+        aliases: "",
+        helpText: "Disable health regeneration"
+    )]
+    public static void DisableRegen()
+    {
+        PlayerHealthRegen healthRegen = FindFirstObjectByType<PlayerHealthRegen>();
+        if (healthRegen == null)
+        {
+            Debug.LogError("PlayerHealthRegen not found");
+            return;
+        }
+
+        healthRegen.enabled = false;
     }
 }

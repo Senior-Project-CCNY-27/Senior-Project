@@ -15,7 +15,13 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
     [Header("Rotation Angles")]
     [SerializeField] private Vector3 _closedRotation = new Vector3(0, 0, 0); // Door rotation when closed.
     [SerializeField] private Vector3 _openRotation = new Vector3(0, -90, 0);   // Door rotation when open.
-    
+    private Vector3 _startRotation;
+
+    private void Awake()
+    {
+        _startRotation = _doorRotator.localEulerAngles;
+    }
+
     private void Start()
     {
         AnimateDoor();
@@ -62,6 +68,6 @@ public class DoorOpener : MonoBehaviour, IInteractionValidator
         _doorRotator.DOKill();
         
         Vector3 targetEulerAngles = _isOpen ? _openRotation : _closedRotation; 
-        _doorRotator.DOLocalRotate(targetEulerAngles, _animationDuration).SetEase(_animationEase);
+        _doorRotator.DOLocalRotate(_startRotation + targetEulerAngles, _animationDuration).SetEase(_animationEase);
     }
 }
