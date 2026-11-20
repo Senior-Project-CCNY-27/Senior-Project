@@ -2212,6 +2212,7 @@ GameObject:
   - component: {fileID: 293364263455553691}
   - component: {fileID: 6905549458166233107}
   - component: {fileID: 7028321243438154744}
+  - component: {fileID: 2832007763852150208}
   - component: {fileID: 5164342651361651785}
   - component: {fileID: 4990973764900267045}
   - component: {fileID: 3585593536688389072}
@@ -2340,6 +2341,54 @@ MonoBehaviour:
       Value: 0
     - Key: 2
       Value: 0
+--- !u!114 &2832007763852150208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674973594923332841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1078ab053684791bfd03074dfe2d83b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterSoundListener
+  _soundDataEventListener: {fileID: 11400000, guid: 67fda16ea26108c40b9bd56c55701e0c, type: 2}
+  _sourceListenerTransform: {fileID: 1479164432836177180}
+  _wallDampeningMultiplier: 0.75
+  _distanceDampeningCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.104619905
+      outSlope: -0.104619905
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9263557
+      value: 0.90308475
+      inSlope: -0.117836334
+      outSlope: -0.117836334
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16245723
+      outWeight: 0.8918115
+    - serializedVersion: 3
+      time: 0.9975586
+      value: 0.0071411133
+      inSlope: -12.582971
+      outSlope: -12.582971
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!135 &5164342651361651785
 SphereCollider:
   m_ObjectHideFlags: 0
