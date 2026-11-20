@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +14,13 @@ public class Interactable : MonoBehaviour
 
     [field: Header("Event")]
     [field: SerializeField] public UnityEvent<Interactor> OnInteract { get; private set; } = new();
-    
+
+    private void OnValidate()
+    {
+        if(gameObject.layer != LayerMask.NameToLayer("Interactable"))
+            gameObject.layer = LayerMask.NameToLayer("Interactable");
+    }
+
     public void EnableInteractability(bool canInteract) => IsInteractionEnabled = canInteract;
     
     public virtual void Interact(Interactor interactor)
