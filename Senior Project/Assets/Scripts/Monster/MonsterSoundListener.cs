@@ -10,7 +10,8 @@ public class MonsterSoundListener : MonoBehaviour
     
     [Header("Config")]
     [SerializeField] private float _wallDampeningMultiplier = 0.75f; 
-    [SerializeField] private AnimationCurve _distanceDampeningCurve; 
+    [SerializeField] private AnimationCurve _distanceDampeningCurve;
+    [SerializeField] private bool _isDebugEnabled = true;
     
     public event Action<SoundData> OnValidSoundHeard = delegate { };
 
@@ -26,7 +27,8 @@ public class MonsterSoundListener : MonoBehaviour
     
     private void OnSoundDataEventReceived(SoundData soundData)
     {
-        CustomDebug.InstantiateTemporarySphere(soundData.Position, soundData.Radius, 2f, Color.blue.WithA(0.2f));
+        if (_isDebugEnabled)
+            CustomDebug.InstantiateTemporarySphere(soundData.Position, soundData.Radius, 2f, Color.blue.WithA(0.2f));
         
         float soundDistance = Vector3.Distance(soundData.Position, _sourceListenerTransform.position);
         if (soundDistance > soundData.Radius)
@@ -44,7 +46,9 @@ public class MonsterSoundListener : MonoBehaviour
             soundData.Volume = finalVolume;
         }
         
-        Debug.Log($"{name} processed sound with data: [{soundData}]");
+        if (_isDebugEnabled)
+            Debug.Log($"{name} processed sound with data: [{soundData}]");
+        
         OnValidSoundHeard?.Invoke(soundData);
     }
 }
