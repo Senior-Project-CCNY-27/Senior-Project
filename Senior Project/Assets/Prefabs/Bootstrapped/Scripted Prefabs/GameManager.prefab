@@ -50,5 +50,5 @@ MonoBehaviour:
     asset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
     guid: 99c9720ab356a0642a771bea13969a05
   <GameplayScene>k__BackingField:
-    asset: {fileID: 102900000, guid: 846a71d61009fdc4fb36893acc318e7e, type: 3}
-    guid: 846a71d61009fdc4fb36893acc318e7e
+    asset: {fileID: 102900000, guid: 4290e85b5c289d44091d0de0f4839ea3, type: 3}
+    guid: 4290e85b5c289d44091d0de0f4839ea3
