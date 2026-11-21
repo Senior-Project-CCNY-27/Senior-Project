@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 9085483512149658120}
   - component: {fileID: 2146057265064121959}
   - component: {fileID: 1831590039686094144}
+  - component: {fileID: 8673190657689659739}
   m_Layer: 8
   m_Name: DestructibleWall
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Destructible
   _onDestructibleEnabledEvent: {fileID: 11400000, guid: 402d6aa98a56c0e418d3ac8e8b8ff378, type: 2}
+  _fractureGenerator: {fileID: 8673190657689659739}
   _shakeSettings:
     Duration: 1
     Intensity: 10
@@ -267,7 +269,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1369
+  m_VersionIndex: 1372
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -392,3 +394,21 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &8673190657689659739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5408603562064970069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102dbc5d468093e4ab82ad9cdf956212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DestructibleFractureGenerator
+  _fragmentCount: 25
+  _fragmentsHolder: {fileID: 0}
+  _explosionForce: 3
+  _lifeTime: 2
+  _fadeAwayDuration: 0.5
+  _fadeAwayEase: 21

@@ -10,6 +10,8 @@ public class Destructible : MonoBehaviour
     [SerializeField, Required] private BoolScriptableEvent _onDestructibleEnabledEvent;
     private NavMeshObstacle _navMeshObstacle;
     
+    [SerializeField] private DestructibleFractureGenerator _fractureGenerator;
+    
     [Header("Camera Shake")]
     [SerializeField] private CameraShakeSettings _shakeSettings;
 
@@ -34,9 +36,13 @@ public class Destructible : MonoBehaviour
         _navMeshObstacle.enabled = !isEnabled;
     }
 
-    public void TryDestroy()
+    public void TryDestroy(Vector3 hitPoint)
     {
         CameraShakeManager.ShakeCamera(_shakeSettings);
+        
+        if(_fractureGenerator != null)
+            _fractureGenerator.TriggerDestruction(hitPoint);
+        
         Destroy(gameObject);
     }
 }

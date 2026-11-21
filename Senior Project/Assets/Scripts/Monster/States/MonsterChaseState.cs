@@ -110,7 +110,7 @@ namespace MonsterStates
         public override void HandleCollision(Collision collision)
         {
             if (collision.gameObject.TryGetComponent(out Destructible destructible))
-                destructible.TryDestroy();
+                destructible.TryDestroy(collision.GetContact(0).point);
         }
         
         private void CheckIfTargetInRange()
