@@ -1,21 +1,34 @@
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
 public class PlayerPickupController : MonoBehaviour
 {
     [Header("Hand Settings")]
-    [SerializeField, Required] private Transform _handTransform;
+    [SerializeField, Required] private Transform _holdTransform;
     [field: SerializeField, ReadOnly] public Pickup HeldPickupItem { get; private set; }
     public bool IsHandEmpty => HeldPickupItem == null;
     
     [Header("Throw Settings")]
-    [SerializeField] private float _throwForce = 25f;
+    [SerializeField] private FloatRange _throwForceRange = new FloatRange(2f, 20f);
+    [field: SerializeField] public float ThrowHoldMaxDuration { get; private set; } = 1f;
 
-    private bool _isThrowing = false;
+    public bool IsThrowing { get; private set; }
+    public float ThrowHoldTimer { get; private set; }
+
+    private void Start()
+    {
+        Transform camTransform = Camera.main.transform;
+        Vector3 holdLocalPosition = transform.InverseTransformPoint(_holdTransform.position);
+        holdLocalPosition.y = _holdTransform.position.y - camTransform.position.y;
+        Quaternion holdLocalRotation = Quaternion.Inverse(transform.rotation) * _holdTransform.rotation;
+
+        _holdTransform.SetParent(camTransform, false);
+        _holdTransform.localPosition = holdLocalPosition;
+        _holdTransform.localRotation = holdLocalRotation;
+    }
 
     private void OnEnable()
     {
@@ -36,6 +49,11 @@ public class PlayerPickupController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        UpdateThrowTimer();
+    }
+
     private void Input_InteractPerformed(InputAction.CallbackContext context)
     {
         UsePickup();
@@ -45,7 +63,7 @@ public class PlayerPickupController : MonoBehaviour
     {
         if (context.interaction is HoldInteraction)
         {
-            _isThrowing = true;
+            IsThrowing = true;
             return;
         }
         
@@ -55,7 +73,7 @@ public class PlayerPickupController : MonoBehaviour
     
     private void Input_DropCanceled(InputAction.CallbackContext context)
     {
-        if (_isThrowing && context.interaction is HoldInteraction)
+        if (IsThrowing && context.interaction is HoldInteraction)
             Throw();
     }
 
@@ -67,7 +85,7 @@ public class PlayerPickupController : MonoBehaviour
         if (pickup == null)
             return;
 
-        if (!pickup.TryAttach(_handTransform))
+        if (!pickup.TryAttach(_holdTransform))
             return;
         
         HeldPickupItem = pickup;
@@ -91,11 +109,27 @@ public class PlayerPickupController : MonoBehaviour
 
         if (!HeldPickupItem.TryDetach())
             return;
-        
-        HeldPickupItem.RigidBody.AddForce(Camera.main.transform.forward * _throwForce, ForceMode.Impulse);
+
+        float throwForce = _throwForceRange.Lerp(ThrowHoldTimer / ThrowHoldMaxDuration);
+        HeldPickupItem.RigidBody.AddForce(Camera.main.transform.forward * throwForce, ForceMode.Impulse);
         HeldPickupItem = null;
 
-        _isThrowing = false;
+        IsThrowing = false;
+        ThrowHoldTimer = 0f;
+    }
+
+    private void UpdateThrowTimer()
+    {
+        if (!IsThrowing)
+        {
+            ThrowHoldTimer = 0f;
+            return;
+        }
+        
+        if(ThrowHoldTimer < ThrowHoldMaxDuration)
+            ThrowHoldTimer += Time.deltaTime;
+        else
+            ThrowHoldTimer = ThrowHoldMaxDuration;
     }
 
     private void UsePickup()

@@ -43,6 +43,7 @@ Transform:
   m_Children:
   - {fileID: 3919594409917372591}
   - {fileID: 6644281914412440329}
+  - {fileID: 7949093552225234195}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7841058051866017547
@@ -230,9 +231,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00752629508b243abad696ae53e72390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  _handTransform: {fileID: 2907680414278467724}
+  _holdTransform: {fileID: 7949093552225234195}
   <HeldPickupItem>k__BackingField: {fileID: 0}
-  _throwForce: 20
+  _throwForceRange:
+    Min: 2
+    Max: 20
+  <ThrowHoldMaxDuration>k__BackingField: 1
 --- !u!114 &2558347682521545660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +378,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3a1ac63f854e1fae21b52db0528080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraTarget
+--- !u!1 &2231458237865473710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7949093552225234195}
+  m_Layer: 7
+  m_Name: PickupHoldOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7949093552225234195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2231458237865473710}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.391, y: 1.482, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6248889060958525270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3008097335726584711
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,11 +733,6 @@ PrefabInstance:
       addedObject: {fileID: 4501214515535917409}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0554f5568befe5f4d863ce0f2beb9175, type: 3}
---- !u!4 &2907680414278467724 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 0554f5568befe5f4d863ce0f2beb9175, type: 3}
-  m_PrefabInstance: {fileID: 3598247614766006084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3919594409917372591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0554f5568befe5f4d863ce0f2beb9175, type: 3}
