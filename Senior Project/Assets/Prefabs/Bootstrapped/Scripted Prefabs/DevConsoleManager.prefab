@@ -45,4 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Utils.CustomDevConsoleCommands
   _enabledInBuilds: 1
-  _spawnFoodPrefab: {fileID: 9128221770205823608, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
+  _spawnItemPrefabs:
+    _serializedList:
+    - Key: food
+      Value: {fileID: 1099216390143750588, guid: ff550939e1b3ce347b22fb706096c83e, type: 3}
+    - Key: key
+      Value: {fileID: 1116848756204259168, guid: e343eed2514ba4b408f8004276417dec, type: 3}

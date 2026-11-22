@@ -3,15 +3,15 @@ using MonsterStates;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(NavMeshObstacle))]
 public class Destructible : MonoBehaviour
 {
     [SerializeField, Required] private BoolScriptableEvent _onDestructibleEnabledEvent;
     private NavMeshObstacle _navMeshObstacle;
-    
-    [Header("Camera Shake")]
-    [SerializeField] private CameraShakeSettings _shakeSettings;
+
+    [SerializeField] private UnityEvent<Vector3> _onDestroyed = new();
 
     private void Awake()
     {
@@ -34,9 +34,10 @@ public class Destructible : MonoBehaviour
         _navMeshObstacle.enabled = !isEnabled;
     }
 
-    public void TryDestroy()
+    public void TryDestroy(Vector3 hitPoint)
     {
-        CameraShakeManager.ShakeCamera(_shakeSettings);
+        _onDestroyed?.Invoke(hitPoint);
+        
         Destroy(gameObject);
     }
 }

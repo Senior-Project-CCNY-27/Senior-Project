@@ -8,7 +8,9 @@ using UnityEngine.Events;
 public class Pickup : MonoBehaviour, IInteractionValidator
 {
     private Interactable _interactable;
+    private IPickupUseValidator[] _useValidators;
     public Rigidbody RigidBody { get; private set; }
+    public Collider Collider { get; private set; }
     public PlayerPickupController PickupController { get; private set; }
 
     public bool IsPickedUp { get; private set; } = false;
@@ -17,10 +19,21 @@ public class Pickup : MonoBehaviour, IInteractionValidator
     [field: SerializeField] public bool Usable { get; private set; } = false;
     [field: SerializeField, ShowIf("Usable")] public UnityEvent<PlayerPickupController> OnUse { get; private set; } = new();
 
+    private void OnValidate()
+    {
+        if (RigidBody == null)
+        {
+            RigidBody = GetComponent<Rigidbody>();
+            RigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
+    }
+
     private void Awake()
     {
         _interactable = GetComponent<Interactable>();
         RigidBody = GetComponent<Rigidbody>();
+        Collider = GetComponent<Collider>();
+        _useValidators = GetComponentsInChildren<IPickupUseValidator>(true);
     }
 
     public bool CanInteract(Interactor interactor)
@@ -83,10 +96,24 @@ public class Pickup : MonoBehaviour, IInteractionValidator
 
     public bool TryUse(PlayerPickupController pickupController)
     {
-        if (!Usable)
+        if (!Usable || !CanUseAfterValidation(pickupController))
             return false;
-        
+
         OnUse?.Invoke(pickupController);
+        return true;
+    }
+
+    public bool CanUseAfterValidation(PlayerPickupController pickupController)
+    {
+        if (pickupController == null)
+            return false;
+
+        foreach (IPickupUseValidator validator in _useValidators)
+        {
+            if (!validator.CanUse(pickupController))
+                return false;
+        }
+
         return true;
     }
 }

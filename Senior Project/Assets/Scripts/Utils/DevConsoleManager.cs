@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using DavidFDev.DevConsole;
 using UnityEngine;
 
@@ -5,9 +6,9 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
 {
     [Header("Settings")] 
     [SerializeField] private bool _enabledInBuilds = false;
-    
-    [Header("References")]
-    [SerializeField] private Pickup _spawnFoodPrefab;
+
+    [Header("References")] [SerializeField, SerializedDictionary("Item Name (lowercase)", "Prefab")]
+    private SerializedDictionary<string, GameObject> _spawnItemPrefabs = new();
 
     private protected override void Awake()
     {
@@ -18,19 +19,25 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     }
 
     [DevConsoleCommand(
-        name: "spawnfood", 
+        name: "spawn", 
         aliases: "", 
-        helpText: "Spawns food on the player"
+        helpText: "Spawns an item in front of the player"
     )]
-    public static void SpawnItem()
+    public static void SpawnItem(string itemName)
     {
-        if (Instance._spawnFoodPrefab == null)
+        if (!Instance._spawnItemPrefabs.TryGetValue(itemName.ToLower(), out GameObject itemPrefab))
         {
-            Debug.LogError("Spawn Food Prefab is null");
+            Debug.Log($"No item found with name {itemName}");
+            return;
+        }
+        
+        if (itemPrefab == null)
+        {
+            Debug.LogError("Spawn item Prefab is null");
             return;
         }
             
-        PlayerController player = FindFirstObjectByType<PlayerController>();
+        PlayerController player = FindFirstObjectByType<PlayerController>(FindObjectsInactive.Include);
         if (player == null)
         {
             Debug.LogError("Player not found");
@@ -39,7 +46,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
 
         Vector3 offset = Vector3.up + player.transform.forward * 0.5f;
         Vector3 spawnPosition = player.transform.position + offset;
-        Instantiate(Instance._spawnFoodPrefab, spawnPosition, Quaternion.identity);
+        Instantiate(itemPrefab, spawnPosition, Quaternion.identity);
     }
     
     [DevConsoleCommand(
@@ -49,7 +56,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void AgitateMonster()
     {
-        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>(FindObjectsInactive.Include);
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -66,7 +73,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void AggressMonster()
     {
-        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>(FindObjectsInactive.Include);
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -83,7 +90,7 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
     )]
     public static void FeedMonster()
     {
-        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>();
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>(FindObjectsInactive.Include);
         if (monster == null)
         {
             Debug.LogError("Monster not found");
@@ -92,38 +99,63 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
 
         monster.Feed();
     }
+    
+    [DevConsoleCommand(
+        name: "enable_monster", 
+        aliases: "", 
+        helpText: "Enables/Disables the monster",
+        parameterHelpText: "true to enable monster, false to disable monster"
+    )]
+    public static void EnableMonster(bool isEnabled)
+    {
+        MonsterStateActions monster = FindFirstObjectByType<MonsterStateActions>(FindObjectsInactive.Include);
+        if (monster == null)
+        {
+            Debug.LogError("Monster not found");
+            return;
+        }
+
+        monster.gameObject.SetActive(isEnabled);
+    }
+    
+    [DevConsoleCommand(
+        name: "take_damage", 
+        aliases: "", 
+        helpText: "Deals 1 damage to player"
+    )]
+    public static void TakeDamage()
+    {
+        PlayerController player = FindFirstObjectByType<PlayerController>(FindObjectsInactive.Include);
+        if (player == null)
+        {
+            Debug.LogError("Player not found");
+            return;
+        }
+
+        if (!player.TryGetComponent(out Health health))
+        {
+            Debug.LogError("Player health not found");
+            return;
+        }
+        
+        health.TakeDamage(1);
+    }
 
     [DevConsoleCommand(
-        name: "enableRegen",
+        name: "enable_regen",
         aliases: "",
-        helpText: "Enable health regeneration"
+        helpText: "Enable health regeneration",
+        parameterHelpText: "true to enable the health regeneration"
     )]
-    public static void EnableRegen()
+    public static void EnableRegen(bool isEnabled)
     {
-        PlayerHealthRegen healthRegen = FindFirstObjectByType<PlayerHealthRegen>();
+        PlayerHealthRegen healthRegen = FindFirstObjectByType<PlayerHealthRegen>(FindObjectsInactive.Include);
         if (healthRegen == null)
         {
             Debug.LogError("PlayerHealthRegen not found");
             return;
         }
         
-        healthRegen.enabled = true;
-    }
-
-    [DevConsoleCommand(
-        name: "disableRegen",
-        aliases: "",
-        helpText: "Disable health regeneration"
-    )]
-    public static void DisableRegen()
-    {
-        PlayerHealthRegen healthRegen = FindFirstObjectByType<PlayerHealthRegen>();
-        if (healthRegen == null)
-        {
-            Debug.LogError("PlayerHealthRegen not found");
-            return;
-        }
-
-        healthRegen.enabled = false;
+        healthRegen.enabled = isEnabled;
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
+    private IInteractionValidator[] _interactionValidators;
+
     [field: Header("Display")]
     [field: SerializeField] public string DisplayName { get; private set; } = "Interactable";
     [field: SerializeField] public bool DisplayOnlyWhenValidated { get; private set; } = false;
@@ -21,6 +23,11 @@ public class Interactable : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer("Interactable");
     }
 
+    private void Awake()
+    {
+        _interactionValidators = GetComponentsInChildren<IInteractionValidator>(true);
+    }
+
     public void EnableInteractability(bool canInteract) => IsInteractionEnabled = canInteract;
     
     public virtual void Interact(Interactor interactor)
@@ -30,8 +37,7 @@ public class Interactable : MonoBehaviour
 
     public bool CanInteractAfterValidation(Interactor interactor)
     {
-        IInteractionValidator[] validators = GetComponents<IInteractionValidator>();
-        foreach (IInteractionValidator validator in validators)
+        foreach (IInteractionValidator validator in _interactionValidators)
         {
             if (!validator.CanInteract(interactor))
                 return false;

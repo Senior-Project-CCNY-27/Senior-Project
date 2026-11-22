@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using Unity.Cinemachine;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 public class CameraFOVController : MonoBehaviour
 {
-    [SerializeField, Required] private PlayerController _player;
+    private PlayerController _player;
     [SerializeField, Required] private CinemachineCamera _camera;
     
     [Header("Sprinting")]
@@ -17,6 +18,8 @@ public class CameraFOVController : MonoBehaviour
 
     private void Awake()
     {
+        _player = FindAnyObjectByType<PlayerController>();
+        
         _baseFOV = _camera.Lens.FieldOfView;
     }
 
