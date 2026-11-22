@@ -17,6 +17,12 @@ public class CameraInputController : InputAxisControllerBase<CameraInputControll
         UpdateControllers();
     }
 
+    public void SetSensitivity(float value)
+    {
+        _sensitivity = value;
+        Sensitivity = value;
+    }
+
     [Serializable]
     public class Reader : IInputAxisReader
     {

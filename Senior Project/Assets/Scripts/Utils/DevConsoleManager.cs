@@ -158,4 +158,22 @@ public class DevConsoleManager : Singleton<DevConsoleManager>
         
         healthRegen.enabled = isEnabled;
     }
+    
+    [DevConsoleCommand(
+        name: "sensitivity",
+        aliases: "sens",
+        helpText: "Change mouse sensitivity",
+        parameterHelpText: "sensitivity value"
+    )]
+    public static void SetMouseSensitivity(float sensitivity)
+    {
+        CameraInputController cameraInput = FindFirstObjectByType<CameraInputController>(FindObjectsInactive.Include);
+        if (cameraInput == null)
+        {
+            Debug.LogError("CameraInput not found");
+            return;
+        }
+        
+        cameraInput.SetSensitivity(sensitivity);
+    }
 }
