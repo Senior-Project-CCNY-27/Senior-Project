@@ -8,7 +8,9 @@ using UnityEngine.Events;
 public class Pickup : MonoBehaviour, IInteractionValidator
 {
     private Interactable _interactable;
+    private IPickupUseValidator[] _useValidators;
     public Rigidbody RigidBody { get; private set; }
+    public Collider Collider { get; private set; }
     public PlayerPickupController PickupController { get; private set; }
 
     public bool IsPickedUp { get; private set; } = false;
@@ -30,6 +32,8 @@ public class Pickup : MonoBehaviour, IInteractionValidator
     {
         _interactable = GetComponent<Interactable>();
         RigidBody = GetComponent<Rigidbody>();
+        Collider = GetComponent<Collider>();
+        _useValidators = GetComponentsInChildren<IPickupUseValidator>(true);
     }
 
     public bool CanInteract(Interactor interactor)
@@ -104,8 +108,7 @@ public class Pickup : MonoBehaviour, IInteractionValidator
         if (pickupController == null)
             return false;
 
-        IPickupUseValidator[] validators = GetComponents<IPickupUseValidator>();
-        foreach (IPickupUseValidator validator in validators)
+        foreach (IPickupUseValidator validator in _useValidators)
         {
             if (!validator.CanUse(pickupController))
                 return false;
