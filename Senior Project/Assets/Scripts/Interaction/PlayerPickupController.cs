@@ -32,7 +32,7 @@ public class PlayerPickupController : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Instance.Actions.Player.Interact.performed += Input_InteractPerformed;
+        InputManager.Instance.Actions.Player.Use.performed += Input_UsePerformed;
         
         InputManager.Instance.Actions.Player.Drop.performed += Input_DropPerformed;
         InputManager.Instance.Actions.Player.Drop.canceled += Input_DropCanceled;
@@ -42,7 +42,7 @@ public class PlayerPickupController : MonoBehaviour
     {
         if (InputManager.Instance != null)
         {
-            InputManager.Instance.Actions.Player.Interact.performed -= Input_InteractPerformed;
+            InputManager.Instance.Actions.Player.Use.performed -= Input_UsePerformed;
             
             InputManager.Instance.Actions.Player.Drop.performed -= Input_DropPerformed;
             InputManager.Instance.Actions.Player.Drop.canceled -= Input_DropCanceled;
@@ -54,7 +54,7 @@ public class PlayerPickupController : MonoBehaviour
         UpdateThrowTimer();
     }
 
-    private void Input_InteractPerformed(InputAction.CallbackContext context)
+    private void Input_UsePerformed(InputAction.CallbackContext context)
     {
         UsePickup();
     }
@@ -132,13 +132,13 @@ public class PlayerPickupController : MonoBehaviour
             ThrowHoldTimer = ThrowHoldMaxDuration;
     }
 
-    private void UsePickup()
+    private bool UsePickup()
     {
-        if (IsHandEmpty)
-            return;
+        Pickup pickup = HeldPickupItem;
+        if (pickup == null)
+            return false;
 
-        if (!HeldPickupItem.TryUse(this))
-            return;
+        return pickup.TryUse(this);
     }
 
     public void ConsumePickup()
