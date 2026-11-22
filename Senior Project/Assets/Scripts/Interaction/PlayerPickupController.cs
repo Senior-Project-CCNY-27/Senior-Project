@@ -159,7 +159,11 @@ public class PlayerPickupController : MonoBehaviour
         if (pickup == null)
             return false;
 
-        return pickup.TryUse(this);
+        if (!pickup.TryUse(this))
+            return false;
+        
+        ClearHeldPickupItem();
+        return true;
     }
 
     public void ConsumePickup()
